@@ -52,11 +52,11 @@ const sentidoInverso = configuracion => ({
 
     configurar (dureza, porosidad)  {
         if ( dureza < DUREZA_THRESHOLD && porosidad >= POROSIDAD_THRESHOLD ) {
-            console.log(TIPOS_DE_SUELO.DuroYCompacto)
-            return DICCIONARIO_CONFIGURACION[TIPOS_DE_SUELO.DuroYCompacto]
-        } else if ( dureza >= DUREZA_THRESHOLD && porosidad < POROSIDAD_THRESHOLD ) {
             console.log(TIPOS_DE_SUELO.BlandoYPoroso)
             return DICCIONARIO_CONFIGURACION[TIPOS_DE_SUELO.BlandoYPoroso]
+        } else if ( dureza >= DUREZA_THRESHOLD && porosidad < POROSIDAD_THRESHOLD ) {
+            console.log(TIPOS_DE_SUELO.DuroYCompacto)
+            return DICCIONARIO_CONFIGURACION[TIPOS_DE_SUELO.DuroYCompacto]
         } else {
             throw new Error('Tipo de suelo desconocido');
         }
@@ -64,12 +64,15 @@ const sentidoInverso = configuracion => ({
     }
 
     async accionarBrazo ({ tiempo, velocidad, sentido}) {
-        // Este metodo debería accionar el brazo real.
+        // Este metodo debería accionar el brazo real utilizando el tiempo, la velocidad y sentidos indicados
+
+        console.log(`Accionar brazo en el sentido ${sentido} a una velocidad de ${velocidad.valor} ${velocidad.unidad} durante ${tiempo.valor} ${tiempo.unidad} `)
         await delay(toMilliSeconds(tiempo));
     }
 
-    cierreDePinzas() {
+    async cierreDePinzas() {
         // Este metodo deberia accionar el cierre de pinzas.
+        console.log('Cierre de pinzas')
     }
 
 
@@ -79,7 +82,7 @@ const sentidoInverso = configuracion => ({
 
         await this.accionarBrazo(configuracion);
 
-        this.cierreDePinzas();
+        await this.cierreDePinzas();
 
         await this.accionarBrazo(sentidoInverso(configuracion));
     }

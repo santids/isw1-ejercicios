@@ -28,7 +28,9 @@ const main  = () => {
         .then( () => {
             console.log('Terminé de obtener la muestra')
         })
-        .catch(error => { throw error });
+        .catch(error => { 
+            console.error(error.message)
+        });
     } catch (error) {
         console.error(error.message);
     };

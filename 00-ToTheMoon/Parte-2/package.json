@@ -1,0 +1,12 @@
+{
+  "name": "00-ToTheMoon",
+  "version": "1.0.0",
+  "description": "Ingenieria 1: Ejercicio 0",
+  "main": "index.mjs",
+  "author": "Dandois, Santiago José y Carreira Munich, Tobías Agustín",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "node index.mjs"
+  }
+}
