@@ -57,6 +57,21 @@ test19ComplexPath
 	self assert: 3@2 equals: rover position.
 	self assert: east equals: rover direction.! !
 
+!TestMarsRover methodsFor: 'testing - mixing instructions' stamp: 's.d 10/8/2019 21:23:26'!
+test20InvalidCharInstructionShouldRaiseExceptionAndStop
+
+	| rover |
+	rover _ MarsRover at: 2@1 withDirection: east .
+	
+	self should: [
+		rover do: 'fffxfffrr'.
+	] raise: Error - MessageNotUnderstood 
+	  withMessageText: (MarsRover invalidInstructionMessage: $x).
+
+
+	self assert: 5@1 equals: rover position.
+	self assert: east equals: rover direction.! !
+
 
 !TestMarsRover methodsFor: 'testing - unmixed rotation instructions' stamp: 's.d 10/8/2019 20:44:55'!
 test08RotateToLeftPointingNorthShouldPointWest
@@ -405,9 +420,9 @@ executeOn: aMarsRover
 IndividualInstruction class
 	instanceVariableNames: ''!
 
-!IndividualInstruction class methodsFor: 'instance creation' stamp: 's.d 10/8/2019 20:21:06'!
+!IndividualInstruction class methodsFor: 'instance creation' stamp: 's.d 10/8/2019 21:25:33'!
 for: aCharInstruction
-	^ (self subclasses detect: [ :subclass | subclass isFor: aCharInstruction ]) new.! !
+	^ (self subclasses detect: [ :subclass | subclass isFor: aCharInstruction ] ifNone: [ self error: (MarsRover invalidInstructionMessage: aCharInstruction )]) new.! !
 
 
 !IndividualInstruction class methodsFor: 'testing' stamp: 's.d 10/8/2019 20:30:31'!
@@ -591,3 +606,8 @@ MarsRover class
 !MarsRover class methodsFor: 'instance creation' stamp: 's.d 10/8/2019 20:44:55'!
 at: aPoint withDirection: aDirection    
 	^ self new initializeAtPosition: aPoint andDirection: aDirection.! !
+
+
+!MarsRover class methodsFor: 'error messages' stamp: 's.d 10/8/2019 21:13:39'!
+invalidInstructionMessage: aCharacter 
+	^ aCharacter  asString, ' is an invalid instruction'.! !
