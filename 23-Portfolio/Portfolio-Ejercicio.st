@@ -39,9 +39,11 @@ FinancialAsset subclass: #Portfolio
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
-!Portfolio methodsFor: 'testing' stamp: 'SAS 10/17/2019 20:47:16'!
+!Portfolio methodsFor: 'testing' stamp: 'TCM 10/21/2019 15:21:28'!
 hasConflictWith: aFinancialAsset
-	^ aFinancialAsset = self or: [ collection anySatisfy: [ :financialAsset | financialAsset hasConflictWith: aFinancialAsset ]. ].
+	^ aFinancialAsset = self 
+		or: [ collection anySatisfy: [ :financialAsset | 
+				financialAsset hasConflictWith: aFinancialAsset ]. ].
 	! !
 
 !Portfolio methodsFor: 'testing' stamp: 'SAS 10/17/2019 20:48:11'!
@@ -49,12 +51,17 @@ hasRegistered: aTransaction
 	^ collection anySatisfy: [ :financialAsset | financialAsset hasRegistered: aTransaction ].! !
 
 
-!Portfolio methodsFor: 'assertions' stamp: 'TCM 10/21/2019 12:38:33'!
+!Portfolio methodsFor: 'assertions' stamp: 'TCM 10/21/2019 15:19:05'!
 assertItHasNoConflict: aFinancialAsset
-	(collection anySatisfy: [ :financialAsset | (financialAsset  hasConflictWith: aFinancialAsset) or: (aFinancialAsset hasConflictWith: financialAsset ) ] ) ifTrue: [ self error: self class cannotAddRepeatedAccountErrorMessage ].
+	(collection anySatisfy: [ :financialAsset | 
+		(financialAsset  hasConflictWith: aFinancialAsset) 
+		or: (aFinancialAsset hasConflictWith: financialAsset ) 
+	] ) ifTrue: [ 
+		self error: self class cannotAddRepeatedAccountErrorMessage 
+	].
 	! !
 
-!Portfolio methodsFor: 'assertions' stamp: 'SAS 10/17/2019 21:44:14'!
+!Portfolio methodsFor: 'assertions' stamp: 'TCM 10/21/2019 15:19:13'!
 assertItIsNotInPortfolioYet: aFinancialAsset
 
 
@@ -62,12 +69,16 @@ assertItIsNotInPortfolioYet: aFinancialAsset
 	roots := self getRoots.
 	
 	
-	roots do: [ :aFinancialAssetRoot | aFinancialAssetRoot assertItHasNoConflict: aFinancialAsset ]	! !
+	roots do: [ :aFinancialAssetRoot | 
+		aFinancialAssetRoot assertItHasNoConflict: aFinancialAsset ]	! !
 
-!Portfolio methodsFor: 'assertions' stamp: 'TCM 10/21/2019 12:08:00'!
+!Portfolio methodsFor: 'assertions' stamp: 'TCM 10/21/2019 15:20:09'!
 getRoots
  	| roots |
-	roots := (parents  inject: OrderedCollection  new into: [ :a :p | a, p getRoots ]).
+	roots := (parents  
+		inject: OrderedCollection  new 
+		into: [ :otherParentsRoots :parent | 
+			otherParentsRoots, parent getRoots ]).
 	
 	roots isEmpty ifTrue:  [ ^ OrderedCollection with: self ].
 	
@@ -105,7 +116,7 @@ balance
 Portfolio class
 	instanceVariableNames: ''!
 
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 19:51:49'!
+!Portfolio class methodsFor: 'error message' stamp: 'SAS 10/17/2019 19:51:49'!
 cannotAddRepeatedAccountErrorMessage
 	^ 'No se puede agregar una cuenta que ya se encuentra en el portfolio'! !
 
@@ -160,7 +171,20 @@ TestCase subclass: #PortfolioTest
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 20:26:18'!
+!PortfolioTest methodsFor: 'assertions' stamp: 'TCM 10/21/2019 16:02:21'!
+assertCannotAddFinancialAsset: aFinalncialAsset toPortfolio: aPortfolio withPreviousTransactions: aBagOfTransactions andBalance: aBalanceNumber 
+
+	self 
+		should: [ aPortfolio  add: aFinalncialAsset ]
+		raise:  Error  - MessageNotUnderstood 
+		withMessageText: Portfolio cannotAddRepeatedAccountErrorMessage.
+		
+	self assert: aBagOfTransactions equals: aPortfolio transactions  asBag.
+	self assert: aBalanceNumber equals: aPortfolio balance 
+! !
+
+
+!PortfolioTest methodsFor: 'tests' stamp: 'SAS 10/17/2019 20:26:18'!
 test01PortfolioHaveZeroAsBalanceWhenCreated 
 
 	| portfolio |
@@ -170,7 +194,7 @@ test01PortfolioHaveZeroAsBalanceWhenCreated
 	self assert: 0 equals: portfolio balance .
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 18:50:24'!
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 15:10:58'!
 test02AddAnAccountMakesPortfolioBalanceEqualsAccountsBalance
 
 	| portfolio account |
@@ -184,7 +208,7 @@ test02AddAnAccountMakesPortfolioBalanceEqualsAccountsBalance
 	self assert: 100 equals: portfolio balance .
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 18:54:42'!
+!PortfolioTest methodsFor: 'tests' stamp: 'SAS 10/17/2019 18:54:42'!
 test03AddManyAccountsMakesPortfolioBalanceEqualsAccountsBalanceSum
 
 	| portfolio account1 account2 account3 |
@@ -206,26 +230,31 @@ test03AddManyAccountsMakesPortfolioBalanceEqualsAccountsBalanceSum
 	self assert: 130 equals: portfolio balance .
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 20:11:53'!
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 16:10:05'!
 test03dot5APortfolioWithAccountsAndPortfoliosBalanceEqualsAllAccountsBalance
 	| portfolio account1 account2 childPortfolio account3 account4 |
 	
 	portfolio := Portfolio new.
-	
+	childPortfolio  := Portfolio  new.
+
 	account1 := ReceptiveAccount new.
 	account2 := ReceptiveAccount new.
 	account3 := ReceptiveAccount new.
 	account4 := ReceptiveAccount new.
-	
+
+	portfolio add: account1.
+	portfolio add: account2.
+	childPortfolio add: account3.
+	childPortfolio  add: account4.
 
 	Deposit register: 100 on: account1.
 	Deposit register: 200 on: account1.
 	Deposit register: 300 on: account1.
-	
+
 	Deposit register: 10 on: account2.
 	Deposit register: 20 on: account2.
 	Deposit register: 30 on: account2.
-			
+
 	Deposit register: 10 on: account3.
 	Deposit register: 20 on: account3.
 	Deposit register: 30 on: account3.
@@ -233,21 +262,13 @@ test03dot5APortfolioWithAccountsAndPortfoliosBalanceEqualsAllAccountsBalance
 	Deposit register: 10 on: account4.
 	Deposit register: 20 on: account4.
 	Deposit register: 30 on: account4.
-		
-
-	portfolio add: account1.
-	portfolio add: account2.
-	
-	childPortfolio  := Portfolio  new.
-	childPortfolio add: account3.
-	childPortfolio  add: account4.
 	
 	portfolio  add: childPortfolio.
 
 	self assert: 780 equals: portfolio balance.
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 20:14:38'!
+!PortfolioTest methodsFor: 'tests' stamp: 'SAS 10/17/2019 20:14:38'!
 test04APortfolioWithManyAccountsShouldHaveRegisteredAllTransactionsRegisteredInEveryAccount
 	| portfolio  transaction1 account1 account2 transaction2 |
 	
@@ -267,7 +288,7 @@ test04APortfolioWithManyAccountsShouldHaveRegisteredAllTransactionsRegisteredInE
 	self assert: (portfolio hasRegistered: transaction2).
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 19:05:34'!
+!PortfolioTest methodsFor: 'tests' stamp: 'SAS 10/17/2019 19:05:34'!
 test05APortfolioWithAnAccountShouldNotHaveRegisteredATransactionNotRegisteredInTheAccount
 	| portfolio account  transaction|
 	
@@ -280,7 +301,7 @@ test05APortfolioWithAnAccountShouldNotHaveRegisteredATransactionNotRegisteredInT
 	self deny: (portfolio hasRegistered: transaction).
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 20:25:56'!
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 15:47:14'!
 test05dot5InAPorfolioWithAccountsAndPortfoliosHasRegisteredTransactionRegisteredInAccountInsideChildPortfolio
 	| portfolio account1 account2 childPortfolio account3 account4 transaction |
 	
@@ -299,14 +320,13 @@ test05dot5InAPorfolioWithAccountsAndPortfoliosHasRegisteredTransactionRegistered
 	childPortfolio  := Portfolio  new.
 	childPortfolio add: account3.
 	childPortfolio  add: account4.
-	
+
 	portfolio  add: childPortfolio.
-	
 
 	self assert: (portfolio  hasRegistered: transaction) 
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 19:10:47'!
+!PortfolioTest methodsFor: 'tests' stamp: 'SAS 10/17/2019 19:10:47'!
 test06AnEmptyPortfolioShouldHaveEmptyTransactions
 	| portfolio |
 	
@@ -315,7 +335,7 @@ test06AnEmptyPortfolioShouldHaveEmptyTransactions
 	self assert: (portfolio transactions isEmpty).
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 19:29:09'!
+!PortfolioTest methodsFor: 'tests' stamp: 'SAS 10/17/2019 19:29:09'!
 test07APorfolioWithAnAccountShouldHaveSameTransactionsThanTheAccountInOrder
 	| portfolio account transactions|
 	
@@ -333,7 +353,7 @@ test07APorfolioWithAnAccountShouldHaveSameTransactionsThanTheAccountInOrder
 	self assert: transactions equals: portfolio transactions asArray.
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 19:36:03'!
+!PortfolioTest methodsFor: 'tests' stamp: 'SAS 10/17/2019 19:36:03'!
 test08APorfolioWithManyAccountShouldHaveTheTransactionsOfAllTheAccounts
 	| portfolio account transactions1 transactions2 account1 account2 |
 	
@@ -359,17 +379,26 @@ test08APorfolioWithManyAccountShouldHaveTheTransactionsOfAllTheAccounts
 	self assert: (transactions1,transactions2) asBag equals: portfolio transactions asBag.
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 20:25:38'!
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 15:48:11'!
 test09InAPorfolioWithAccountsAndPortfoliosHasAllTransactionsRegisteredInAllAccounts
 	| portfolio transactions1 transactions2 account1 account2 childPortfolio transactions3 account3 account4 transactions4 |
 	
 	portfolio := Portfolio new.
+	childPortfolio  := Portfolio  new.
 	
 	account1 := ReceptiveAccount new.
 	account2 := ReceptiveAccount new.
 	account3 := ReceptiveAccount new.
 	account4 := ReceptiveAccount new.
-	
+
+	portfolio  add: childPortfolio.
+
+	portfolio add: account1.
+	portfolio add: account2.
+
+	childPortfolio add: account3.
+	childPortfolio  add: account4.
+
 	transactions1  := Array 
 		with: (Deposit register: 100 on: account1) 
 		with: (Deposit register: 200 on: account1) 
@@ -389,96 +418,56 @@ test09InAPorfolioWithAccountsAndPortfoliosHasAllTransactionsRegisteredInAllAccou
 		with: (Deposit register: 10 on: account4) 
 		with: (Deposit register: 20 on: account4) 
 		with: (Deposit register: 30 on: account4).
-		
-
-	portfolio add: account1.
-	portfolio add: account2.
-	
-	childPortfolio  := Portfolio  new.
-	childPortfolio add: account3.
-	childPortfolio  add: account4.
-	
-	portfolio  add: childPortfolio.
 
 	self assert: (transactions1,transactions2, transactions3, transactions4 ) asBag equals: portfolio transactions asBag.
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 20:25:21'!
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 16:04:01'!
 test10InAPorfolioWithOnlyAccountsEnsureThereAreNotRepeatedAccounts
 	
-	| portfolio account1 account2 transaction1 transaction2 |
+	| portfolio account1 account2 transactions |
 
 	portfolio := Portfolio new.
 	account1 := ReceptiveAccount new.
 	account2 := ReceptiveAccount new.
-	
-	transaction1 := Deposit register: 100 on: account1 .
-	transaction2 := Deposit register: 100 on: account2 .
 
 	portfolio add: account1.
 	portfolio add: account2.
 	
-	self 
-		should: [ portfolio  add: account2 ]
-		raise:  Error  - MessageNotUnderstood 
-		withMessageText: Portfolio cannotAddRepeatedAccountErrorMessage.
-		
-	self assert:  (Bag with: transaction1 with: transaction2 ) equals: portfolio transactions  asBag.
-! !
+	transactions := Bag 
+		with: (Deposit register: 100 on: account1)
+		with: (Deposit register: 100 on: account2).
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 20:26:40'!
+	self assertCannotAddFinancialAsset: account2 toPortfolio: portfolio withPreviousTransactions: transactions andBalance: 200.
+	! !
+
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 16:03:03'!
 test11InAPorfolioWithAccountsAndPortfoliosEnsureThereAreNotRepeatedAccounts
-	| portfolio transactions1 transactions2 account1 account2 childPortfolio transactions3 account3 account4 transactions4 |
+	| portfolio transactions account1 account2 account3 childPortfolio |
 	
 	portfolio := Portfolio new.
+	childPortfolio  := Portfolio  new.
 	
 	account1 := ReceptiveAccount new.
 	account2 := ReceptiveAccount new.
 	account3 := ReceptiveAccount new.
-	account4 := ReceptiveAccount new.
 	
-	transactions1  := Array 
-		with: (Deposit register: 100 on: account1) 
-		with: (Deposit register: 200 on: account1) 
-		with: (Deposit register: 300 on: account1).
-		
-	transactions2  := Array 
-		with: (Deposit register: 10 on: account2) 
-		with: (Deposit register: 20 on: account2) 
-		with: (Deposit register: 30 on: account2).
-		
-	transactions3  := Array 
+	portfolio  add: childPortfolio.
+
+	childPortfolio add: account1.
+	childPortfolio add: account2.
+	childPortfolio add: account3.
+
+	transactions  := Bag 
 		with: (Deposit register: 10 on: account3) 
 		with: (Deposit register: 20 on: account3) 
 		with: (Deposit register: 30 on: account3).
-		
-	transactions4  := Array 
-		with: (Deposit register: 10 on: account4) 
-		with: (Deposit register: 20 on: account4) 
-		with: (Deposit register: 30 on: account4).
-		
 
-	portfolio add: account1.
-	portfolio add: account2.
-	
-	childPortfolio  := Portfolio  new.
-	childPortfolio add: account3.
-	childPortfolio  add: account4.
-	
-	portfolio  add: childPortfolio.
-	
-	self 
-		should: [ portfolio  add: account3 ]
-		raise:  Error  - MessageNotUnderstood 
-		withMessageText: Portfolio cannotAddRepeatedAccountErrorMessage.
-	
+	self assertCannotAddFinancialAsset: account3 toPortfolio: portfolio withPreviousTransactions: transactions andBalance: 60! !
 
-	self assert: (transactions1,transactions2, transactions3, transactions4 ) asBag equals: portfolio transactions asBag.
-! !
-
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 21:00:38'!
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 16:05:03'!
 test12InAPorfolioWithAccountsAndPortfoliosNestedEnsureThereAreNotRepeatedAccounts
-	| portfolio transactions1 transactions2 account1 account2 childPortfolio transactions3 account3 account4 transactions4 account5 transactions5 childChildPortfolio anotherPortfolio |
+	| portfolio account1 account2 childPortfolio account3 account4 account5 transactions childChildPortfolio |
 	
 	portfolio := Portfolio new.
 	
@@ -488,60 +477,28 @@ test12InAPorfolioWithAccountsAndPortfoliosNestedEnsureThereAreNotRepeatedAccount
 	account4 := ReceptiveAccount new.
 	account5 := ReceptiveAccount new.
 	
-	transactions1  := Array 
-		with: (Deposit register: 100 on: account1) 
-		with: (Deposit register: 200 on: account1) 
-		with: (Deposit register: 300 on: account1).
-		
-	transactions2  := Array 
-		with: (Deposit register: 10 on: account2) 
-		with: (Deposit register: 20 on: account2) 
-		with: (Deposit register: 30 on: account2).
-		
-	transactions3  := Array 
-		with: (Deposit register: 10 on: account3) 
-		with: (Deposit register: 20 on: account3) 
-		with: (Deposit register: 30 on: account3).
-		
-	transactions4  := Array 
-		with: (Deposit register: 10 on: account4) 
-		with: (Deposit register: 20 on: account4) 
-		with: (Deposit register: 30 on: account4).
-	
-	transactions5  := Array 
-		with: (Deposit register: 10 on: account5) 
-		with: (Deposit register: 20 on: account5) 
-		with: (Deposit register: 30 on: account5).
-		
+	childPortfolio  := Portfolio  new.
+	portfolio  add: childPortfolio.
+	childChildPortfolio := Portfolio  new.
+	childPortfolio add: childChildPortfolio.
 
 	portfolio add: account1.
 	portfolio add: account2.
-	
-	childPortfolio  := Portfolio  new.
 	childPortfolio add: account3.
 	childPortfolio  add: account4.
-	
-	childChildPortfolio := Portfolio  new.
-	childPortfolio add: childChildPortfolio.
-	
 	childChildPortfolio  add: account5.
 	
-	anotherPortfolio := Portfolio new.
-	
-	portfolio  add: childPortfolio.
-	
-	self 
-		should: [ portfolio  add: account5 ]
-		raise:  Error - MessageNotUnderstood 
-		withMessageText: Portfolio cannotAddRepeatedAccountErrorMessage.
-	
+	transactions  := Bag 
+		with: (Deposit register: 10 on: account5) 
+		with: (Deposit register: 20 on: account5) 
+		with: (Deposit register: 30 on: account5).
 
-	self assert: (transactions1,transactions2, transactions3, transactions4,transactions5) asBag equals: portfolio transactions asBag.
+	self assertCannotAddFinancialAsset: account5 toPortfolio: portfolio withPreviousTransactions: transactions andBalance: 60.
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'SAS 10/17/2019 20:46:08'!
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 16:05:34'!
 test13InAPorfolioWithAccountsAndPortfoliosNestedEnsureThereAreNotRepeatedPortfolios
-	| portfolio transactions1 transactions2 account1 account2 childPortfolio transactions3 account3 account4 transactions4 account5 transactions5 childChildPortfolio |
+	| portfolio account1 account2 childPortfolio account3 account4 account5 transactions childChildPortfolio |
 	
 	portfolio := Portfolio new.
 	
@@ -551,99 +508,74 @@ test13InAPorfolioWithAccountsAndPortfoliosNestedEnsureThereAreNotRepeatedPortfol
 	account4 := ReceptiveAccount new.
 	account5 := ReceptiveAccount new.
 	
-	transactions1  := Array 
-		with: (Deposit register: 100 on: account1) 
-		with: (Deposit register: 200 on: account1) 
-		with: (Deposit register: 300 on: account1).
-		
-	transactions2  := Array 
-		with: (Deposit register: 10 on: account2) 
-		with: (Deposit register: 20 on: account2) 
-		with: (Deposit register: 30 on: account2).
-		
-	transactions3  := Array 
-		with: (Deposit register: 10 on: account3) 
-		with: (Deposit register: 20 on: account3) 
-		with: (Deposit register: 30 on: account3).
-		
-	transactions4  := Array 
-		with: (Deposit register: 10 on: account4) 
-		with: (Deposit register: 20 on: account4) 
-		with: (Deposit register: 30 on: account4).
-	
-	transactions5  := Array 
-		with: (Deposit register: 10 on: account5) 
-		with: (Deposit register: 20 on: account5) 
-		with: (Deposit register: 30 on: account5).
-		
-
 	portfolio add: account1.
 	portfolio add: account2.
-	
+
 	childPortfolio  := Portfolio  new.
 	childPortfolio add: account3.
 	childPortfolio  add: account4.
-	
+
 	childChildPortfolio := Portfolio  new.
 	childPortfolio add: childChildPortfolio.
-	
+
+	transactions  := Bag 
+		with: (Deposit register: 10 on: account5) 
+		with: (Deposit register: 20 on: account5) 
+		with: (Deposit register: 30 on: account5).
 	childChildPortfolio  add: account5.
-	
 
-	
 	portfolio  add: childPortfolio.
-	
-	self 
-		should: [ portfolio  add: childChildPortfolio ]
-		raise:  Error  - MessageNotUnderstood 
-		withMessageText: Portfolio cannotAddRepeatedAccountErrorMessage.
-	
 
-	self assert: (transactions1,transactions2, transactions3, transactions4,transactions5) asBag equals: portfolio transactions asBag.
+	self assertCannotAddFinancialAsset: childChildPortfolio toPortfolio: portfolio withPreviousTransactions: transactions andBalance: 60.
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 12:29:28'!
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 16:05:48'!
 test14AnAccountInManyPortfoliosEnsureCannotAddOnePortfolioToTheOther
-	| account1 portfolio1 portfolio2 |
+	| account portfolio1 portfolio2 transactions |
 	
 	portfolio1 := Portfolio new.
 	portfolio2 := Portfolio new.
 	
-	account1 := ReceptiveAccount new.
+	account := ReceptiveAccount new.
 	
-	portfolio1 add: account1.
-	portfolio2 add: account1.
+	portfolio1 add: account.
+	portfolio2 add: account.
 
-	
-	self 
-		should: [ portfolio1  add: portfolio2 ]
-		raise:  Error  - MessageNotUnderstood 
-		withMessageText: Portfolio cannotAddRepeatedAccountErrorMessage.
-	
+	transactions  := Bag 
+		with: (Deposit register: 10 on: account) 
+		with: (Deposit register: 20 on: account) 
+		with: (Deposit register: 30 on: account).
+
+	self assertCannotAddFinancialAsset: portfolio2 toPortfolio: portfolio1 withPreviousTransactions: transactions andBalance: 60.
 
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 12:31:12'!
-test15AnotherCaseInAPorfolioWithAccountsAndPortfoliosNestedEnsureThereAreNotRepeatedPortfolios
-	| account1 portfolio1 portfolio2 portfolio3 |
+!PortfolioTest methodsFor: 'tests' stamp: 'TCM 10/21/2019 15:54:34'!
+test15InAPorfolioWithAccountsAndPortfoliosNestedAndAnAccountWhichIsInManyPortfoliosEnsureThereAreNotRepeatedPortfolios
+	| account1 portfolio1 portfolio2 portfolio3 transactions |
 	
 	portfolio1 := Portfolio new.
 	portfolio2 := Portfolio new.
 	portfolio3 := Portfolio new.
-	
+
 	account1 := ReceptiveAccount new.
-	
+
 	portfolio1 add: account1.
 	portfolio2 add: account1.
 	portfolio2 add: portfolio3.
-
 	
+	transactions  := Bag 
+		with: (Deposit register: 10 on: account1) 
+		with: (Deposit register: 20 on: account1) 
+		with: (Deposit register: 30 on: account1).
+
 	self 
 		should: [ portfolio3  add: portfolio1 ]
 		raise:  Error  - MessageNotUnderstood 
 		withMessageText: Portfolio cannotAddRepeatedAccountErrorMessage.
-	
 
+	self assert: transactions equals: portfolio2 transactions asBag.
+	self assert: 60 equals: portfolio2 balance
 ! !
 
 
