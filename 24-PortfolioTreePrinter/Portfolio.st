@@ -330,7 +330,7 @@ TestCase subclass: #ReportTest
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!ReportTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:33:24'!
+!ReportTest methodsFor: 'tests - AccountSummary' stamp: 'TCM 10/21/2019 20:33:24'!
 test01NewAccountHasAccountSummaryWithBalanceZero
 	
 	| account summary |
@@ -340,7 +340,7 @@ test01NewAccountHasAccountSummaryWithBalanceZero
 	
 	self assert: 'Balance = 0' equals: summary printString! !
 
-!ReportTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:50:58'!
+!ReportTest methodsFor: 'tests - AccountSummary' stamp: 'TCM 10/21/2019 20:50:58'!
 test02AccountWithOneDepositAccountSummaryPrintsTheDeposit
 	
 	| account summary expectedString |
@@ -356,7 +356,7 @@ test02AccountWithOneDepositAccountSummaryPrintsTheDeposit
 
 	self assert: expectedString equals: summary printString! !
 
-!ReportTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:59:45'!
+!ReportTest methodsFor: 'tests - AccountSummary' stamp: 'TCM 10/21/2019 20:59:45'!
 test03AccountWithManyDepositsAccountSummaryPrintsThemAll
 	
 	| account summary expectedString |
@@ -376,7 +376,7 @@ test03AccountWithManyDepositsAccountSummaryPrintsThemAll
 
 	self assert: expectedString equals: summary printString! !
 
-!ReportTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:05:28'!
+!ReportTest methodsFor: 'tests - AccountSummary' stamp: 'TCM 10/21/2019 21:05:28'!
 test04AccountWithManyWithdrawsAccountSummaryPrintsThemAll
 	
 	| account summary expectedString |
@@ -396,7 +396,7 @@ test04AccountWithManyWithdrawsAccountSummaryPrintsThemAll
 
 	self assert: expectedString equals: summary printString! !
 
-!ReportTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:15:46'!
+!ReportTest methodsFor: 'tests - AccountSummary' stamp: 'TCM 10/21/2019 21:15:46'!
 test05AccountWithTransferAccountSummaryPrintsCorrectly
 	
 	| account1 account2 expectedString1 expectedString2 summary1 summary2 |
@@ -419,7 +419,8 @@ test05AccountWithTransferAccountSummaryPrintsCorrectly
 	self assert: expectedString1 equals: summary1 printString.
 	self assert: expectedString2 equals: summary2 printString.! !
 
-!ReportTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:26:09'!
+
+!ReportTest methodsFor: 'tests - TransferNet' stamp: 'TCM 10/21/2019 21:26:09'!
 test06NewAccountHasTransferNetWithBalanceZero
 	
 	| account summary |
@@ -429,7 +430,7 @@ test06NewAccountHasTransferNetWithBalanceZero
 	
 	self assert: '0' equals: summary printString! !
 
-!ReportTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:35:10'!
+!ReportTest methodsFor: 'tests - TransferNet' stamp: 'TCM 10/21/2019 21:35:10'!
 test07AccountWithTransferHasTransferNetEqualToTransferValue
 	
 	| account1 account2 expectedString1 expectedString2 summary1 summary2 |
@@ -450,7 +451,7 @@ test07AccountWithTransferHasTransferNetEqualToTransferValue
 	self assert: expectedString1 equals: summary1 printString.
 	self assert: expectedString2 equals: summary2 printString.! !
 
-!ReportTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:46:10'!
+!ReportTest methodsFor: 'tests - TransferNet' stamp: 'TCM 10/21/2019 21:46:10'!
 test08TransferNetShouldIgnoreDepositsAndWithdraws
 	
 	| account1 account2 expectedString1 expectedString2 summary1 summary2 |
@@ -718,23 +719,20 @@ Object subclass: #AccountTransaction
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!AccountTransaction methodsFor: 'value' stamp: 'TCM 10/21/2019 21:23:30'!
-isTransfer
-	^ false! !
-
 !AccountTransaction methodsFor: 'value' stamp: 'HernanWilkinson 9/12/2011 12:25'!
 value 
 
 	self subclassResponsibility ! !
 
 
+!AccountTransaction methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:14:23'!
+accept: aReporter
+	self subclassResponsibility ! !
+
+
 !AccountTransaction methodsFor: 'balance' stamp: 'HAW 5/25/2019 11:25:39'!
 affectBalance: aBalance
 
-	self subclassResponsibility ! !
-
-!AccountTransaction methodsFor: 'balance' stamp: 'TCM 10/21/2019 21:10:28'!
-name
 	self subclassResponsibility ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -779,13 +777,9 @@ affectBalance: aBalance
 	^aBalance + value ! !
 
 
-!Deposit methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:18:16'!
-formatForSummary
-	^ 'Depósito por ', self value printString, '.'! !
-
-!Deposit methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:10:45'!
-name
-	^ 'Depósito'! !
+!Deposit methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:17:53'!
+accept: aReporter
+	^ aReporter reportDeposit: self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -806,30 +800,25 @@ AccountTransaction subclass: #TransferDeposit
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:12:09'!
-affectBalance: aBalance
-
-	^aBalance + self value ! !
-
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:18:08'!
-formatForSummary
-	^ 'Entrada por transferencia de ', self value printString, '.'! !
-
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:10:45'!
+!TransferDeposit methodsFor: 'initialization' stamp: 'TCM 10/21/2019 20:10:45'!
 initializeFor: aTransfer
 	transfer := aTransfer! !
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:23:40'!
-isTransfer
-	^ true! !
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:11:09'!
-name
-	^ 'Entrada por transferencia'! !
-
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:11:24'!
+!TransferDeposit methodsFor: 'value' stamp: 'TCM 10/21/2019 20:11:24'!
 value
 	^ transfer value! !
+
+
+!TransferDeposit methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:18:03'!
+accept: aReporter
+	^ aReporter reportTransferDeposit: self! !
+
+
+!TransferDeposit methodsFor: 'balance' stamp: 'TCM 10/21/2019 20:12:09'!
+affectBalance: aBalance
+
+	^aBalance + self value ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -850,31 +839,26 @@ AccountTransaction subclass: #TransferWithdraw
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:12:20'!
-affectBalance: aBalance
-
-	^aBalance - self value ! !
-
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:20:14'!
-formatForSummary
-	^ 'Salida por transferencia de ', self value printString, '.'! !
-
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:10:53'!
+!TransferWithdraw methodsFor: 'initialization' stamp: 'TCM 10/21/2019 20:10:53'!
 initializeFor: aTransfer
 	transfer := aTransfer! !
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:23:47'!
-isTransfer
-	^ true! !
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:11:16'!
-name
-	^ 'Salida por transferencia'! !
-
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:22:51'!
+!TransferWithdraw methodsFor: 'value' stamp: 'TCM 10/21/2019 20:22:51'!
 value
 
 	^ transfer value! !
+
+
+!TransferWithdraw methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:18:08'!
+accept: aReporter
+	^ aReporter reportTransferWithdraw: self! !
+
+
+!TransferWithdraw methodsFor: 'balance' stamp: 'TCM 10/21/2019 20:12:20'!
+affectBalance: aBalance
+
+	^aBalance - self value ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -913,13 +897,9 @@ affectBalance: aBalance
 	^aBalance - value! !
 
 
-!Withdraw methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:21:34'!
-formatForSummary
-	^ 'Extracción por ', self value printString, '.'! !
-
-!Withdraw methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:11:31'!
-name
-	^ 'Extracción'! !
+!Withdraw methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:18:13'!
+accept: aReporter
+	^ aReporter reportWithdraw: self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -940,6 +920,32 @@ Object subclass: #Report
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
+!Report methodsFor: 'value' stamp: 'TCM 10/24/2019 14:33:40'!
+printString
+	self subclassResponsibility ! !
+
+
+!Report methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:32:56'!
+reportDeposit: aDepositTransaction
+	self subclassResponsibility ! !
+
+!Report methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:33:27'!
+reportTransferDeposit: aTransferDepositTransaction
+	self subclassResponsibility ! !
+
+!Report methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:33:16'!
+reportTransferWithdraw: aTransferWithdrawTransaction
+	self subclassResponsibility ! !
+
+!Report methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:33:08'!
+reportWithdraw: aWithdrawTransaction
+	self subclassResponsibility ! !
+
+
+!Report methodsFor: 'initialization' stamp: 'TCM 10/24/2019 14:31:51'!
+initializeFor: anAccount 
+	account := anAccount! !
+
 
 !classDefinition: #AccountSummary category: #Portfolio!
 Report subclass: #AccountSummary
@@ -948,19 +954,32 @@ Report subclass: #AccountSummary
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!AccountSummary methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:34:36'!
-initializeFor: aReceptiveAccount 
-	account := aReceptiveAccount ! !
-
-!AccountSummary methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:19:45'!
+!AccountSummary methodsFor: 'value' stamp: 'TCM 10/24/2019 14:21:49'!
 printString
 	| reportString |
 
 	reportString := (account transactions inject: '' into: [ :acc :transaction |
-		 acc, transaction formatForSummary , String newLineString 
+		 acc, (transaction accept: self) , String newLineString 
 	]).
 
 	^  reportString , 'Balance = ', account balance printString! !
+
+
+!AccountSummary methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:18:58'!
+reportDeposit: aDepositTransaction
+	^ 'Depósito por ', aDepositTransaction value printString, '.'! !
+
+!AccountSummary methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:19:22'!
+reportTransferDeposit: aTransferDepositTransaction
+	^ 'Entrada por transferencia de ', aTransferDepositTransaction value printString, '.'! !
+
+!AccountSummary methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:19:44'!
+reportTransferWithdraw: aTransferWithdrawTransaction
+	^ 'Salida por transferencia de ', aTransferWithdrawTransaction value printString, '.'! !
+
+!AccountSummary methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:20:04'!
+reportWithdraw: aWithdrawTransaction
+	^ 'Extracción por ', aWithdrawTransaction value printString, '.'! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -975,26 +994,40 @@ for: aReceptiveAccount
 
 !classDefinition: #TransferNet category: #Portfolio!
 Report subclass: #TransferNet
-	instanceVariableNames: ''
+	instanceVariableNames: 'balance'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!TransferNet methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:27:53'!
-initializeFor: anAccount 
-	account := anAccount! !
-
-!TransferNet methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:45:26'!
+!TransferNet methodsFor: 'value' stamp: 'TCM 10/24/2019 14:33:55'!
 printString
-	| balance |
 	balance := 0.
-	
-	
-	(account transactions 
-		select: [ :aTransaction | aTransaction  isTransfer ] )
-		do: [ :aTransaction | balance:= aTransaction affectBalance: balance ].
-	
+
+	account transactions
+		do: [ :aTransaction | balance := aTransaction accept: self ].
+
 	^ balance printString.! !
+
+
+!TransferNet methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:26:55'!
+reportDeposit: aDepositTransaction
+	^ balance
+! !
+
+!TransferNet methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:27:47'!
+reportTransferDeposit: aTransferDepositTransaction
+	^ aTransferDepositTransaction affectBalance: balance
+! !
+
+!TransferNet methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:27:28'!
+reportTransferWithdraw: aTransferWithdrawTransaction
+	^ aTransferWithdrawTransaction affectBalance: balance
+! !
+
+!TransferNet methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:27:05'!
+reportWithdraw: aWithdrawTransaction
+	^ balance
+! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
