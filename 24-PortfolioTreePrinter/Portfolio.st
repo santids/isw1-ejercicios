@@ -420,6 +420,168 @@ test05AccountWithTransferAccountSummaryPrintsCorrectly
 	self assert: expectedString2 equals: summary2 printString.! !
 
 
+!ReportTest methodsFor: 'tests - TreePrinter' stamp: 'TCM 10/25/2019 15:48:53'!
+test09TreePrintARecepetiveAccountReturnsItsName
+	| account report |
+	account := ReceptiveAccount named: 'Cuenta Pepe'.
+	
+	report := TreePrinter for: account.
+	
+	self assert: 'Cuenta Pepe', String newLineString equals: report printString.! !
+
+!ReportTest methodsFor: 'tests - TreePrinter' stamp: 'TCM 10/25/2019 15:48:44'!
+test10TreePrintAnEmptyPortfolioReturnsItsName
+	| account report |
+	account := Portfolio named: 'Portfolio de Pepe'.
+	
+	report := TreePrinter for: account.
+	
+	self assert: 'Portfolio de Pepe', String newLineString equals: report printString.! !
+
+!ReportTest methodsFor: 'tests - TreePrinter' stamp: 'TCM 10/25/2019 15:48:02'!
+test11TreePrintAPortfolioWithAccountsPrintsCorrectly
+	| portfolio report account expectedString |
+	portfolio := Portfolio named: 'Portfolio de Pepe'.
+	account := ReceptiveAccount named: 'Cuenta de Pepe'.
+	
+	portfolio  add:  account .
+	
+	expectedString := 
+		'Portfolio de Pepe', String newLineString,
+		'   Cuenta de Pepe', String newLineString .
+	
+	report := TreePrinter for: portfolio.
+	
+	self assert: expectedString equals: report printString.! !
+
+!ReportTest methodsFor: 'tests - TreePrinter' stamp: 'TCM 10/25/2019 15:50:20'!
+test12TreePrintAPortfolioWithManyAccountsPrintsCorrectly
+	| portfolio report account expectedString account2 |
+	portfolio := Portfolio named: 'Portfolio de Pepe'.
+	account := ReceptiveAccount named: 'Cuenta de Pepe'.
+	account2 := ReceptiveAccount named: 'Cuenta de Juan'.
+	
+	portfolio  add:  account .
+	portfolio  add: account2.
+	
+	expectedString := 
+		'Portfolio de Pepe', String newLineString,
+		'   Cuenta de Pepe', String newLineString,
+		'   Cuenta de Juan', String newLineString .
+	
+	report := TreePrinter for: portfolio.
+	
+	self assert: expectedString equals: report printString.! !
+
+!ReportTest methodsFor: 'tests - TreePrinter' stamp: 'TCM 10/25/2019 16:06:37'!
+test13TreePrintAPortfolioWithPortfoliosAccountsPrintsCorrectly
+	| report expectedString angiesAccount childrenPortfolio familyPortfolio johnsAccount myAccount |
+	
+	johnsAccount := ReceptiveAccount named: 'Cuenta de Juan'.
+	angiesAccount := ReceptiveAccount named: 'Cuenta de Angeles'.
+	childrenPortfolio := Portfolio named: 'Portfolio de hijos' with: johnsAccount with: angiesAccount.
+	myAccount := ReceptiveAccount named: 'Cuenta Mia'.
+	familyPortfolio := Portfolio named: 'Portfolio de la familia' with: myAccount with: childrenPortfolio.
+	
+	expectedString := 		
+'Portfolio de la familia
+   Cuenta Mia
+   Portfolio de hijos
+      Cuenta de Juan
+      Cuenta de Angeles
+'.
+	
+	report := TreePrinter for: familyPortfolio .
+	
+	self assert: expectedString equals: report printString.! !
+
+
+!ReportTest methodsFor: 'tests - SpecialAccountSummary' stamp: 'TCM 10/25/2019 16:33:29'!
+test14SpecialAccountSummaryForRecepetiveAccountReturnsItsNameAndBalance
+	| account report expectedString |
+	account := ReceptiveAccount named: 'Cuenta Pepe'.
+	
+	report := SpecialAccountSummary for: account.
+	
+	expectedString := 
+'Cuenta Pepe
+   Balance = 0
+'.
+	
+	self assert: expectedString equals: report printString.! !
+
+!ReportTest methodsFor: 'tests - SpecialAccountSummary' stamp: 'TCM 10/25/2019 16:43:42'!
+test15SpecialAccountSummaryForRecepetiveWithTransactionsListThem
+	| account report expectedString |
+	account := ReceptiveAccount named: 'Cuenta Pepe'.
+	
+	Deposit register: 100 on: account.
+	
+	report := SpecialAccountSummary for: account.
+	
+	expectedString := 
+'Cuenta Pepe
+   Depósito por 100.
+   Balance = 100
+'.
+	
+	self assert: expectedString equals: report printString.! !
+
+!ReportTest methodsFor: 'tests - SpecialAccountSummary' stamp: 'TCM 10/25/2019 17:01:40'!
+test16SpecialAccountSummaryForEmptyPortfolioReturnsItsNameAndBalance
+	| account report expectedString |
+	account := Portfolio named: 'Portfolio de Pepe'.
+
+	
+	report := SpecialAccountSummary for: account.
+	
+	expectedString := 
+'Portfolio de Pepe
+   Balance = 0
+'.
+	
+	self assert: expectedString equals: report printString.! !
+
+!ReportTest methodsFor: 'tests - SpecialAccountSummary' stamp: 'TCM 10/25/2019 17:00:51'!
+test17SpecialAccountSummaryForAPortfolioWithPortfoliosAccountsPrintsCorrectly
+	| report expectedString angiesAccount childrenPortfolio familyPortfolio johnsAccount myAccount |
+	
+	johnsAccount := ReceptiveAccount named: 'Cuenta de Juan'.
+	angiesAccount := ReceptiveAccount named: 'Cuenta de Angeles'.
+	childrenPortfolio := Portfolio named: 'Portfolio de hijos' with: johnsAccount with: angiesAccount.
+	myAccount := ReceptiveAccount named: 'Cuenta Mia'.
+	familyPortfolio := Portfolio named: 'Portfolio de la familia' with: myAccount with: childrenPortfolio.
+	
+      Deposit register: 100 on: myAccount .
+	Withdraw  register: 20 on: myAccount .
+	
+      Deposit  register: 200 on: johnsAccount .
+	Transfer register: 50 from: angiesAccount  to: johnsAccount .
+	
+	
+	expectedString := 		
+'Portfolio de la familia
+   Cuenta Mia
+      Depósito por 100.
+      Extracción por 20.
+      Balance = 80
+   Portfolio de hijos
+      Cuenta de Juan
+         Depósito por 200.
+         Entrada por transferencia de 50.
+         Balance = 250
+      Cuenta de Angeles
+         Salida por transferencia de 50.
+         Balance = -50
+      Balance = 200
+   Balance = 280
+'.
+	
+	report := SpecialAccountSummary for: familyPortfolio .
+	
+	self assert: expectedString equals: report printString.! !
+
+
 !ReportTest methodsFor: 'tests - TransferNet' stamp: 'TCM 10/21/2019 21:26:09'!
 test06NewAccountHasTransferNetWithBalanceZero
 	
@@ -478,7 +640,7 @@ test08TransferNetShouldIgnoreDepositsAndWithdraws
 
 !classDefinition: #Account category: #Portfolio!
 Object subclass: #Account
-	instanceVariableNames: ''
+	instanceVariableNames: 'name'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Portfolio'!
@@ -500,6 +662,10 @@ balance
 	self subclassResponsibility ! !
 
 
+!Account methodsFor: 'transactions' stamp: 'TCM 10/25/2019 15:33:23'!
+acceptReport: aReport
+	self subclassResponsibility .! !
+
 !Account methodsFor: 'transactions' stamp: 'HAW 5/25/2019 12:23:27'!
 addTransactionsTo: aCollectionOfTransactions
 
@@ -516,6 +682,27 @@ addedTo: aPortfolio
 
 	self subclassResponsibility ! !
 
+
+!Account methodsFor: 'initialization' stamp: 'TCM 10/25/2019 15:30:32'!
+initializeNamed: aName 
+	self initialize.
+	name := aName.! !
+
+
+!Account methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:19:36'!
+name
+	^ name ifNil: [ super name ].! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Account class' category: #Portfolio!
+Account class
+	instanceVariableNames: ''!
+
+!Account class methodsFor: 'instance creation' stamp: 'TCM 10/25/2019 15:21:08'!
+named: aName 
+	^ (self basicNew) initializeNamed: aName.! !
+
 
 !classDefinition: #Portfolio category: #Portfolio!
 Account subclass: #Portfolio
@@ -523,6 +710,11 @@ Account subclass: #Portfolio
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Portfolio'!
+
+!Portfolio methodsFor: 'accounts management' stamp: 'TCM 10/25/2019 15:45:09'!
+accountsDo: aBlock
+	
+	^accounts do: aBlock.! !
 
 !Portfolio methodsFor: 'accounts management' stamp: 'HAW 5/25/2019 11:49:20'!
 accountsIncludes: anAccount
@@ -628,6 +820,11 @@ signalCanNotAddAccount
 	
 	self error: self class canNotAddAccountErrorMessage! !
 
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:34:26'!
+acceptReport: aReport
+	^ aReport reportPortfolio: self.! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Portfolio class' category: #Portfolio!
@@ -638,6 +835,13 @@ Portfolio class
 canNotAddAccountErrorMessage
 	
 	^'Can not add repeated account to a portfolio'! !
+
+!Portfolio class methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:56:13'!
+named: aName with: anAccount with: anotherAccount 
+	^ (self basicNew initializeNamed: aName)
+		add: anAccount;
+		add: anotherAccount;
+		yourself! !
 
 !Portfolio class methodsFor: 'as yet unclassified' stamp: 'HAW 5/25/2019 11:18:21'!
 with: anAccount
@@ -669,6 +873,10 @@ initialize
 	transactions := OrderedCollection new.! !
 
 
+!ReceptiveAccount methodsFor: 'transactions' stamp: 'TCM 10/25/2019 15:34:41'!
+acceptReport: aReport
+	^ aReport reportReceptiveAccount: self.! !
+
 !ReceptiveAccount methodsFor: 'transactions' stamp: 'HAW 5/25/2019 11:38:52'!
 addTransactionsTo: aCollectionOfTransactions
 
@@ -684,6 +892,11 @@ register: aTransaction
 transactions 
 
 	^ transactions copy! !
+
+!ReceptiveAccount methodsFor: 'transactions' stamp: 'TCM 10/25/2019 14:50:48'!
+transactionsDo: aBlock
+
+	^ transactions do: aBlock ! !
 
 
 !ReceptiveAccount methodsFor: 'balance' stamp: 'HAW 5/25/2019 11:24:46'!
@@ -925,6 +1138,10 @@ printString
 	self subclassResponsibility ! !
 
 
+!Report methodsFor: 'visit' stamp: 'TCM 10/25/2019 17:04:51'!
+printBalanceFor: anAccount
+	^ 'Balance = ', anAccount balance printString! !
+
 !Report methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:32:56'!
 reportDeposit: aDepositTransaction
 	self subclassResponsibility ! !
@@ -946,6 +1163,16 @@ reportWithdraw: aWithdrawTransaction
 initializeFor: anAccount 
 	account := anAccount! !
 
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Report class' category: #Portfolio!
+Report class
+	instanceVariableNames: ''!
+
+!Report class methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:14:56'!
+for: anAccount 
+	^ self basicNew initializeFor: anAccount! !
+
 
 !classDefinition: #AccountSummary category: #Portfolio!
 Report subclass: #AccountSummary
@@ -954,15 +1181,16 @@ Report subclass: #AccountSummary
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!AccountSummary methodsFor: 'value' stamp: 'TCM 10/24/2019 14:21:49'!
+!AccountSummary methodsFor: 'value' stamp: 'TCM 10/25/2019 17:05:30'!
 printString
 	| reportString |
 
-	reportString := (account transactions inject: '' into: [ :acc :transaction |
-		 acc, (transaction accept: self) , String newLineString 
-	]).
+	reportString := ''.
+	account transactionsDo: [ :transaction |
+		 reportString := reportString , (transaction accept: self) , String newLineString 
+	].
 
-	^  reportString , 'Balance = ', account balance printString! !
+	^  reportString , (self printBalanceFor: account).! !
 
 
 !AccountSummary methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:18:58'!
@@ -981,16 +1209,6 @@ reportTransferWithdraw: aTransferWithdrawTransaction
 reportWithdraw: aWithdrawTransaction
 	^ 'Extracción por ', aWithdrawTransaction value printString, '.'! !
 
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'AccountSummary class' category: #Portfolio!
-AccountSummary class
-	instanceVariableNames: ''!
-
-!AccountSummary class methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:34:10'!
-for: aReceptiveAccount 
-	^ self basicNew initializeFor: aReceptiveAccount ! !
-
 
 !classDefinition: #TransferNet category: #Portfolio!
 Report subclass: #TransferNet
@@ -999,12 +1217,11 @@ Report subclass: #TransferNet
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!TransferNet methodsFor: 'value' stamp: 'TCM 10/24/2019 14:33:55'!
+!TransferNet methodsFor: 'value' stamp: 'TCM 10/25/2019 14:51:02'!
 printString
 	balance := 0.
 
-	account transactions
-		do: [ :aTransaction | balance := aTransaction accept: self ].
+	account transactionsDo: [ :aTransaction | balance := aTransaction accept: self ].
 
 	^ balance printString.! !
 
@@ -1029,15 +1246,69 @@ reportWithdraw: aWithdrawTransaction
 	^ balance
 ! !
 
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: #TreePrinter category: #Portfolio!
+Report subclass: #TreePrinter
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio'!
 
-!classDefinition: 'TransferNet class' category: #Portfolio!
-TransferNet class
-	instanceVariableNames: ''!
+!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 16:24:44'!
+indent: anStringReport
+	| aReportString |
+	aReportString := ''.
+		
+	anStringReport withoutTrailingBlanks linesDo: [ :aLine | 
+		 aReportString  := aReportString,'   ',aLine,String newLineString. 
+	].
+	
+	^ aReportString.! !
 
-!TransferNet class methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 21:27:24'!
-for: anAccount 
-	^ self basicNew initializeFor: anAccount! !
+!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 16:30:16'!
+indentedTreePrintFor: anAccount
+	^ self indent: (self class for: anAccount) printString! !
+
+!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:32:50'!
+printString
+	^ account acceptReport: self.! !
+
+!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 16:29:24'!
+reportPortfolio: aPortfolio 
+	| aReportString |
+	aReportString := aPortfolio  name, String newLineString .
+	
+	aPortfolio accountsDo: [ :anAccount | 
+		aReportString := aReportString, (self indentedTreePrintFor: anAccount).
+	].
+
+	^ aReportString.! !
+
+!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:46:27'!
+reportReceptiveAccount: aReceptiveAccount 
+	^ aReceptiveAccount name, String newLineString ! !
+
+
+!classDefinition: #SpecialAccountSummary category: #Portfolio!
+TreePrinter subclass: #SpecialAccountSummary
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio'!
+
+!SpecialAccountSummary methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 17:04:35'!
+reportPortfolio: aPortfolio 
+	
+	^( super reportPortfolio: aPortfolio),
+		( self indent: ( self printBalanceFor: aPortfolio ))
+	
+	! !
+
+!SpecialAccountSummary methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 17:08:41'!
+reportReceptiveAccount: aReceptiveAccount 
+	^ (super reportReceptiveAccount:  aReceptiveAccount),
+		(self indent: ( AccountSummary for: aReceptiveAccount ) printString)
+! !
 
 
 !classDefinition: #Transfer category: #Portfolio!
