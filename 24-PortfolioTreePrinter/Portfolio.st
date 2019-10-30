@@ -662,10 +662,6 @@ balance
 	self subclassResponsibility ! !
 
 
-!Account methodsFor: 'transactions' stamp: 'TCM 10/25/2019 15:33:23'!
-acceptReport: aReport
-	self subclassResponsibility .! !
-
 !Account methodsFor: 'transactions' stamp: 'HAW 5/25/2019 12:23:27'!
 addTransactionsTo: aCollectionOfTransactions
 
@@ -683,13 +679,17 @@ addedTo: aPortfolio
 	self subclassResponsibility ! !
 
 
-!Account methodsFor: 'initialization' stamp: 'TCM 10/25/2019 15:30:32'!
+!Account methodsFor: 'initialization' stamp: 'sjd 10/26/2019 20:27:16'!
 initializeNamed: aName 
-	self initialize.
 	name := aName.! !
 
 
-!Account methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:19:36'!
+!Account methodsFor: 'reports' stamp: 'TCM 10/25/2019 15:33:23'!
+acceptReport: aReport
+	self subclassResponsibility .! !
+
+
+!Account methodsFor: 'accessing' stamp: 'TCM 10/25/2019 15:19:36'!
 name
 	^ name ifNil: [ super name ].! !
 
@@ -699,9 +699,9 @@ name
 Account class
 	instanceVariableNames: ''!
 
-!Account class methodsFor: 'instance creation' stamp: 'TCM 10/25/2019 15:21:08'!
+!Account class methodsFor: 'instance creation' stamp: 'sjd 10/26/2019 20:27:30'!
 named: aName 
-	^ (self basicNew) initializeNamed: aName.! !
+	^ self new initializeNamed: aName.! !
 
 
 !classDefinition: #Portfolio category: #Portfolio!
@@ -821,7 +821,7 @@ signalCanNotAddAccount
 	self error: self class canNotAddAccountErrorMessage! !
 
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:34:26'!
+!Portfolio methodsFor: 'reports' stamp: 'TCM 10/25/2019 15:34:26'!
 acceptReport: aReport
 	^ aReport reportPortfolio: self.! !
 
@@ -831,32 +831,33 @@ acceptReport: aReport
 Portfolio class
 	instanceVariableNames: ''!
 
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'HAW 5/25/2019 11:48:55'!
-canNotAddAccountErrorMessage
-	
-	^'Can not add repeated account to a portfolio'! !
-
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:56:13'!
+!Portfolio class methodsFor: 'instance creation' stamp: 'sjd 10/26/2019 20:28:20'!
 named: aName with: anAccount with: anotherAccount 
-	^ (self basicNew initializeNamed: aName)
+	^ (self new initializeNamed: aName)
 		add: anAccount;
 		add: anotherAccount;
 		yourself! !
 
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'HAW 5/25/2019 11:18:21'!
+!Portfolio class methodsFor: 'instance creation' stamp: 'HAW 5/25/2019 11:18:21'!
 with: anAccount
 
 	^self new 
 		add: anAccount;
 		yourself! !
 
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'HAW 5/25/2019 11:23:59'!
+!Portfolio class methodsFor: 'instance creation' stamp: 'HAW 5/25/2019 11:23:59'!
 with: anAccount with: anotherAccount
 
 	^self new 
 		add: anAccount;
 		add: anotherAccount;
 		yourself! !
+
+
+!Portfolio class methodsFor: 'error messages' stamp: 'HAW 5/25/2019 11:48:55'!
+canNotAddAccountErrorMessage
+	
+	^'Can not add repeated account to a portfolio'! !
 
 
 !classDefinition: #ReceptiveAccount category: #Portfolio!
@@ -866,16 +867,11 @@ Account subclass: #ReceptiveAccount
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!ReceptiveAccount methodsFor: 'initialization' stamp: 'HernanWilkinson 7/13/2011 18:35'!
+!ReceptiveAccount methodsFor: 'initialization' stamp: 'sjd 10/26/2019 20:29:33'!
 initialize
 
-	super initialize.
 	transactions := OrderedCollection new.! !
 
-
-!ReceptiveAccount methodsFor: 'transactions' stamp: 'TCM 10/25/2019 15:34:41'!
-acceptReport: aReport
-	^ aReport reportReceptiveAccount: self.! !
 
 !ReceptiveAccount methodsFor: 'transactions' stamp: 'HAW 5/25/2019 11:38:52'!
 addTransactionsTo: aCollectionOfTransactions
@@ -919,6 +915,11 @@ isComposedBy: anAccount
 	^self = anAccount ! !
 
 
+!ReceptiveAccount methodsFor: 'reports' stamp: 'TCM 10/25/2019 15:34:41'!
+acceptReport: aReport
+	^ aReport reportReceptiveAccount: self.! !
+
+
 !ReceptiveAccount methodsFor: 'composition' stamp: 'HAW 5/25/2019 12:03:32'!
 addedTo: aPortfolio 
 	
@@ -938,8 +939,8 @@ value
 	self subclassResponsibility ! !
 
 
-!AccountTransaction methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:14:23'!
-accept: aReporter
+!AccountTransaction methodsFor: 'reports' stamp: 'TCM 10/28/2019 12:41:13'!
+acceptReport: aReporter
 	self subclassResponsibility ! !
 
 
@@ -990,8 +991,8 @@ affectBalance: aBalance
 	^aBalance + value ! !
 
 
-!Deposit methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:17:53'!
-accept: aReporter
+!Deposit methodsFor: 'reports' stamp: 'TCM 10/28/2019 12:41:13'!
+acceptReport: aReporter
 	^ aReporter reportDeposit: self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -1023,8 +1024,8 @@ value
 	^ transfer value! !
 
 
-!TransferDeposit methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:18:03'!
-accept: aReporter
+!TransferDeposit methodsFor: 'reports' stamp: 'TCM 10/28/2019 12:41:13'!
+acceptReport: aReporter
 	^ aReporter reportTransferDeposit: self! !
 
 
@@ -1039,7 +1040,7 @@ affectBalance: aBalance
 TransferDeposit class
 	instanceVariableNames: ''!
 
-!TransferDeposit class methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:22:31'!
+!TransferDeposit class methodsFor: 'instance creation' stamp: 'TCM 10/21/2019 20:22:31'!
 for: aTransfer 
 	^ self basicNew initializeFor: aTransfer
 	! !
@@ -1063,8 +1064,8 @@ value
 	^ transfer value! !
 
 
-!TransferWithdraw methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:18:08'!
-accept: aReporter
+!TransferWithdraw methodsFor: 'reports' stamp: 'TCM 10/28/2019 12:41:13'!
+acceptReport: aReporter
 	^ aReporter reportTransferWithdraw: self! !
 
 
@@ -1079,7 +1080,7 @@ affectBalance: aBalance
 TransferWithdraw class
 	instanceVariableNames: 'transfer'!
 
-!TransferWithdraw class methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:22:36'!
+!TransferWithdraw class methodsFor: 'instance creation' stamp: 'TCM 10/21/2019 20:22:36'!
 for: aTransfer 
 	^ self basicNew initializeFor: aTransfer
 	! !
@@ -1110,8 +1111,8 @@ affectBalance: aBalance
 	^aBalance - value! !
 
 
-!Withdraw methodsFor: 'visitor' stamp: 'TCM 10/24/2019 14:18:13'!
-accept: aReporter
+!Withdraw methodsFor: 'reports' stamp: 'TCM 10/28/2019 12:41:13'!
+acceptReport: aReporter
 	^ aReporter reportWithdraw: self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -1138,26 +1139,6 @@ printString
 	self subclassResponsibility ! !
 
 
-!Report methodsFor: 'visit' stamp: 'TCM 10/25/2019 17:04:51'!
-printBalanceFor: anAccount
-	^ 'Balance = ', anAccount balance printString! !
-
-!Report methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:32:56'!
-reportDeposit: aDepositTransaction
-	self subclassResponsibility ! !
-
-!Report methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:33:27'!
-reportTransferDeposit: aTransferDepositTransaction
-	self subclassResponsibility ! !
-
-!Report methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:33:16'!
-reportTransferWithdraw: aTransferWithdrawTransaction
-	self subclassResponsibility ! !
-
-!Report methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:33:08'!
-reportWithdraw: aWithdrawTransaction
-	self subclassResponsibility ! !
-
 
 !Report methodsFor: 'initialization' stamp: 'TCM 10/24/2019 14:31:51'!
 initializeFor: anAccount 
@@ -1169,7 +1150,7 @@ initializeFor: anAccount
 Report class
 	instanceVariableNames: ''!
 
-!Report class methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:14:56'!
+!Report class methodsFor: 'instance creation' stamp: 'TCM 10/25/2019 15:14:56'!
 for: anAccount 
 	^ self basicNew initializeFor: anAccount! !
 
@@ -1181,33 +1162,45 @@ Report subclass: #AccountSummary
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!AccountSummary methodsFor: 'value' stamp: 'TCM 10/25/2019 17:05:30'!
+!AccountSummary methodsFor: 'value' stamp: 'TCM 10/28/2019 12:45:26'!
 printString
 	| reportString |
 
 	reportString := ''.
 	account transactionsDo: [ :transaction |
-		 reportString := reportString , (transaction accept: self) , String newLineString 
+		 reportString := reportString , (transaction acceptReport: self) , String newLineString 
 	].
 
-	^  reportString , (self printBalanceFor: account).! !
+	^  reportString , (BalanceReport for: account) printString.! !
 
 
-!AccountSummary methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:18:58'!
+!AccountSummary methodsFor: 'report' stamp: 'TCM 10/24/2019 14:18:58'!
 reportDeposit: aDepositTransaction
 	^ 'Depósito por ', aDepositTransaction value printString, '.'! !
 
-!AccountSummary methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:19:22'!
+!AccountSummary methodsFor: 'report' stamp: 'TCM 10/24/2019 14:19:22'!
 reportTransferDeposit: aTransferDepositTransaction
 	^ 'Entrada por transferencia de ', aTransferDepositTransaction value printString, '.'! !
 
-!AccountSummary methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:19:44'!
+!AccountSummary methodsFor: 'report' stamp: 'TCM 10/24/2019 14:19:44'!
 reportTransferWithdraw: aTransferWithdrawTransaction
 	^ 'Salida por transferencia de ', aTransferWithdrawTransaction value printString, '.'! !
 
-!AccountSummary methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:20:04'!
+!AccountSummary methodsFor: 'report' stamp: 'TCM 10/24/2019 14:20:04'!
 reportWithdraw: aWithdrawTransaction
 	^ 'Extracción por ', aWithdrawTransaction value printString, '.'! !
+
+
+!classDefinition: #BalanceReport category: #Portfolio!
+Report subclass: #BalanceReport
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio'!
+
+!BalanceReport methodsFor: 'value' stamp: 'TCM 10/28/2019 12:43:48'!
+printString
+	^ 'Balance = ', account balance printString! !
 
 
 !classDefinition: #TransferNet category: #Portfolio!
@@ -1217,33 +1210,34 @@ Report subclass: #TransferNet
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!TransferNet methodsFor: 'value' stamp: 'TCM 10/25/2019 14:51:02'!
+!TransferNet methodsFor: 'value' stamp: 'TCM 10/28/2019 12:41:13'!
 printString
 	balance := 0.
 
-	account transactionsDo: [ :aTransaction | balance := aTransaction accept: self ].
+	account transactionsDo: [ :aTransaction | balance := aTransaction acceptReport: self ].
 
 	^ balance printString.! !
 
 
-!TransferNet methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:26:55'!
+!TransferNet methodsFor: 'report' stamp: 'TCM 10/24/2019 14:26:55'!
 reportDeposit: aDepositTransaction
 	^ balance
 ! !
 
-!TransferNet methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:27:47'!
+!TransferNet methodsFor: 'report' stamp: 'TCM 10/24/2019 14:27:47'!
 reportTransferDeposit: aTransferDepositTransaction
 	^ aTransferDepositTransaction affectBalance: balance
 ! !
 
-!TransferNet methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:27:28'!
+!TransferNet methodsFor: 'report' stamp: 'TCM 10/24/2019 14:27:28'!
 reportTransferWithdraw: aTransferWithdrawTransaction
 	^ aTransferWithdrawTransaction affectBalance: balance
 ! !
 
-!TransferNet methodsFor: 'visit' stamp: 'TCM 10/24/2019 14:27:05'!
+!TransferNet methodsFor: 'report' stamp: 'sjd 10/26/2019 20:46:08'!
 reportWithdraw: aWithdrawTransaction
 	^ balance
+	
 ! !
 
 
@@ -1254,26 +1248,12 @@ Report subclass: #TreePrinter
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 16:24:44'!
-indent: anStringReport
-	| aReportString |
-	aReportString := ''.
-		
-	anStringReport withoutTrailingBlanks linesDo: [ :aLine | 
-		 aReportString  := aReportString,'   ',aLine,String newLineString. 
-	].
-	
-	^ aReportString.! !
-
-!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 16:30:16'!
-indentedTreePrintFor: anAccount
-	^ self indent: (self class for: anAccount) printString! !
-
-!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:32:50'!
+!TreePrinter methodsFor: 'value' stamp: 'TCM 10/25/2019 15:32:50'!
 printString
 	^ account acceptReport: self.! !
 
-!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 16:29:24'!
+
+!TreePrinter methodsFor: 'report' stamp: 'TCM 10/25/2019 16:29:24'!
 reportPortfolio: aPortfolio 
 	| aReportString |
 	aReportString := aPortfolio  name, String newLineString .
@@ -1284,9 +1264,25 @@ reportPortfolio: aPortfolio
 
 	^ aReportString.! !
 
-!TreePrinter methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 15:46:27'!
+!TreePrinter methodsFor: 'report' stamp: 'TCM 10/25/2019 15:46:27'!
 reportReceptiveAccount: aReceptiveAccount 
 	^ aReceptiveAccount name, String newLineString ! !
+
+
+!TreePrinter methodsFor: 'private - formatting' stamp: 'TCM 10/25/2019 16:24:44'!
+indent: anStringReport
+	| aReportString |
+	aReportString := ''.
+		
+	anStringReport withoutTrailingBlanks linesDo: [ :aLine | 
+		 aReportString  := aReportString,'   ',aLine,String newLineString. 
+	].
+	
+	^ aReportString.! !
+
+!TreePrinter methodsFor: 'private - formatting' stamp: 'TCM 10/25/2019 16:30:16'!
+indentedTreePrintFor: anAccount
+	^ self indent: (self class for: anAccount) printString! !
 
 
 !classDefinition: #SpecialAccountSummary category: #Portfolio!
@@ -1296,15 +1292,15 @@ TreePrinter subclass: #SpecialAccountSummary
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!SpecialAccountSummary methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 17:04:35'!
+!SpecialAccountSummary methodsFor: 'report' stamp: 'TCM 10/28/2019 12:46:22'!
 reportPortfolio: aPortfolio 
 	
 	^( super reportPortfolio: aPortfolio),
-		( self indent: ( self printBalanceFor: aPortfolio ))
+		( self indent: (BalanceReport for: aPortfolio) printString )
 	
 	! !
 
-!SpecialAccountSummary methodsFor: 'as yet unclassified' stamp: 'TCM 10/25/2019 17:08:41'!
+!SpecialAccountSummary methodsFor: 'report' stamp: 'TCM 10/25/2019 17:08:41'!
 reportReceptiveAccount: aReceptiveAccount 
 	^ (super reportReceptiveAccount:  aReceptiveAccount),
 		(self indent: ( AccountSummary for: aReceptiveAccount ) printString)
@@ -1318,23 +1314,25 @@ Object subclass: #Transfer
 	poolDictionaries: ''
 	category: 'Portfolio'!
 
-!Transfer methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:07:47'!
-deposit
-	^deposit! !
+!Transfer methodsFor: 'value' stamp: 'TCM 10/21/2019 20:23:04'!
+value
+	
+	^ value! !
 
-!Transfer methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:05:33'!
+
+!Transfer methodsFor: 'initialization' stamp: 'TCM 10/21/2019 20:05:33'!
 initiliazeFor: aValue 
 	value := aValue.
 	deposit := TransferDeposit for: self.
 	withdraw := TransferWithdraw for: self.
 ! !
 
-!Transfer methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:23:04'!
-value
-	
-	^ value! !
 
-!Transfer methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:07:36'!
+!Transfer methodsFor: 'transactions' stamp: 'TCM 10/21/2019 20:07:47'!
+deposit
+	^deposit! !
+
+!Transfer methodsFor: 'transactions' stamp: 'TCM 10/21/2019 20:07:36'!
 withdraw
 	^withdraw! !
 
@@ -1344,7 +1342,7 @@ withdraw
 Transfer class
 	instanceVariableNames: ''!
 
-!Transfer class methodsFor: 'as yet unclassified' stamp: 'TCM 10/21/2019 20:04:18'!
+!Transfer class methodsFor: 'instance creation' stamp: 'TCM 10/21/2019 20:04:18'!
 register: aValue from: aTransferSender to: aTransferReceiver
 	| transfer |
 	transfer := self basicNew initiliazeFor: aValue.
