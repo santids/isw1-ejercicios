@@ -1,5 +1,5 @@
 # changes file
-*.changes
+# *.changes
 
 # system image
 *.image

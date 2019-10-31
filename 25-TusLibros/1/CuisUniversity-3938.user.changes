@@ -1,0 +1,836 @@
+
+
+----STARTUP---- (29 October 2019 20:42:27) as /home/tcarreira/Downloads/linux64/CuisUniversity-3938.image!
+
+
+Object subclass: #ShoppingCart
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #ShoppingCart category: #TusLibros stamp: 'TCM 10/29/2019 20:44:23'!
+Object subclass: #ShoppingCart
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+Object subclass: #ShoppingCartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #ShoppingCartTest category: #TusLibros stamp: 'TCM 10/29/2019 20:44:30'!
+Object subclass: #ShoppingCartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+TestCase subclass: #ShoppingCartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #ShoppingCartTest category: #TusLibros stamp: 'TCM 10/29/2019 20:44:38'!
+TestCase subclass: #ShoppingCartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+----STARTUP---- (29 October 2019 20:46:49) as /home/tcarreira/Downloads/linux64/CuisUniversity-3938.image!
+
+
+TestCase subclass: #ShoppingCartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #ShoppingCartTest category: #TusLibros stamp: 'TCM 10/29/2019 20:47:42'!
+TestCase subclass: #ShoppingCartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #ShoppingCart category: #TusLibros stamp: 'TCM 10/29/2019 20:48:22'!
+Object subclass: #ShoppingCart
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!ShoppingCartTest methodsFor: 'no messages' stamp: 'TCM 10/29/2019 20:48:15'!
+test01NewCartIsEmpty
+
+	| cart |
+	cart := ShoppingCart new.
+
+	self assert: cart isEmpty! !
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 20:48:24'!
+ERROR!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:48:32'!
+isEmpty
+	self shouldBeImplemented.! !
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:48:38' prior: 50777424!
+isEmpty
+	^ true! !
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 20:48:42'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 20:48:42'!
+PASSED!
+
+----SNAPSHOT----(29 October 2019 20:48:48) CuisUniversity-3938.image priorSource: 14319118!
+
+!classDefinition: #Book category: #TusLibros stamp: 'TCM 10/29/2019 20:53:17'!
+Object subclass: #Book
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:53:11'!
+test02CartIsNotEmptyAfterAddingABook
+
+	| cart aBook |
+	cart := ShoppingCart new.
+	aBook := Book new.
+
+	cart add: aBook withQuantity: 1.
+
+	self deny: cart isEmpty! !
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 20:53:23'!
+ERROR!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 20:53:39'!
+ERROR!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:53:48'!
+add: aBook withQuantity: aSmallInteger 
+	self shouldBeImplemented.! !
+
+!classDefinition: #ShoppingCart category: #TusLibros stamp: 'TCM 10/29/2019 20:55:21'!
+Object subclass: #ShoppingCart
+	instanceVariableNames: 'books'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:55:19' prior: 50777463!
+add: aBook withQuantity: aQuantity 
+	books at: aBook put: aQuantity! !
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:55:58'!
+initialize 
+	books := Dictionary new.! !
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 20:56:03'!
+FAILURE!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:56:19' prior: 50777429!
+isEmpty
+	^ books isEmpty! !
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 20:56:24'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 20:56:24'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 20:56:24'!
+PASSED!
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:58:15' prior: 50777448!
+test02CartIsNotEmptyAfterAddingABook
+
+	| cart book |
+	cart := ShoppingCart new.
+	book := Book new.
+
+	cart add: book withQuantity: 1.
+
+	self deny: cart isEmpty! !
+
+!classDefinition: #ShoppingCartTest category: #TusLibros stamp: 'TCM 10/29/2019 20:58:29'!
+TestCase subclass: #ShoppingCartTest
+	instanceVariableNames: 'aBook'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:58:27'!
+setUp
+	aBook := Book new.
+! !
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:58:42' prior: 50777503!
+test02CartIsNotEmptyAfterAddingABook
+
+	| cart |
+	cart := ShoppingCart new.
+	aBook := Book new.
+
+	cart add: aBook withQuantity: 1.
+
+	self deny: cart isEmpty! !
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 20:58:49'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 20:58:49'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 20:58:49'!
+PASSED!
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 20:59:25' prior: 50777523!
+test02CartIsNotEmptyAfterAddingABook
+
+	| cart |
+	cart := ShoppingCart new.
+
+	cart add: aBook withQuantity: 1.
+
+	self deny: cart isEmpty! !
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 20:59:25'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 20:59:25'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 20:59:25'!
+PASSED!
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:01:01'!
+test03BookNotAddedToCartIsNotContained
+
+	| cart |
+	cart := ShoppingCart new.
+
+	self deny: (cart contains: aBook)! !
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotContained stamp: 'TCM 10/29/2019 21:01:04'!
+ERROR!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:01:11'!
+contains: aBook 
+	self shouldBeImplemented.! !
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:01:16' prior: 50777568!
+contains: aBook 
+	^ false! !
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotContained stamp: 'TCM 10/29/2019 21:01:20'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:01:20'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:01:20'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotContained stamp: 'TCM 10/29/2019 21:01:20'!
+PASSED!
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:02:09'!
+test04BookAddedToCartIsContained
+
+	| cart |
+	cart := ShoppingCart new.
+	
+	cart add: aBook withQuantity: 1.
+
+	self assert: (cart contains: aBook)! !
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsContained stamp: 'TCM 10/29/2019 21:02:10'!
+FAILURE!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:03:52' prior: 50777573!
+contains: aBook 
+	^ books includesKey: aBook.! !
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsContained stamp: 'TCM 10/29/2019 21:03:54'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:03:54'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:03:54'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotContained stamp: 'TCM 10/29/2019 21:03:54'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsContained stamp: 'TCM 10/29/2019 21:03:55'!
+PASSED!
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:04:46' prior: 50777590!
+test04BookAddedToCartIsContained
+
+	| cart |
+	cart := ShoppingCart new.
+	
+	cart add: aBook withQuantity: 1.
+
+	self assert: (cart contains: aBook)! !
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:06:07'!
+includes: aBook 
+	^ books includesKey: aBook.! !
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:06:07' prior: 50777558!
+test03BookNotAddedToCartIsNotContained
+
+	| cart |
+	cart := ShoppingCart new.
+
+	self deny: (cart includes: aBook)! !
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:06:07' prior: 50777623!
+test04BookAddedToCartIsContained
+
+	| cart |
+	cart := ShoppingCart new.
+	
+	cart add: aBook withQuantity: 1.
+
+	self assert: (cart includes: aBook)! !
+
+!methodRemoval: ShoppingCart #contains: stamp: 'TCM 10/29/2019 21:06:07'!
+contains: aBook 
+	^ books includesKey: aBook.!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsContained stamp: 'TCM 10/29/2019 21:06:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:06:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:06:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotContained stamp: 'TCM 10/29/2019 21:06:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsContained stamp: 'TCM 10/29/2019 21:06:11'!
+PASSED!
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:06:28'!
+test03BookNotAddedToCartIsNotIncluded
+
+	| cart |
+	cart := ShoppingCart new.
+
+	self deny: (cart includes: aBook)! !
+
+!methodRemoval: ShoppingCartTest #test03BookNotAddedToCartIsNotContained stamp: 'TCM 10/29/2019 21:06:28'!
+test03BookNotAddedToCartIsNotContained
+
+	| cart |
+	cart := ShoppingCart new.
+
+	self deny: (cart includes: aBook)!
+!ShoppingCartTest methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:06:36'!
+test04BookAddedToCartIsIncluded
+
+	| cart |
+	cart := ShoppingCart new.
+	
+	cart add: aBook withQuantity: 1.
+
+	self assert: (cart includes: aBook)! !
+
+!methodRemoval: ShoppingCartTest #test04BookAddedToCartIsContained stamp: 'TCM 10/29/2019 21:06:36'!
+test04BookAddedToCartIsContained
+
+	| cart |
+	cart := ShoppingCart new.
+	
+	cart add: aBook withQuantity: 1.
+
+	self assert: (cart includes: aBook)!
+!ShoppingCartTest methodsFor: 'tests - ShoppingCart' stamp: 'TCM 10/29/2019 21:08:38'!
+test05QuantityOfNotIncludedBookInShoppingCartIsZero
+
+	| cart |
+	cart := ShoppingCart new.
+
+	self assert: 0 equals: (cart quantityOf: aBook)! !
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:08:42'!
+ERROR!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:08:48'!
+quantityOf: aBook 
+	self shouldBeImplemented.! !
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:08:52' prior: 50777712!
+quantityOf: aBook 
+	^ 0! !
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:08:56'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:08:56'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:08:56'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:08:56'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:08:56'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:08:56'!
+PASSED!
+!ShoppingCartTest methodsFor: 'tests - ShoppingCart' stamp: 'TCM 10/29/2019 21:11:29'!
+test06QuantityOfBookAddedOnceIsTheAmountAdded
+
+	| cart |
+	cart := ShoppingCart new.
+
+	cart add: aBook withQuantity: 2.
+
+	self assert: 2 equals: (cart quantityOf: aBook)! !
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:11:30'!
+FAILURE!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:12:16' prior: 50777717!
+quantityOf: aBook 
+	^ books at: aBook ifAbsent: 0! !
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:12:25'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:12:25'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:12:25'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:12:25'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:12:25'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:12:25'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:12:25'!
+PASSED!
+!ShoppingCartTest methodsFor: 'tests - ShoppingCart' stamp: 'TCM 10/29/2019 21:12:56'!
+test07QuantityOfBookAddedManyTimesIsTheAmountAdded
+
+	| cart |
+	cart := ShoppingCart new.
+
+	cart add: aBook withQuantity: 2.
+	cart add: aBook withQuantity: 4.
+
+	self assert: 6 equals: (cart quantityOf: aBook)! !
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:12:57'!
+FAILURE!
+
+books!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:16:49' prior: 50777476!
+add: aBook withQuantity: aQuantity 
+
+	books at: aBook ifPresent: [ :xx |
+		books at: aBook put: xx + aQuantity
+	] ifAbsent: [
+		books at: aBook put: aQuantity
+	].
+! !
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:16:52'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:16:52'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:16:52'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:16:52'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:16:52'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:16:52'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:16:52'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:16:52'!
+PASSED!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:18:15' prior: 50777798!
+add: aBook withQuantity: aQuantity 
+
+	books at: aBook ifAbsentPut: 0.
+	books at: aBook put: (books at: aBook) + aQuantity! !
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:18:18'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:18:18'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:18:18'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:18:18'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:18:18'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:18:18'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:18:18'!
+PASSED!
+!ShoppingCartTest methodsFor: 'tests - ShoppingCart' stamp: 'TCM 10/29/2019 21:21:38'!
+test08AddingLessThanOneBookFails
+
+	| cart |
+	cart := ShoppingCart new.
+
+	self should: [
+		cart add: aBook withQuantity: 0. ]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: ShoppingCart cannotAddLessThanOneBookErrorMessage.
+
+	self assert: cart isEmpty! !
+
+!testRun: #ShoppingCartTest #test08AddingLessThanOneBookFails stamp: 'TCM 10/29/2019 21:21:40'!
+ERROR!
+!ShoppingCart class methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:21:48'!
+cannotAddLessThanOneBookErrorMessage
+	self shouldBeImplemented.! !
+!ShoppingCart class methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:22:24' prior: 50777882!
+cannotAddLessThanOneBookErrorMessage
+	^ 'No se puede agregar una cantidad menor a 1 de libros'! !
+
+!testRun: #ShoppingCartTest #test08AddingLessThanOneBookFails stamp: 'TCM 10/29/2019 21:22:33'!
+FAILURE!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:23:19' prior: 50777835!
+add: aBook withQuantity: aQuantity 
+
+	aQuantity < 1 ifTrue: [ self error: self class cannotAddLessThanOneBookErrorMessage ].
+
+	books at: aBook ifAbsentPut: 0.
+	books at: aBook put: (books at: aBook) + aQuantity! !
+
+!testRun: #ShoppingCartTest #test08AddingLessThanOneBookFails stamp: 'TCM 10/29/2019 21:23:21'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:23:21'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:23:21'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:23:21'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:23:21'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:23:21'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:23:21'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:23:21'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test08AddingLessThanOneBookFails stamp: 'TCM 10/29/2019 21:23:21'!
+PASSED!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:24:05'!
+assertValidQuantity: aQuantity
+
+	^ aQuantity < 1 ifTrue: [ self error: self class cannotAddLessThanOneBookErrorMessage ]! !
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:24:05' prior: 50777898!
+add: aBook withQuantity: aQuantity 
+
+	self assertValidQuantity: aQuantity.
+
+	books at: aBook ifAbsentPut: 0.
+	books at: aBook put: (books at: aBook) + aQuantity! !
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:24:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:24:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:24:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:24:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:24:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:24:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:24:11'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test08AddingLessThanOneBookFails stamp: 'TCM 10/29/2019 21:24:11'!
+PASSED!
+!ShoppingCartTest methodsFor: 'tests - ShoppingCart' stamp: 'TCM 10/29/2019 21:28:47'!
+test09IterateOverEmptyCartDoesNothing
+
+	| cart |
+	cart := ShoppingCart new.
+
+	cart purchaseRequestsDo: [ :book :quantity |
+		self fail
+	]! !
+
+!testRun: #ShoppingCartTest #test09IterateOverEmptyCartDoesNothing stamp: 'TCM 10/29/2019 21:28:51'!
+ERROR!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:29:00'!
+purchaseRequestsDo: aBlockClosure 
+	self shouldBeImplemented.! !
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:29:09' prior: 50777993!
+purchaseRequestsDo: aBlockClosure 
+	! !
+
+!testRun: #ShoppingCartTest #test09IterateOverEmptyCartDoesNothing stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test08AddingLessThanOneBookFails stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test09IterateOverEmptyCartDoesNothing stamp: 'TCM 10/29/2019 21:29:17'!
+PASSED!
+
+!classDefinition: #ShoppingCartTest category: #TusLibros stamp: 'TCM 10/29/2019 21:34:23'!
+TestCase subclass: #ShoppingCartTest
+	instanceVariableNames: 'aBook anotherBook'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!ShoppingCartTest methodsFor: 'tests - ShoppingCart' stamp: 'TCM 10/29/2019 21:34:20'!
+test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem
+
+	| cart expectedList list |
+	cart := ShoppingCart new.
+
+	cart add: aBook withQuantity: 2.
+	cart add: anotherBook withQuantity: 1.
+	
+	list := OrderedCollection new.
+
+	cart purchaseRequestsDo: [ :book :quantity |
+		list add: (Array with: book with: quantity)
+	].
+
+	expectedList := OrderedCollection with: (Array with: aBook with: 2) with: (Array with: anotherBook with: 1).
+
+	self assert: expectedList equals: list! !
+!ShoppingCartTest methodsFor: 'tests - ShoppingCart' stamp: 'TCM 10/29/2019 21:34:40' prior: 50777518!
+setUp
+	aBook := Book new.
+	anotherBook := Book new.
+! !
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:34:43'!
+FAILURE!
+
+books!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:36:10' prior: 50777999!
+purchaseRequestsDo: aBlockClosure 
+	books do: aBlockClosure! !
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:36:14'!
+ERROR!
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:36:35'!
+ERROR!
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:37:01'!
+ERROR!
+
+each!
+
+self key!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:37:58' prior: 50778075!
+purchaseRequestsDo: aBlockClosure 
+	books associationsDo: aBlockClosure! !
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:38:01'!
+ERROR!
+!ShoppingCart methodsFor: 'as yet unclassified' stamp: 'TCM 10/29/2019 21:38:56' prior: 50778094!
+purchaseRequestsDo: aBlockClosure 
+	books associationsDo: [ :association | aBlockClosure value: association  key value: association value ].! !
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test08AddingLessThanOneBookFails stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test09IterateOverEmptyCartDoesNothing stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:39:05'!
+FAILURE!
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:39:05'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test08AddingLessThanOneBookFails stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test09IterateOverEmptyCartDoesNothing stamp: 'TCM 10/29/2019 21:39:10'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:39:10'!
+FAILURE!
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:39:10'!
+FAILURE!
+!ShoppingCartTest methodsFor: 'tests - ShoppingCart' stamp: 'TCM 10/29/2019 21:39:36' prior: 50778046!
+test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem
+
+	| cart expectedList list |
+	cart := ShoppingCart new.
+
+	cart add: aBook withQuantity: 2.
+	cart add: anotherBook withQuantity: 1.
+	
+	list := Bag new.
+
+	cart purchaseRequestsDo: [ :book :quantity |
+		list add: (Array with: book with: quantity)
+	].
+
+	expectedList := Bag with: (Array with: aBook with: 2) with: (Array with: anotherBook with: 1).
+
+	self assert: expectedList equals: list! !
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test01NewCartIsEmpty stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test02CartIsNotEmptyAfterAddingABook stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test03BookNotAddedToCartIsNotIncluded stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test04BookAddedToCartIsIncluded stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test05QuantityOfNotIncludedBookInShoppingCartIsZero stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test06QuantityOfBookAddedOnceIsTheAmountAdded stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test07QuantityOfBookAddedManyTimesIsTheAmountAdded stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test08AddingLessThanOneBookFails stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test09IterateOverEmptyCartDoesNothing stamp: 'TCM 10/29/2019 21:39:37'!
+PASSED!
+
+!testRun: #ShoppingCartTest #test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem stamp: 'TCM 10/29/2019 21:39:38'!
+PASSED!
+!ShoppingCartTest methodsFor: 'tests - ShoppingCart' stamp: 'TCM 10/29/2019 21:41:41' prior: 50778200!
+test10IterateOverShoppingCartWithPurchaseRequestsVisitsAllOfThem
+
+	| cart expectedList list |
+	cart := ShoppingCart new.
+
+	cart add: aBook withQuantity: 2.
+	cart add: anotherBook withQuantity: 1.
+	
+	list := Bag new.
+
+	cart purchaseRequestsDo: [ :book :quantity |
+		list add: (Array with: book with: quantity)
+	].
+
+	expectedList := Bag 
+		with: (Array with: aBook with: 2) 
+		with: (Array with: anotherBook with: 1).
+
+	self assert: expectedList equals: list! !
+
+----QUIT----(29 October 2019 21:46:01) CuisUniversity-3938.image priorSource: 14265196!
+
+----STARTUP---- (29 October 2019 21:47:41) as /home/tcarreira/Downloads/linux64/CuisUniversity-3938.image!
+
+
+----QUIT----(29 October 2019 21:48:05) CuisUniversity-3938.image priorSource: 14291979!
