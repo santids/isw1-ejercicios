@@ -1843,3 +1843,3191 @@ PASSED!
 PASSED!
 
 ----SNAPSHOT----(4 November 2019 21:08:26) CuisUniversity-3938.image priorSource: 14313108!
+
+----QUIT----(4 November 2019 21:10:29) CuisUniversity-3938.image priorSource: 14330793!
+
+----STARTUP---- (5 November 2019 17:14:49) as /home/tcarreira/Downloads/linux64/CuisUniversity-3938.image!
+
+!CashierForSale methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:17:07' prior: 50779352!
+checkout
+	^ salesBook add: (Purchase for: cart)! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:17:07' prior: 50779357!
+test05CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 17:17:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 17:17:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 17:17:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 17:17:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:17:22'!
+PASSED!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:18:40' prior: 50779503!
+test05CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 5 equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:19:06' prior: 50779538!
+test05CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:19:09'!
+ERROR!
+!Purchase methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:19:34'!
+totalSpent
+	self shouldBeImplemented.! !
+!Purchase methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:21:50' prior: 50779578!
+totalSpent
+	^ elements inject: 0 into: [ :acc :elem | acc + elem at: 3 ]! !
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 17:22:03'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 17:22:03'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 17:22:03'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 17:22:03'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:22:03'!
+ERROR!
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:22:03'!
+ERROR!
+!Purchase methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:22:25' prior: 50779583!
+totalSpent
+	^ elements inject: 0 into: [ :acc :elem | acc + (elem at: 3) ]! !
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:22:27'!
+FAILURE!
+!Cart methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:23:10' prior: 50779419!
+priceOf: anItem 
+	^ catalog at: anItem! !
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:23:18'!
+FAILURE!
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:23:18'!
+FAILURE!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:23:32' prior: 50779557!
+test05CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:23:34'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:23:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 17:23:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 17:23:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 17:23:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 17:23:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:23:36'!
+PASSED!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:26:14'!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+
+!methodRemoval: CashierForSaleTest #test05CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:26:14'!
+test05CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:27:32'!
+test05IsExpiredOnExpiredCardReturnsTrue
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:30:00' prior: 50779711!
+test05IsExpiredOnExpiredCardReturnsTrue
+
+	| expiredCreditCard |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	self assert: expiredCreditCard
+
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:30:41' prior: 50779730!
+test05IsExpiredOnExpiredCardReturnsTrue
+
+	| expiredCreditCard |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	self assert: (expiredCreditCard isExpiredOn: (GregorianMonthOfYear novemberOf: (GregorianYear number: 2019)))
+! !
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:30:43'!
+ERROR!
+!CreditCard methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:30:50'!
+isExpiredOn: aGregorianMonthOfYear 
+	self shouldBeImplemented.! !
+!CreditCard methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:30:54' prior: 50779759!
+isExpiredOn: aGregorianMonthOfYear 
+	^ true! !
+
+	^ true!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:30:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 17:30:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 17:30:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 17:30:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 17:30:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:30:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:30:57'!
+PASSED!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:31:33'!
+test06IsExpiredOnNotExpiredCardReturnsFalse
+
+	| expiredCreditCard |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	self deny: (expiredCreditCard isExpiredOn: (GregorianMonthOfYear septemberOf: (GregorianYear number: 2019)))
+! !
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 17:31:34'!
+FAILURE!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:37:04' prior: 50779795!
+test06IsExpiredOnNotExpiredCardReturnsFalse
+
+	| expiredCreditCard |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	self deny: (expiredCreditCard isExpiredOn: (FixedGregorianDate  yearNumber: 2019 monthNumber: 10 dayNumber: 2))! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:37:35' prior: 50779742!
+test05IsExpiredOnExpiredCardReturnsTrue
+
+	| expiredCreditCard |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	self assert: (expiredCreditCard isExpiredOn: (FixedGregorianDate  yearNumber: 2019 monthNumber: 11 dayNumber: 2))
+! !
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:37:37'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 17:37:37'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 17:37:37'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 17:37:37'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 17:37:37'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:37:37'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 17:37:37'!
+FAILURE!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:37:38'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 17:37:38'!
+FAILURE!
+!CreditCard methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:38:45' prior: 50779765!
+isExpiredOn: aFixedGregorianDate
+	^ expiration < aFixedGregorianDate monthOfYear .! !
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 17:38:48'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:38:52'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 17:38:52'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 17:38:52'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 17:38:52'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 17:38:52'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:38:52'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 17:38:52'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:38:52'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:38:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 17:38:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 17:38:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 17:38:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 17:38:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:38:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 17:38:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:38:57'!
+PASSED!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:39:34'!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	self deny: (expiredCreditCard isExpiredOn: (FixedGregorianDate  yearNumber: 2019 monthNumber: 10 dayNumber: 2))! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:42:06' prior: 50779942!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	self deny: (expiredCreditCard isExpiredOn: (FixedGregorianDate  yearNumber: 2019 monthNumber: 10 dayNumber: 2)).
+	
+	
+	
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.! !
+!CashierForSale methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:43:21'!
+checkout: aDate
+	^ salesBook add: (Purchase for: cart)! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:43:21' prior: 50779957!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	self deny: (expiredCreditCard isExpiredOn: (FixedGregorianDate  yearNumber: 2019 monthNumber: 10 dayNumber: 2)).
+	
+	
+	
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout: aDate.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:43:21' prior: 50779674!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout: aDate.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+
+!methodRemoval: CashierForSale #checkout stamp: 'TCM 11/5/2019 17:43:21'!
+checkout
+	^ salesBook add: (Purchase for: cart)!
+!CashierForSale methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:43:31'!
+checkoutOn: aDate
+	^ salesBook add: (Purchase for: cart)! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:43:31' prior: 50779986!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	self deny: (expiredCreditCard isExpiredOn: (FixedGregorianDate  yearNumber: 2019 monthNumber: 10 dayNumber: 2)).
+	
+	
+	
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkoutOn: aDate.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:43:31' prior: 50780010!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkoutOn: aDate.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+
+!methodRemoval: CashierForSale #checkout: stamp: 'TCM 11/5/2019 17:43:31'!
+checkout: aDate
+	^ salesBook add: (Purchase for: cart)!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:44:33' prior: 50780038!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDate |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDate := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkoutOn: aDate.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:44:44' prior: 50780085!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDate |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDate := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: expiredCreditCard) checkoutOn: aDate.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:45:22' prior: 50780108!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: expiredCreditCard) checkoutOn: aDateAfterExpiration.! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 17:45:31'!
+PASSED!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:46:18' prior: 50780131!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: expiredCreditCard) checkoutOn: aDateAfterExpiration]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardMessageError.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:46:28' prior: 50780159!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: expiredCreditCard) checkoutOn: aDateAfterExpiration]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 17:46:32'!
+ERROR!
+!CashierForSale class methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:46:46'!
+expiredCardErrorMessage
+	self shouldBeImplemented.! !
+!CashierForSale class methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:47:01' prior: 50780218!
+expiredCardErrorMessage
+	^ 'No se puede comprar con una tarjeta vencida'! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 17:47:03'!
+FAILURE!
+!CashierForSale methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:48:10'!
+checkoutOn
+	^ salesBook add: (Purchase for: cart)! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:48:10' prior: 50780187!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: expiredCreditCard) checkoutOn]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:48:10' prior: 50780062!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkoutOn.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+
+!methodRemoval: CashierForSale #checkoutOn: stamp: 'TCM 11/5/2019 17:48:10'!
+checkoutOn: aDate
+	^ salesBook add: (Purchase for: cart)!
+!CashierForSale methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:48:17'!
+checkout
+	^ salesBook add: (Purchase for: cart)! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:48:17' prior: 50780237!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: expiredCreditCard) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:48:17' prior: 50780265!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+
+!methodRemoval: CashierForSale #checkoutOn stamp: 'TCM 11/5/2019 17:48:17'!
+checkoutOn
+	^ salesBook add: (Purchase for: cart)!
+!CashierForSale class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 17:48:57'!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aDate   
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard ! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:48:57' prior: 50779030!
+test01EmptyCartCannotCheckout
+
+	| aCart salesBook  |
+	
+	aCart := Cart acceptingItemsOf: self priceListWithItem.
+	
+
+	
+	salesBook := OrderedCollection new.
+
+	self 
+		should: [ CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: anExpirationDate  ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: CashierForSale emptyCartErrorMessage .
+
+	self assert: salesBook isEmpty! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:48:57' prior: 50780292!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: expiredCreditCard onDate: anExpirationDate) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:48:57' prior: 50780319!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: anExpirationDate) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+
+!methodRemoval: CashierForSale class #for:registerIn:payingWith: stamp: 'TCM 11/5/2019 17:48:57'!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard  
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard !
+!CashierForSale class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 17:49:23' prior: 50780341!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: anExpirationDate   
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard ! !
+!CashierForSale methodsFor: 'initialization' stamp: 'TCM 11/5/2019 17:49:52'!
+initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: anExpirationDate   
+	cart := aCart.
+	salesBook := aSalesBook! !
+!CashierForSale class methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:49:52' prior: 50780425!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: anExpirationDate   
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: anExpirationDate ! !
+
+!methodRemoval: CashierForSale #initializeFor:registerIn:payingWith: stamp: 'TCM 11/5/2019 17:49:52'!
+initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard  
+	cart := aCart.
+	salesBook := aSalesBook!
+
+!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/5/2019 17:50:11'!
+Object subclass: #CashierForSale
+	instanceVariableNames: 'cart salesBook purchaseDate'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSale methodsFor: 'initialization' stamp: 'TCM 11/5/2019 17:50:10' prior: 50780435!
+initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate   
+	cart := aCart.
+	salesBook := aSalesBook.
+	purchaseDate := aPurchaseDate! !
+!CashierForSale class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 17:50:27' prior: 50780443!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate   
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate ! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:50:47' prior: 50780368!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: expiredCreditCard onDate: aDateAfterExpiration) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 17:50:49'!
+FAILURE!
+!CashierForSale class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 17:51:47' prior: 50780478!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate   
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	(aCreditCard isExpiredOn: aPurchaseDate) ifTrue: [ self error: self expiredCardErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate ! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 17:51:50'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 17:51:50'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 17:51:50'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 17:51:50'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 17:51:50'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:51:50'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 17:51:50'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 17:51:50'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:51:50'!
+ERROR!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:51:50'!
+ERROR!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:52:40' prior: 50780396!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := 0.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:53:01' prior: 50778464!
+expirationDate
+
+	^ GregorianMonthOfYear octoberOf: (GregorianYear number: 2019)! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:53:36' prior: 50780572!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:53:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 17:53:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 17:53:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 17:53:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 17:53:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 17:53:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 17:53:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 17:53:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 17:53:42'!
+PASSED!
+
+!classDefinition: #MerchantProcessorSimulator category: #TusLibros stamp: 'TCM 11/5/2019 18:03:21'!
+Object subclass: #MerchantProcessorSimulator
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:03:14' prior: 50780599!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:04:12' prior: 50780662!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSale class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 18:05:22'!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: paymentGateway    
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	(aCreditCard isExpiredOn: aPurchaseDate) ifTrue: [ self error: self expiredCardErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate ! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:05:22' prior: 50780352!
+test01EmptyCartCannotCheckout
+
+	| aCart salesBook  |
+	
+	aCart := Cart acceptingItemsOf: self priceListWithItem.
+	
+
+	
+	salesBook := OrderedCollection new.
+
+	self 
+		should: [ CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: anExpirationDate withPaymentGateway: aPaymentGateway  ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: CashierForSale emptyCartErrorMessage .
+
+	self assert: salesBook isEmpty! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:05:22' prior: 50780490!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: expiredCreditCard onDate: aDateAfterExpiration withPaymentGateway: aPaymentGateway) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:05:22' prior: 50780692!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: aPaymentGateway) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!methodRemoval: CashierForSale class #for:registerIn:payingWith:onDate: stamp: 'TCM 11/5/2019 18:05:22'!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate   
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	(aCreditCard isExpiredOn: aPurchaseDate) ifTrue: [ self error: self expiredCardErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate !
+!CashierForSale class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 18:05:26' prior: 50780723!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway    
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	(aCreditCard isExpiredOn: aPurchaseDate) ifTrue: [ self error: self expiredCardErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate ! !
+!CashierForSale methodsFor: 'initialization' stamp: 'TCM 11/5/2019 18:06:14'!
+initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway    
+	cart := aCart.
+	salesBook := aSalesBook.
+	purchaseDate := aPurchaseDate! !
+!CashierForSale class methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:06:14' prior: 50780832!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway    
+	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
+	(aCreditCard isExpiredOn: aPurchaseDate) ifTrue: [ self error: self expiredCardErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway ! !
+
+!methodRemoval: CashierForSale #initializeFor:registerIn:payingWith:onDate: stamp: 'TCM 11/5/2019 18:06:14'!
+initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate   
+	cart := aCart.
+	salesBook := aSalesBook.
+	purchaseDate := aPurchaseDate!
+
+!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/5/2019 18:06:26'!
+Object subclass: #CashierForSale
+	instanceVariableNames: 'cart salesBook purchaseDate paymentGateway'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSale methodsFor: 'initialization' stamp: 'TCM 11/5/2019 18:06:24' prior: 50780847!
+initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway    
+	cart := aCart.
+	salesBook := aSalesBook.
+	purchaseDate := aPurchaseDate.
+	paymentGateway := aPaymentGateway! !
+
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/5/2019 18:07:33'!
+TestCase subclass: #CashierForSaleTest
+	instanceVariableNames: 'creditCard dummyPaymentGateway'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:07:30' prior: 50779045!
+setUp
+	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: self expirationDate holderName: 'PIRULO'.
+	dummyPaymentGateway := MerchantProcessorSimulator responds: []
+	
+	
+! !
+
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/5/2019 18:09:46'!
+TestCase subclass: #CashierForSaleTest
+	instanceVariableNames: 'creditCard dummyPaymentGateway expirationDate'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/5/2019 18:10:16'!
+TestCase subclass: #CashierForSaleTest
+	instanceVariableNames: 'creditCard dummyPaymentGateway expirationDate dateAfterExpiration'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/5/2019 18:10:18'!
+TestCase subclass: #CashierForSaleTest
+	instanceVariableNames: 'creditCard dummyPaymentGateway expirationDate dateAfterExpiration dateBeforeExpiration'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:10:15' prior: 50780909!
+setUp
+	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: self expirationDate holderName: 'PIRULO'.
+	dummyPaymentGateway := MerchantProcessorSimulator responds: [].
+
+	expirationDate := GregorianMonthOfYear octoberOf: (GregorianYear number: 2019).
+	
+	dateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+	dateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:10:44' prior: 50780739!
+test01EmptyCartCannotCheckout
+
+	| aCart salesBook  |
+	
+	aCart := Cart acceptingItemsOf: self priceListWithItem.
+	
+
+	
+	salesBook := OrderedCollection new.
+
+	self 
+		should: [ CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: dummyPaymentGateway ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: CashierForSale emptyCartErrorMessage .
+
+	self assert: salesBook isEmpty! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:10:59' prior: 50778482!
+test02CreditCardCreationWithInvalidNumberFails
+
+
+	
+	self 
+		should: [ CreditCard withNumber: '1234' expirationDate: expirationDate holderName: 'PIRULO'. ]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CreditCard invalidNumberErrorMessage.
+		
+
+	
+	! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:11:05' prior: 50778497!
+test03CreditCardCreationWithLettersFails
+
+	self 
+		should: [ CreditCard withNumber: '12q4567890123456' expirationDate: expirationDate holderName: 'PIRULO'. ]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CreditCard invalidNumberErrorMessage.
+		
+
+	
+	! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:11:10' prior: 50778725!
+test04CreditCardCreationWithNotOnlyLettersFails
+
+	self 
+		should: [ CreditCard withNumber: '1234567890123456' expirationDate: expirationDate holderName: 'PIRULO 12'. ]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CreditCard invalidHolderNameErrorMessage .
+		
+
+	
+	! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:11:40' prior: 50779828!
+test05IsExpiredOnExpiredCardReturnsTrue
+
+	| expiredCreditCard |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: expirationDate 
+		holderName: 'PIRULO'.
+
+	self assert: (expiredCreditCard isExpiredOn: dateAfterExpiration )! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:11:59' prior: 50779813!
+test06IsExpiredOnNotExpiredCardReturnsFalse
+
+	| expiredCreditCard |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: expirationDate 
+		holderName: 'PIRULO'.
+
+	self deny: (expiredCreditCard isExpiredOn: dateBeforeExpiration )! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:12:41' prior: 50780756!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: expiredCreditCard
+			onDate: aDateAfterExpiration
+			withPaymentGateway: dummyPaymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:12:52' prior: 50780786!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!MerchantProcessorSimulator class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 18:13:15'!
+responds: aBlockClosure 
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeResponds: aBlockClosure ! !
+!MerchantProcessorSimulator class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 18:13:23' prior: 50781104!
+responds: aBlockClosure 
+	^self new initializeResponds: aBlockClosure ! !
+
+!classDefinition: #MerchantProcessorSimulator category: #TusLibros stamp: 'TCM 11/5/2019 18:13:40'!
+Object subclass: #MerchantProcessorSimulator
+	instanceVariableNames: 'blockClosure'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!MerchantProcessorSimulator methodsFor: 'initialization' stamp: 'TCM 11/5/2019 18:13:40'!
+initializeResponds: aBlockClosure 
+	self shouldBeImplemented.
+	blockClosure := aBlockClosure.! !
+!MerchantProcessorSimulator methodsFor: 'initialization' stamp: 'TCM 11/5/2019 18:13:57' prior: 50781127!
+initializeResponds: aBlockClosure
+	blockClosure := aBlockClosure.! !
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:14:00'!
+FAILURE!
+
+!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/5/2019 18:16:09'!
+Object subclass: #CashierForSale
+	instanceVariableNames: 'cart salesBook purchaseDate paymentGateway creditCard'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSale methodsFor: 'initialization' stamp: 'TCM 11/5/2019 18:16:08' prior: 50780890!
+initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway    
+	cart := aCart.
+	salesBook := aSalesBook.
+	creditCard := aCreditCard.
+	purchaseDate := aPurchaseDate.
+	paymentGateway := aPaymentGateway! !
+!CashierForSale methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:16:15' prior: 50780287!
+checkout
+	paymentGateway debit: (Purchase for: cart) totalSpent from: creditCard .
+	^ salesBook add: (Purchase for: cart)! !
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:16:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:16:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:16:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:16:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:16:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:16:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:16:36'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:16:36'!
+ERROR!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:16:36'!
+ERROR!
+!MerchantProcessorSimulator methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:16:42'!
+debit: aSimpleMeasure from: aCreditCard 
+	self shouldBeImplemented.! !
+!MerchantProcessorSimulator methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:17:09' prior: 50781203!
+debit: anAmountOfMoney from: aCreditCard 
+	blockClosure value! !
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:17:12'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:17:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:17:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:17:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:17:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:17:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:17:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:17:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:17:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:17:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:17:23'!
+PASSED!
+!CashierForSale methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:19:04' prior: 50781164!
+checkout
+	| purchase |
+	purchase := Purchase for: cart.
+	paymentGateway debit: (Purchase for: cart) totalSpent from: creditCard .
+	^ salesBook add: (Purchase for: cart)! !
+!CashierForSale methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:19:18' prior: 50781254!
+checkout
+	| purchase |
+	purchase := Purchase for: cart.
+	paymentGateway debit: purchase totalSpent from: creditCard .
+	^ salesBook add: purchase! !
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:19:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:19:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:19:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:19:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:19:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:19:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:19:23'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:19:23'!
+PASSED!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:28:25'!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:28:56' prior: 50781299!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		self error: 'Bad Request'.
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:30:17' prior: 50781332!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		self error: 'Bad Request'.
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self deny:( salesBook includes: (Purchase for: aCart)).
+	self deny: (123 * peso = (Purchase for: aCart) totalSpent).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:30:18'!
+ERROR!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:31:42' prior: 50781364!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: aCart)).
+	self deny: (123 * peso = (Purchase for: aCart) totalSpent).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:31:43'!
+FAILURE!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:31:56'!
+FAILURE!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:32:18' prior: 50781400!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: aCart)).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:32:20'!
+FAILURE!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:32:43' prior: 50781443!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited  := true.
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: aCart)).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:32:45'!
+PASSED!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:33:17' prior: 50781480!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited  := true.
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: aCart)).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:35:27' prior: 50781042!
+test07CheckoutWithExpiredCardFails
+
+	| expiredCreditCard aBook aCart pricesList salesBook aDateAfterExpiration paymentGateway paymentGatewayVisited |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: (GregorianMonthOfYear octoberOf: (GregorianYear number: 2019))
+		holderName: 'PIRULO'.
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	aDateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: expiredCreditCard
+			onDate: aDateAfterExpiration
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:35:32'!
+PASSED!
+
+!methodRemoval: CashierForSaleTest #expirationDate stamp: 'TCM 11/5/2019 18:37:47'!
+expirationDate
+
+	^ GregorianMonthOfYear octoberOf: (GregorianYear number: 2019)!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:38:14' prior: 50780946!
+setUp
+	
+	dummyPaymentGateway := MerchantProcessorSimulator responds: [].
+
+	expirationDate := GregorianMonthOfYear octoberOf: (GregorianYear number: 2019).
+	
+	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: expirationDate holderName: 'PIRULO'.
+	
+	dateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+	dateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:41:58' prior: 50781018!
+test05IsExpiredOnExpiredCardReturnsTrue
+
+	| expiredCreditCard |
+	expiredCreditCard := CreditCard
+		withNumber: '1234567890123456'
+		expirationDate: expirationDate 
+		holderName: 'PIRULO'.
+
+	self assert: (creditCard isExpiredOn: dateAfterExpiration )! !
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:42:01'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:42:07' prior: 50781679!
+test05IsExpiredOnExpiredCardReturnsTrue
+
+
+	self assert: (creditCard isExpiredOn: dateAfterExpiration )! !
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:42:08'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:42:25' prior: 50781030!
+test06IsExpiredOnNotExpiredCardReturnsFalse
+
+
+
+	self deny: (creditCard isExpiredOn: dateBeforeExpiration )! !
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:42:26'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:43:06' prior: 50781585!
+test07CheckoutWithExpiredCardFails
+
+	| aBook aCart pricesList salesBook paymentGateway paymentGatewayVisited |
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:43:11'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:43:55' prior: 50781812!
+test07CheckoutWithExpiredCardFails
+
+	| aBook aCart pricesList salesBook paymentGateway paymentGatewayVisited |
+
+	aBook := self itemSellByTheStore.
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited.
+	self assert: salesBook  isEmpty .! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:43:56'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:44:54' prior: 50781551!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited  := true.
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: aCart)).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:45:02' prior: 50781072!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart aBook salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:45:15' prior: 50781874!
+test07CheckoutWithExpiredCardFails
+
+	| aBook aCart pricesList salesBook paymentGateway paymentGatewayVisited |
+
+
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited.
+	self assert: salesBook  isEmpty .! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:45:31' prior: 50782001!
+test07CheckoutWithExpiredCardFails
+
+	| aBook aCart pricesList salesBook paymentGateway paymentGatewayVisited |
+
+
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: aBook.
+
+	salesBook := OrderedCollection new.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited.
+	self assert: salesBook  isEmpty .! !
+
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/5/2019 18:45:59'!
+TestCase subclass: #CashierForSaleTest
+	instanceVariableNames: 'creditCard dummyPaymentGateway expirationDate dateAfterExpiration dateBeforeExpiration book'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:45:58' prior: 50782027!
+test07CheckoutWithExpiredCardFails
+
+	| aCart pricesList salesBook paymentGateway paymentGatewayVisited |
+
+
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: book.
+
+	salesBook := OrderedCollection new.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited.
+	self assert: salesBook  isEmpty .! !
+
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/5/2019 18:46:09'!
+TestCase subclass: #CashierForSaleTest
+	instanceVariableNames: 'creditCard dummyPaymentGateway expirationDate dateAfterExpiration dateBeforeExpiration item'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 18:46:09' prior: 50782063!
+test07CheckoutWithExpiredCardFails
+
+	| aCart pricesList salesBook paymentGateway paymentGatewayVisited |
+
+
+	pricesList := self priceListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: item.
+
+	salesBook := OrderedCollection new.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited.
+	self assert: salesBook  isEmpty .! !
+!CashierForSaleTest methodsFor: 'setUp/tearDown' stamp: 'TCM 11/5/2019 18:46:32' prior: 50781662!
+setUp
+	item := 'ElLaberintoDelFauno'.
+
+	dummyPaymentGateway := MerchantProcessorSimulator responds: [].
+
+	expirationDate := GregorianMonthOfYear octoberOf: (GregorianYear number: 2019).
+	
+	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: expirationDate holderName: 'PIRULO'.
+	
+	dateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+	dateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+! !
+
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/5/2019 18:46:54'!
+TestCase subclass: #CashierForSaleTest
+	instanceVariableNames: 'creditCard dummyPaymentGateway expirationDate dateAfterExpiration dateBeforeExpiration item pricesListWithItem'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSaleTest methodsFor: 'setUp/tearDown' stamp: 'TCM 11/5/2019 18:46:53' prior: 50782126!
+setUp
+	item := 'ElLaberintoDelFauno'.
+	pricesListWithItem := Dictionary with: self itemSellByTheStore -> (123 * peso).
+
+	dummyPaymentGateway := MerchantProcessorSimulator responds: [].
+
+	expirationDate := GregorianMonthOfYear octoberOf: (GregorianYear number: 2019).
+	
+	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: expirationDate holderName: 'PIRULO'.
+	
+	dateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+	dateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+! !
+
+!methodRemoval: CashierForSaleTest #itemSellByTheStore stamp: 'TCM 11/5/2019 18:47:01'!
+itemSellByTheStore
+
+	^ 'ElLaberintoDelFauno'!
+!CartTest methodsFor: 'support' stamp: 'TCM 11/5/2019 18:47:13' prior: 50777997!
+defaultCatalog
+	
+	^ Dictionary with: self item -> (50 * peso)! !
+!CartTest methodsFor: 'support' stamp: 'TCM 11/4/2019 19:42:38' prior: 50782180!
+defaultCatalog
+	
+	^ Dictionary with: self itemSellByTheStore -> (50 * peso)! !
+!CashierForSaleTest methodsFor: 'support' stamp: 'TCM 11/5/2019 18:48:03' prior: 50778098!
+priceListWithItem
+
+	^ Dictionary with: item -> (123 * peso)! !
+!CashierForSaleTest methodsFor: 'setUp/tearDown' stamp: 'TCM 11/5/2019 18:48:08' prior: 50782155!
+setUp
+	item := 'ElLaberintoDelFauno'.
+	pricesListWithItem := Dictionary with: self item -> (123 * peso).
+
+	dummyPaymentGateway := MerchantProcessorSimulator responds: [].
+
+	expirationDate := GregorianMonthOfYear octoberOf: (GregorianYear number: 2019).
+	
+	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: expirationDate holderName: 'PIRULO'.
+	
+	dateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+	dateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+! !
+
+!methodRemoval: CashierForSaleTest #priceListWithItem stamp: 'TCM 11/5/2019 18:48:14'!
+priceListWithItem
+
+	^ Dictionary with: item -> (123 * peso)!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:48:28' prior: 50780964!
+test01EmptyCartCannotCheckout
+
+	| aCart salesBook  |
+	
+	aCart := Cart acceptingItemsOf: pricesListWithItem.
+	
+
+	
+	salesBook := OrderedCollection new.
+
+	self 
+		should: [ CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: dummyPaymentGateway ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: CashierForSale emptyCartErrorMessage .
+
+	self assert: salesBook isEmpty! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:48:34' prior: 50782100!
+test07CheckoutWithExpiredCardFails
+
+	| aCart pricesList salesBook paymentGateway paymentGatewayVisited |
+
+
+	pricesList := pricesListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: item.
+
+	salesBook := OrderedCollection new.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited.
+	self assert: salesBook  isEmpty .! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:48:54' prior: 50781970!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+
+	pricesList := pricesListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: item.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:49:07' prior: 50781937!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart salesBook pricesList aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+	
+
+	pricesList := pricesListWithItem.
+
+	aCart := Cart acceptingItemsOf: pricesList.
+	aCart add: item.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited  := true.
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: aCart)).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'setUp/tearDown' stamp: 'TCM 11/5/2019 18:49:36' prior: 50782197!
+setUp
+	item := 'ElLaberintoDelFauno'.
+	pricesListWithItem := Dictionary with: item -> (123 * peso).
+
+	dummyPaymentGateway := MerchantProcessorSimulator responds: [].
+
+	expirationDate := GregorianMonthOfYear octoberOf: (GregorianYear number: 2019).
+	
+	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: expirationDate holderName: 'PIRULO'.
+	
+	dateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+	dateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+! !
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:49:39'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:49:39'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:49:39'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:49:39'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:49:39'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:49:39'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:49:39'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:49:39'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:49:39'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:49:53' prior: 50782222!
+test01EmptyCartCannotCheckout
+
+	| aCart salesBook  |
+
+	aCart := Cart acceptingItemsOf: pricesListWithItem.
+	salesBook := OrderedCollection new.
+
+	self 
+		should: [ CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: dummyPaymentGateway ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: CashierForSale emptyCartErrorMessage .
+
+	self assert: salesBook isEmpty! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:50:19' prior: 50780982!
+test02CreditCardCreationWithInvalidNumberFails
+
+	self 
+		should: [ CreditCard withNumber: '1234' expirationDate: expirationDate holderName: 'PIRULO'. ]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CreditCard invalidNumberErrorMessage.
+		
+
+	
+	! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:50:31' prior: 50781726!
+test05IsExpiredOnExpiredCardReturnsTrue
+
+	self assert: (creditCard isExpiredOn: dateAfterExpiration )! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:50:35' prior: 50781769!
+test06IsExpiredOnNotExpiredCardReturnsFalse
+
+	self deny: (creditCard isExpiredOn: dateBeforeExpiration )! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:50:55' prior: 50782239!
+test07CheckoutWithExpiredCardFails
+
+	| aCart salesBook paymentGateway paymentGatewayVisited |
+
+	aCart := Cart acceptingItemsOf: pricesListWithItem.
+	aCart add: item.
+
+	salesBook := OrderedCollection new.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: aCart
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited.
+	self assert: salesBook  isEmpty .! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:51:08' prior: 50782265!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart salesBook aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+
+	aCart := Cart acceptingItemsOf: pricesListWithItem.
+	aCart add: item.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:51:17' prior: 50782296!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| aCart salesBook aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+
+	aCart := Cart acceptingItemsOf: pricesListWithItem.
+	aCart add: item.
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited  := true.
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: aCart)).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/5/2019 18:53:29'!
+TestCase subclass: #CashierForSaleTest
+	instanceVariableNames: 'creditCard dummyPaymentGateway expirationDate dateAfterExpiration dateBeforeExpiration item pricesListWithItem cartWithItem'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSaleTest methodsFor: 'setUp/tearDown' stamp: 'TCM 11/5/2019 18:53:26' prior: 50782329!
+setUp
+	item := 'ElLaberintoDelFauno'.
+	pricesListWithItem := Dictionary with: item -> (123 * peso).
+
+	dummyPaymentGateway := MerchantProcessorSimulator responds: [].
+
+	expirationDate := GregorianMonthOfYear octoberOf: (GregorianYear number: 2019).
+	
+	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: expirationDate holderName: 'PIRULO'.
+	
+	cartWithItem := Cart acceptingItemsOf: pricesListWithItem.
+	cartWithItem add: item.
+	
+	dateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+	dateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:54:12' prior: 50782424!
+test07CheckoutWithExpiredCardFails
+
+	| salesBook paymentGateway paymentGatewayVisited |
+
+	salesBook := OrderedCollection new.
+
+	paymentGatewayVisited := false.
+	paymentGateway := MerchantProcessorSimulator responds: [
+		paymentGatewayVisited := true.
+	].
+
+	self should: [
+		( CashierForSale 
+			for: cartWithItem 
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGatewayVisited.
+	self assert: salesBook  isEmpty .! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:54:17'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:54:29' prior: 50782449!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| aCart salesBook aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+
+
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: cartWithItem registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: aCart).
+	self assert: 123 * peso equals: (Purchase for: aCart) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:54:38' prior: 50782601!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| salesBook aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+
+
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: cartWithItem registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: cartWithItem).
+	self assert: 123 * peso equals: (Purchase for: cartWithItem) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:55:13' prior: 50782478!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| salesBook aDateBeforeExpiration merchantProcessorSimulator merchantProcessorVisited |
+
+	salesBook := OrderedCollection new.
+	
+	aDateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited  := true.
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: cartWithItem registerIn: salesBook payingWith: creditCard onDate: aDateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: cartWithItem )).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:55:19'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:56:10' prior: 50782656!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| salesBook merchantProcessorSimulator merchantProcessorVisited |
+
+	salesBook := OrderedCollection new.
+	
+
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited  := true.
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: cartWithItem registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: cartWithItem )).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:56:13'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:56:37' prior: 50782628!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| salesBook merchantProcessorSimulator merchantProcessorVisited |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale for: cartWithItem registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: cartWithItem).
+	self assert: 123 * peso equals: (Purchase for: cartWithItem) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:56:42'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:56:52' prior: 50782721!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| salesBook merchantProcessorSimulator merchantProcessorVisited |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited  := true.
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: cartWithItem registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny:( salesBook includes: (Purchase for: cartWithItem )).
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:57:42' prior: 50782783!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| salesBook merchantProcessorSimulator merchantProcessorVisited |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorVisited := false.
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		merchantProcessorVisited := true.
+		^ 'OK'
+	].
+
+	(CashierForSale
+		for: cartWithItem
+		registerIn: salesBook
+		payingWith: creditCard
+		onDate: dateBeforeExpiration
+		withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: cartWithItem).
+	self assert: 123 * peso equals: (Purchase for: cartWithItem) totalSpent.
+	self assert: merchantProcessorVisited 
+		
+	
+	
+! !
+
+!classDefinition: #MerchantProcessorSimulator category: #TusLibros stamp: 'TCM 11/5/2019 18:58:18'!
+Object subclass: #MerchantProcessorSimulator
+	instanceVariableNames: 'blockClosure wasVisited'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!MerchantProcessorSimulator methodsFor: 'initialization' stamp: 'TCM 11/5/2019 18:58:17' prior: 50781134!
+initializeResponds: aBlockClosure
+	blockClosure := aBlockClosure.
+	wasVisited := false.! !
+!MerchantProcessorSimulator methodsFor: 'initialization' stamp: 'TCM 11/5/2019 18:58:35'!
+visited
+	^ wasVisited! !
+!MerchantProcessorSimulator methodsFor: 'payment' stamp: 'TCM 11/5/2019 18:59:00' prior: 50781209!
+debit: anAmountOfMoney from: aCreditCard 
+	wasVisited := true.
+	blockClosure value! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:59:52' prior: 50782543!
+test07CheckoutWithExpiredCardFails
+
+	| salesBook paymentGateway |
+
+	salesBook := OrderedCollection new.
+
+	paymentGateway := MerchantProcessorSimulator responds: [].
+
+	self should: [
+		( CashierForSale 
+			for: cartWithItem 
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
+
+	self deny: paymentGateway visited.
+	self assert: salesBook  isEmpty .! !
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 18:59:57'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 19:00:35' prior: 50782868!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [].
+
+	(CashierForSale
+		for: cartWithItem
+		registerIn: salesBook
+		payingWith: creditCard
+		onDate: dateBeforeExpiration
+		withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: cartWithItem).
+	self assert: 123 * peso equals: (Purchase for: cartWithItem) totalSpent.
+	self assert: merchantProcessorSimulator visited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 19:00:58' prior: 50782843!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		self error: 'Bad Request'.
+	].
+	self should: [(CashierForSale for: cartWithItem registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny: ( salesBook includes: (Purchase for: cartWithItem )).
+	self assert: merchantProcessorSimulator visited. 
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/5/2019 19:01:05'!
+PASSED!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 19:01:07' prior: 50782994!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		self error: 'Bad Request'.
+	].
+
+	self should: [(CashierForSale for: cartWithItem registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny: ( salesBook includes: (Purchase for: cartWithItem )).
+	self assert: merchantProcessorSimulator visited. 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 19:01:32' prior: 50783053!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		self error: 'Bad Request'.
+	].
+
+	self
+		should: [
+			(CashierForSale 
+				for: cartWithItem
+				registerIn: salesBook
+				payingWith: creditCard
+				onDate: dateBeforeExpiration
+				withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+	
+
+	self deny: ( salesBook includes: (Purchase for: cartWithItem )).
+	self assert: merchantProcessorSimulator visited. 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 19:01:45' prior: 50783076!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		self error: 'Bad Request'.
+	].
+
+	self
+		should: [
+			(CashierForSale 
+				for: cartWithItem
+				registerIn: salesBook
+				payingWith: creditCard
+				onDate: dateBeforeExpiration
+				withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+
+	self deny: ( salesBook includes: (Purchase for: cartWithItem )).
+	self assert: merchantProcessorSimulator visited. 
+
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 19:03:10' prior: 50782382!
+test01EmptyCartCannotCheckout
+
+	| anEmptyCart salesBook  |
+
+	anEmptyCart := Cart acceptingItemsOf: pricesListWithItem.
+	salesBook := OrderedCollection new.
+
+	self 
+		should: [ CashierForSale for: anEmptyCart registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: dummyPaymentGateway ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: CashierForSale emptyCartErrorMessage .
+
+	self assert: salesBook isEmpty! !
+
+----SNAPSHOT----(5 November 2019 19:05:19) CuisUniversity-3938.image priorSource: 14330886!

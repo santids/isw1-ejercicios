@@ -1,4 +1,4 @@
-!classDefinition: #CartTest category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
+!classDefinition: #CartTest category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
 TestCase subclass: #CartTest
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -142,61 +142,53 @@ itemSellByTheStore
 	^ 'validBook'! !
 
 
-!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
 TestCase subclass: #CashierForSaleTest
-	instanceVariableNames: 'creditCard'
+	instanceVariableNames: 'creditCard dummyPaymentGateway expirationDate dateAfterExpiration dateBeforeExpiration item pricesListWithItem cartWithItem'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:08:42'!
-expirationDate
 
-	^ GregorianMonthOfYear octoberOf: (GregorianYear number: 1997)! !
-
-!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 19:44:39'!
-itemSellByTheStore
-
-	^ 'ElLaberintoDelFauno'! !
-
-!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 19:45:34'!
-priceListWithItem
-
-	^ Dictionary with: self itemSellByTheStore -> (123 * peso)! !
-
-!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:32:07'!
+!CashierForSaleTest methodsFor: 'setUp/tearDown' stamp: 'TCM 11/5/2019 18:53:26'!
 setUp
-	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: self expirationDate holderName: 'PIRULO'.
-		
+	item := 'ElLaberintoDelFauno'.
+	pricesListWithItem := Dictionary with: item -> (123 * peso).
+
+	dummyPaymentGateway := MerchantProcessorSimulator responds: [].
+
+	expirationDate := GregorianMonthOfYear octoberOf: (GregorianYear number: 2019).
 	
+	creditCard := CreditCard withNumber: '1234567890123456' expirationDate: expirationDate holderName: 'PIRULO'.
 	
+	cartWithItem := Cart acceptingItemsOf: pricesListWithItem.
+	cartWithItem add: item.
+	
+	dateAfterExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.
+	dateBeforeExpiration := FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.
 ! !
 
-!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:31:58'!
+
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 19:03:10'!
 test01EmptyCartCannotCheckout
 
-	| aCart salesBook  |
-	
-	aCart := Cart acceptingItemsOf: self priceListWithItem.
-	
+	| anEmptyCart salesBook  |
 
-	
+	anEmptyCart := Cart acceptingItemsOf: pricesListWithItem.
 	salesBook := OrderedCollection new.
 
 	self 
-		should: [ CashierForSale for: aCart registerIn: salesBook payingWith: creditCard  ]
+		should: [ CashierForSale for: anEmptyCart registerIn: salesBook payingWith: creditCard onDate: dateBeforeExpiration withPaymentGateway: dummyPaymentGateway ]
 		raise: Error - MessageNotUnderstood
 		withMessageText: CashierForSale emptyCartErrorMessage .
 
 	self assert: salesBook isEmpty! !
 
-!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:08:53'!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:50:19'!
 test02CreditCardCreationWithInvalidNumberFails
 
-
-	
 	self 
-		should: [ CreditCard withNumber: '1234' expirationDate: self expirationDate holderName: 'PIRULO'. ]
+		should: [ CreditCard withNumber: '1234' expirationDate: expirationDate holderName: 'PIRULO'. ]
 		raise: Error - MessageNotUnderstood 
 		withMessageText: CreditCard invalidNumberErrorMessage.
 		
@@ -204,11 +196,11 @@ test02CreditCardCreationWithInvalidNumberFails
 	
 	! !
 
-!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:10:24'!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:11:05'!
 test03CreditCardCreationWithLettersFails
 
 	self 
-		should: [ CreditCard withNumber: '12q4567890123456' expirationDate: self expirationDate holderName: 'PIRULO'. ]
+		should: [ CreditCard withNumber: '12q4567890123456' expirationDate: expirationDate holderName: 'PIRULO'. ]
 		raise: Error - MessageNotUnderstood 
 		withMessageText: CreditCard invalidNumberErrorMessage.
 		
@@ -216,11 +208,11 @@ test03CreditCardCreationWithLettersFails
 	
 	! !
 
-!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:21:42'!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:11:10'!
 test04CreditCardCreationWithNotOnlyLettersFails
 
 	self 
-		should: [ CreditCard withNumber: '1234567890123456' expirationDate: self expirationDate holderName: 'PIRULO 12'. ]
+		should: [ CreditCard withNumber: '1234567890123456' expirationDate: expirationDate holderName: 'PIRULO 12'. ]
 		raise: Error - MessageNotUnderstood 
 		withMessageText: CreditCard invalidHolderNameErrorMessage .
 		
@@ -228,30 +220,92 @@ test04CreditCardCreationWithNotOnlyLettersFails
 	
 	! !
 
-!CashierForSaleTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:58:57'!
-test05CartWithItemsIsCheckedOutSuccesfully
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:50:31'!
+test05IsExpiredOnExpiredCardReturnsTrue
 
-	| aCart aBook salesBook pricesList |
-	
-	aBook := self itemSellByTheStore.
-	pricesList := self priceListWithItem.
+	self assert: (creditCard isExpiredOn: dateAfterExpiration )! !
 
-	aCart := Cart acceptingItemsOf: pricesList.
-	aCart add: aBook.
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:50:35'!
+test06IsExpiredOnNotExpiredCardReturnsFalse
+
+	self deny: (creditCard isExpiredOn: dateBeforeExpiration )! !
+
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 18:59:52'!
+test07CheckoutWithExpiredCardFails
+
+	| salesBook paymentGateway |
 
 	salesBook := OrderedCollection new.
 
-	(CashierForSale for: aCart registerIn: salesBook payingWith: creditCard) checkout.
+	paymentGateway := MerchantProcessorSimulator responds: [].
 
-	self assert: salesBook includes: (Ticket for: aCart).
+	self should: [
+		( CashierForSale 
+			for: cartWithItem 
+			registerIn: salesBook
+			payingWith: creditCard 
+			onDate: dateAfterExpiration 
+			withPaymentGateway: paymentGateway ) checkout]
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale expiredCardErrorMessage.
 
+	self deny: paymentGateway visited.
+	self assert: salesBook  isEmpty .! !
+
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 19:00:35'!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [].
+
+	(CashierForSale
+		for: cartWithItem
+		registerIn: salesBook
+		payingWith: creditCard
+		onDate: dateBeforeExpiration
+		withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: cartWithItem).
+	self assert: 123 * peso equals: (Purchase for: cartWithItem) totalSpent.
+	self assert: merchantProcessorSimulator visited 
 		
 	
 	
 ! !
 
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/5/2019 19:01:45'!
+test09IfMerchantProcessorFailsThePurcharseIsNotDone
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [
+		self error: 'Bad Request'.
+	].
+
+	self
+		should: [
+			(CashierForSale 
+				for: cartWithItem
+				registerIn: salesBook
+				payingWith: creditCard
+				onDate: dateBeforeExpiration
+				withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: 'Bad Request'.
+
+	self deny: ( salesBook includes: (Purchase for: cartWithItem )).
+	self assert: merchantProcessorSimulator visited. 
+
+	
+! !
+
 
-!classDefinition: #Cart category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
+!classDefinition: #Cart category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
 Object subclass: #Cart
 	instanceVariableNames: 'catalog items'
 	classVariableNames: ''
@@ -323,13 +377,13 @@ add: aQuantity of: anItem
 	items add: anItem withOccurrences: aQuantity .! !
 
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 21:05:15'!
+!Cart methodsFor: 'price' stamp: 'TCM 11/5/2019 17:23:10'!
 priceOf: anItem 
-	^ 0! !
+	^ catalog at: anItem! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Cart class' category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
+!classDefinition: 'Cart class' category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
 Cart class
 	instanceVariableNames: ''!
 
@@ -339,26 +393,32 @@ acceptingItemsOf: aCatalog
 	^self new initializeAcceptingItemsOf: aCatalog ! !
 
 
-!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
+!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
 Object subclass: #CashierForSale
-	instanceVariableNames: 'cart salesBook'
+	instanceVariableNames: 'cart salesBook purchaseDate paymentGateway creditCard'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!CashierForSale methodsFor: 'initialization' stamp: 'TCM 11/4/2019 20:29:19'!
-initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard  
+!CashierForSale methodsFor: 'initialization' stamp: 'TCM 11/5/2019 18:16:08'!
+initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway    
 	cart := aCart.
-	salesBook := aSalesBook! !
+	salesBook := aSalesBook.
+	creditCard := aCreditCard.
+	purchaseDate := aPurchaseDate.
+	paymentGateway := aPaymentGateway! !
 
 
-!CashierForSale methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:58:19'!
+!CashierForSale methodsFor: 'operating' stamp: 'TCM 11/5/2019 18:19:18'!
 checkout
-	^ salesBook add: (Ticket for: cart)! !
+	| purchase |
+	purchase := Purchase for: cart.
+	paymentGateway debit: purchase totalSpent from: creditCard .
+	^ salesBook add: purchase! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CashierForSale class' category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
+!classDefinition: 'CashierForSale class' category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
 CashierForSale class
 	instanceVariableNames: ''!
 
@@ -367,13 +427,19 @@ emptyCartErrorMessage
 	^ 'No se puede crear un cajero para un carrito vacio'.! !
 
 
-!CashierForSale class methodsFor: 'instance creation' stamp: 'TCM 11/4/2019 20:29:19'!
-for: aCart registerIn: aSalesBook payingWith: aCreditCard  
+!CashierForSale class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 18:06:14'!
+for: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway    
 	aCart isEmpty ifTrue: [ self error: self emptyCartErrorMessage ].
-	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard ! !
+	(aCreditCard isExpiredOn: aPurchaseDate) ifTrue: [ self error: self expiredCardErrorMessage ].
+	^self new initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway ! !
+
+
+!CashierForSale class methodsFor: 'as yet unclassified' stamp: 'TCM 11/5/2019 17:47:01'!
+expiredCardErrorMessage
+	^ 'No se puede comprar con una tarjeta vencida'! !
 
 
-!classDefinition: #CreditCard category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
+!classDefinition: #CreditCard category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
 Object subclass: #CreditCard
 	instanceVariableNames: 'string gregorianMonthOfYear name number expiration'
 	classVariableNames: ''
@@ -386,9 +452,14 @@ initializeWithNumber: aCreditCardNumber expirationDate: aGregorianMonthOfYear ho
 	expiration := aGregorianMonthOfYear.
 	name := aName.! !
 
+
+!CreditCard methodsFor: 'testing' stamp: 'TCM 11/5/2019 17:38:45'!
+isExpiredOn: aFixedGregorianDate
+	^ expiration < aFixedGregorianDate monthOfYear .! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CreditCard class' category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
+!classDefinition: 'CreditCard class' category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
 CreditCard class
 	instanceVariableNames: ''!
 
@@ -411,23 +482,53 @@ withNumber: aCreditCardNumber expirationDate: aGregorianMonthOfYear holderName: 
 ! !
 
 
-!classDefinition: #Ticket category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
-Object subclass: #Ticket
+!classDefinition: #MerchantProcessorSimulator category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
+Object subclass: #MerchantProcessorSimulator
+	instanceVariableNames: 'blockClosure wasVisited'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!MerchantProcessorSimulator methodsFor: 'testing' stamp: 'TCM 11/5/2019 18:58:35'!
+visited
+	^ wasVisited! !
+
+
+!MerchantProcessorSimulator methodsFor: 'initialization' stamp: 'TCM 11/5/2019 18:58:17'!
+initializeResponds: aBlockClosure
+	blockClosure := aBlockClosure.
+	wasVisited := false.! !
+
+
+!MerchantProcessorSimulator methodsFor: 'payment' stamp: 'TCM 11/5/2019 18:59:00'!
+debit: anAmountOfMoney from: aCreditCard 
+	wasVisited := true.
+	blockClosure value! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'MerchantProcessorSimulator class' category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
+MerchantProcessorSimulator class
+	instanceVariableNames: ''!
+
+!MerchantProcessorSimulator class methodsFor: 'instance creation' stamp: 'TCM 11/5/2019 18:13:23'!
+responds: aBlockClosure 
+	^self new initializeResponds: aBlockClosure ! !
+
+
+!classDefinition: #Purchase category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
+Object subclass: #Purchase
 	instanceVariableNames: 'elements cart'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!Ticket methodsFor: 'private' stamp: 'TCM 11/4/2019 21:06:56'!
+!Purchase methodsFor: 'private' stamp: 'TCM 11/4/2019 21:06:56'!
 elements
 	^ elements! !
 
 
-!Ticket methodsFor: 'initialization' stamp: 'TCM 11/4/2019 21:06:42'!
-= aTicket
-	^ elements = aTicket elements.! !
-
-!Ticket methodsFor: 'initialization' stamp: 'TCM 11/4/2019 21:03:12'!
+!Purchase methodsFor: 'initialization' stamp: 'TCM 11/4/2019 21:03:12'!
 initializeFor: aCart 
 	elements := OrderedCollection  new.
 	
@@ -435,12 +536,22 @@ initializeFor: aCart
 		elements add: (Array with: anItem with: aQuantity  with: (aCart priceOf: anItem) )
 	].! !
 
+
+!Purchase methodsFor: 'comparing' stamp: 'TCM 11/4/2019 21:06:42'!
+= aTicket
+	^ elements = aTicket elements.! !
+
+
+!Purchase methodsFor: 'accessing' stamp: 'TCM 11/5/2019 17:22:25'!
+totalSpent
+	^ elements inject: 0 into: [ :acc :elem | acc + (elem at: 3) ]! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Ticket class' category: #TusLibros stamp: 'TCM 11/4/2019 21:08:14'!
-Ticket class
+!classDefinition: 'Purchase class' category: #TusLibros stamp: 'TCM 11/5/2019 19:05:27'!
+Purchase class
 	instanceVariableNames: ''!
 
-!Ticket class methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:59:31'!
+!Purchase class methodsFor: 'as yet unclassified' stamp: 'TCM 11/4/2019 20:59:31'!
 for: aCart
 	^ self new initializeFor: aCart.! !
