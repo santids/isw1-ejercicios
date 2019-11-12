@@ -1,4 +1,4 @@
-!classDefinition: #CartTest category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: #CartTest category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 TestCase subclass: #CartTest
 	instanceVariableNames: 'objectsFactory'
 	classVariableNames: ''
@@ -148,7 +148,7 @@ itemSellByTheStore
 	^ objectsFactory itemSellByStore ! !
 
 
-!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 TestCase subclass: #CashierForSaleTest
 	instanceVariableNames: 'cartWithItem objectFactory'
 	classVariableNames: ''
@@ -301,14 +301,19 @@ test09IfMerchantProcessorFailsThePurcharseIsNotDone
 ! !
 
 
-!classDefinition: #TusLibrosRESTFacadeTest category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: #TusLibrosRESTFacadeTest category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 TestCase subclass: #TusLibrosRESTFacadeTest
 	instanceVariableNames: 'objectsFactory'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:47:17'!
+!TusLibrosRESTFacadeTest methodsFor: 'setUp/tearDown' stamp: 'TCM 11/7/2019 19:34:22'!
+setUp
+	objectsFactory := TusLibrosTestObjectsFactory new.! !
+
+
+!TusLibrosRESTFacadeTest methodsFor: 'assertions' stamp: 'TCM 11/7/2019 21:47:17'!
 assertPurchase: aPurchase has: aBagOfItems andTotalAmount: totalAmount
 
 	| items |
@@ -321,7 +326,8 @@ assertPurchase: aPurchase has: aBagOfItems andTotalAmount: totalAmount
 	self assert: aBagOfItems equals: items.
 	self assert: totalAmount equals: aPurchase totalSpent.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:51:05'!
+
+!TusLibrosRESTFacadeTest methodsFor: 'support' stamp: 'TCM 11/7/2019 21:51:05'!
 makeCheckoutIn: aFacade forCartId: aCartId
 	| aCCExpiration aCCNumber aCCOwner |
 	aCCNumber := objectsFactory creditCardNumber.
@@ -330,11 +336,8 @@ makeCheckoutIn: aFacade forCartId: aCartId
 	aFacade checkoutCart: aCartId withCreditCardNumber: aCCNumber creditCardExpiration: aCCExpiration creditCardOwner: aCCOwner onDate: objectsFactory dateBeforeExpiration.
 ! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 19:34:22'!
-setUp
-	objectsFactory := TusLibrosTestObjectsFactory new.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:39:47'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:39:47'!
 test01AfterCreationOFACartForValidUserListCartWithThatIdIsEmpty
 	| cartId facade |
 	facade := objectsFactory facade.
@@ -343,7 +346,7 @@ test01AfterCreationOFACartForValidUserListCartWithThatIdIsEmpty
 	
 	self assert: (facade listCart: cartId) isEmpty.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:40:39'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:40:39'!
 test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty
 	| cartId facade |
 	facade := objectsFactory facade.
@@ -354,7 +357,7 @@ test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty
 	
 	self assert: ((facade listCart: cartId) occurrencesOf: objectsFactory itemSellByStore) equals: 5.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:48:37'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:48:37'!
 test03CannotListNonExistantCart
 	| facade |
 	facade := objectsFactory facade.
@@ -364,7 +367,7 @@ test03CannotListNonExistantCart
 		raise: Error - MessageNotUnderstood 
 		withMessageText: TusLibrosRESTFacade cartDoesNotExistErrorMessage.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:40:51'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:40:51'!
 test04AddingItemsToACartDoesNotChangeAnotherCart
 	| cartId1 cartId2 facade |
 	facade := objectsFactory facade.
@@ -377,7 +380,7 @@ test04AddingItemsToACartDoesNotChangeAnotherCart
 	self assert: ((facade listCart: cartId1) occurrencesOf: objectsFactory itemSellByStore) equals: 5.
 	self assert: (facade listCart: cartId2) isEmpty.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:49:21'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:49:21'!
 test05CannotAddToNonExistantCart
 	| facade |
 	facade := objectsFactory facade.
@@ -388,29 +391,55 @@ test05CannotAddToNonExistantCart
 		withMessageText: TusLibrosRESTFacade cartDoesNotExistErrorMessage 
 ! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:41:01'!
-test06CannotCreateCartWithInvalidUser
-	| facade |
-	facade := objectsFactory facade.
 
-	self 
-		should: [ facade createCartFor: objectsFactory invalidUsername with: objectsFactory password ]
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/11/2019 21:25:44'!
+test13CreatingCartAndAddingAfter30MinutesFails
+	| cartId facade timeProvider |
+	timeProvider := TimeProviderSimulator new.
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	timeProvider advance: (Duration minutes: 30).
+
+	self
+		should: [facade addToCart: cartId withQuantity: 5 of: objectsFactory itemSellByStore.]
 		raise: Error - MessageNotUnderstood
-		withMessageText: TusLibrosRESTFacade invalidadCredentialsErrorMessage
-	! !
+		withMessageText: TusLibrosRESTFacade cartExpiredErrorMessage.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:41:06'!
-test07CannotCreateCartWithValidUserButInvalidPassword
-	| facade |
-	facade := objectsFactory facade.
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/11/2019 21:25:44'!
+test14CreatingCartAndListingAfter30MinutesFails
+	| cartId facade timeProvider |
+	timeProvider := TimeProviderSimulator new.
+	facade := objectsFactory facadeWithTime: timeProvider.
 
-	self 
-		should: [ facade createCartFor: objectsFactory username with: objectsFactory invalidPassword ]
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	timeProvider advance: (Duration minutes: 30).
+
+	self
+		should: [facade listCart: cartId]
 		raise: Error - MessageNotUnderstood
-		withMessageText: TusLibrosRESTFacade invalidadCredentialsErrorMessage
-	! !
+		withMessageText: TusLibrosRESTFacade cartExpiredErrorMessage.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:41:12'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/11/2019 21:25:44'!
+test15CheckoutAfter30MinutesWithoutUsingCartFails
+	| cartId facade timeProvider |
+	timeProvider := TimeProviderSimulator new.
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+	facade addToCart: cartId withQuantity: 2 of: objectsFactory itemSellByStore.
+
+	timeProvider advance: (Duration minutes: 30).
+
+	self
+		should: [ self makeCheckoutIn: facade forCartId: cartId ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: TusLibrosRESTFacade cartExpiredErrorMessage.! !
+
+
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/7/2019 21:41:12'!
 test08ListPurchasesForUserWhichDidntCheckoutYetIsEmpty
 	| facade purchases |
 	facade := objectsFactory facade.
@@ -419,7 +448,7 @@ test08ListPurchasesForUserWhichDidntCheckoutYetIsEmpty
 
 	self assert: purchases isEmpty! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:41:16'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/7/2019 21:41:16'!
 test09CannotListPurchasesWithInvalidCredentials
 	| facade |
 	facade := objectsFactory facade.
@@ -430,8 +459,8 @@ test09CannotListPurchasesWithInvalidCredentials
 		withMessageText: TusLibrosRESTFacade invalidadCredentialsErrorMessage
 	! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:51:56'!
-test10ListPurchasesOfAUserWhoCheckoutedHasTheBooksBuyed
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 18:08:39'!
+test10ListPurchasesOfAUserWhoCheckoutedOnceHasTheBooksBuyed
 	| cartId facade purchases expectedItems expectedAmount |
 	facade := objectsFactory facade.
 
@@ -445,8 +474,80 @@ test10ListPurchasesOfAUserWhoCheckoutedHasTheBooksBuyed
 
 	self assertPurchase: purchases has: expectedItems andTotalAmount: expectedAmount! !
 
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 18:08:10'!
+test11PurchasesOfDifferentUsersDontGetMixed
+	| cartId facade purchasesFromUserWhichBuyed purchasesFromUserWhichDidntBuy expectedItems expectedAmount |
+	facade := objectsFactory facade.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	facade addToCart: cartId withQuantity: 2 of: objectsFactory itemSellByStore.
+	self makeCheckoutIn: facade forCartId: cartId.
+	purchasesFromUserWhichBuyed := facade listPurchasesOf: objectsFactory username withPassword: objectsFactory password.
+	purchasesFromUserWhichDidntBuy := facade listPurchasesOf: objectsFactory anotherUsername withPassword: objectsFactory anotherUserPassword.
+
+	expectedItems := Bag with: objectsFactory itemSellByStore with: objectsFactory itemSellByStore.
+	expectedAmount := 2 * objectsFactory priceOfItemSellByStore .
+
+	self assertPurchase: purchasesFromUserWhichBuyed has: expectedItems andTotalAmount: expectedAmount.
+	self assertPurchase: purchasesFromUserWhichDidntBuy has: Bag new andTotalAmount: 0.! !
+
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 18:21:25'!
+test12ListPurchasesOfAUserWhoCheckoutedManyTimesHasTheBooksBuyed
+	| cartId1 cartId2 facade purchases expectedItems expectedAmount |
+	facade := objectsFactory facade.
+
+	cartId1 := facade createCartFor: objectsFactory username with: objectsFactory password.
+	facade addToCart: cartId1 withQuantity: 2 of: objectsFactory itemSellByStore.
+	self makeCheckoutIn: facade forCartId: cartId1.
+
+	cartId2 := facade createCartFor: objectsFactory username with: objectsFactory password.
+	facade addToCart: cartId2 withQuantity: 4 of: objectsFactory itemSellByStore.
+	self makeCheckoutIn: facade forCartId: cartId2.
+
+	purchases := facade listPurchasesOf: objectsFactory username withPassword: objectsFactory password.
+
+	expectedItems := Bag new.
+	expectedItems add: objectsFactory itemSellByStore withOccurrences: 6.
+	expectedAmount := 6 * objectsFactory priceOfItemSellByStore .
+
+	self assertPurchase: purchases has: expectedItems andTotalAmount: expectedAmount! !
+
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 21:18:12'!
+test12dot5CannotCheckoutACartWhichDoesNotExist
+	| facade |
+	facade := objectsFactory facade.
+
+	self
+		should: [ self makeCheckoutIn: facade forCartId: objectsFactory invalidCartId ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: TusLibrosRESTFacade cartDoesNotExistErrorMessage.! !
+
+
+!TusLibrosRESTFacadeTest methodsFor: 'tests - authentication' stamp: 'TCM 11/7/2019 21:41:01'!
+test06CannotCreateCartWithInvalidUser
+	| facade |
+	facade := objectsFactory facade.
+
+	self 
+		should: [ facade createCartFor: objectsFactory invalidUsername with: objectsFactory password ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: TusLibrosRESTFacade invalidadCredentialsErrorMessage
+	! !
+
+!TusLibrosRESTFacadeTest methodsFor: 'tests - authentication' stamp: 'TCM 11/7/2019 21:41:06'!
+test07CannotCreateCartWithValidUserButInvalidPassword
+	| facade |
+	facade := objectsFactory facade.
+
+	self 
+		should: [ facade createCartFor: objectsFactory username with: objectsFactory invalidPassword ]
+		raise: Error - MessageNotUnderstood
+		withMessageText: TusLibrosRESTFacade invalidadCredentialsErrorMessage
+	! !
+
 
-!classDefinition: #Cart category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: #Cart category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 Object subclass: #Cart
 	instanceVariableNames: 'catalog items'
 	classVariableNames: ''
@@ -522,9 +623,16 @@ add: aQuantity of: anItem
 priceOf: anItem 
 	^ catalog at: anItem! !
 
+!Cart methodsFor: 'price' stamp: 'TCM 11/11/2019 18:36:15'!
+totalAmount
+	| amount |
+	amount := 0.
+	self itemsDo: [:anItem :aQuantity | amount := (self priceOf: anItem) * aQuantity + amount].
+	^ amount! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Cart class' category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: 'Cart class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 Cart class
 	instanceVariableNames: ''!
 
@@ -534,7 +642,7 @@ acceptingItemsOf: aCatalog
 	^self new initializeAcceptingItemsOf: aCatalog ! !
 
 
-!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 Object subclass: #CashierForSale
 	instanceVariableNames: 'cart salesBook purchaseDate paymentGateway creditCard'
 	classVariableNames: ''
@@ -559,7 +667,7 @@ checkout
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CashierForSale class' category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: 'CashierForSale class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 CashierForSale class
 	instanceVariableNames: ''!
 
@@ -580,9 +688,9 @@ expiredCardErrorMessage
 	^ 'No se puede comprar con una tarjeta vencida'! !
 
 
-!classDefinition: #CreditCard category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: #CreditCard category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 Object subclass: #CreditCard
-	instanceVariableNames: 'string gregorianMonthOfYear name number expiration'
+	instanceVariableNames: 'name number expiration'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
@@ -600,7 +708,7 @@ isExpiredOn: aFixedGregorianDate
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CreditCard class' category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: 'CreditCard class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 CreditCard class
 	instanceVariableNames: ''!
 
@@ -623,7 +731,7 @@ withNumber: aCreditCardNumber expirationDate: aGregorianMonthOfYear holderName: 
 ! !
 
 
-!classDefinition: #MerchantProcessorSimulator category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: #MerchantProcessorSimulator category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 Object subclass: #MerchantProcessorSimulator
 	instanceVariableNames: 'blockClosure wasVisited'
 	classVariableNames: ''
@@ -648,7 +756,7 @@ debit: anAmountOfMoney from: aCreditCard
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'MerchantProcessorSimulator class' category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: 'MerchantProcessorSimulator class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 MerchantProcessorSimulator class
 	instanceVariableNames: ''!
 
@@ -657,54 +765,62 @@ responds: aBlockClosure
 	^self new initializeResponds: aBlockClosure ! !
 
 
-!classDefinition: #Purchase category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: #Purchase category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 Object subclass: #Purchase
-	instanceVariableNames: 'elements cart'
+	instanceVariableNames: 'elements totalSpent'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!Purchase methodsFor: 'private' stamp: 'TCM 11/4/2019 21:06:56'!
-elements
-	^ elements! !
-
-
-!Purchase methodsFor: 'initialization' stamp: 'TCM 11/7/2019 21:16:35'!
+!Purchase methodsFor: 'initialization' stamp: 'TCM 11/11/2019 18:44:30'!
 initialize
-	elements := OrderedCollection new! !
+	elements := Bag new.
+	totalSpent := 0! !
 
-!Purchase methodsFor: 'initialization' stamp: 'TCM 11/7/2019 21:16:53'!
+!Purchase methodsFor: 'initialization' stamp: 'TCM 11/11/2019 18:44:44'!
 initializeFor: aCart 
 	self initialize.
 	
 	aCart itemsDo: [  :anItem :aQuantity |
-		elements add: (Array with: anItem with: aQuantity  with: (aCart priceOf: anItem) )
-	].! !
+		elements add: anItem withOccurrences: aQuantity
+	].
+
+	totalSpent := aCart totalAmount.! !
 
 
-!Purchase methodsFor: 'comparing' stamp: 'TCM 11/4/2019 21:06:42'!
-= aTicket
-	^ elements = aTicket elements.! !
+!Purchase methodsFor: 'comparing' stamp: 'TCM 11/11/2019 18:54:45'!
+= anotherPurchase
+	| anotherPurchaseElements |
+	anotherPurchaseElements := Bag new.
+	anotherPurchase itemsDo: [ :anItem :aQuantity | anotherPurchaseElements add: anItem withOccurrences: aQuantity ].
+	^ elements = anotherPurchaseElements and: totalSpent = anotherPurchase totalSpent.! !
 
 
-!Purchase methodsFor: 'accessing' stamp: 'TCM 11/7/2019 21:22:03'!
+!Purchase methodsFor: 'accessing' stamp: 'TCM 11/11/2019 18:35:09'!
 totalSpent
-	^ elements inject: 0 into: [ :acc :elem | (elem at: 3) * (elem at: 2)  + acc ]! !
+	^ totalSpent! !
 
 
-!Purchase methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:16:04'!
+!Purchase methodsFor: 'testing' stamp: 'TCM 11/7/2019 21:16:04'!
 isEmpty
 	^ elements isEmpty! !
 
-!Purchase methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:17:53'!
+
+!Purchase methodsFor: 'merging' stamp: 'TCM 11/11/2019 18:53:07'!
+mergeWith: anotherPurchase
+	anotherPurchase itemsDo: [ :anItem :aQuantity | elements add: anItem withOccurrences: aQuantity ].
+	totalSpent := totalSpent + anotherPurchase totalSpent! !
+
+
+!Purchase methodsFor: 'enumerating' stamp: 'TCM 11/11/2019 18:51:05'!
 itemsDo: aBlockClosure 
-	elements do: [ :anElement |
-		aBlockClosure value: (anElement at: 1) value: (anElement at: 2)
+	elements sortedCounts do: [ :assoc |
+		aBlockClosure value: assoc value value: assoc key
 	]! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Purchase class' category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: 'Purchase class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 Purchase class
 	instanceVariableNames: ''!
 
@@ -713,181 +829,270 @@ for: aCart
 	^ self new initializeFor: aCart.! !
 
 
-!classDefinition: #TusLibrosRESTFacade category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
-Object subclass: #TusLibrosRESTFacade
-	instanceVariableNames: 'catalogue catalog carts nextId usersDatabase salesBook paymentGateway'
+!classDefinition: #TimeProviderSimulator category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+Object subclass: #TimeProviderSimulator
+	instanceVariableNames: 'currentTime'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!TusLibrosRESTFacade methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 19:58:29'!
-addToCart: aCartId withQuantity: aQuantity of: anItem
-	(carts at: aCartId ifAbsent: [ self error: self class cartDoesNotExistErrorMessage ]) add: aQuantity of: anItem! !
+!TimeProviderSimulator methodsFor: 'initialization' stamp: 'TCM 11/11/2019 20:47:20'!
+initialize
+	currentTime := DateAndTime now.! !
 
-!TusLibrosRESTFacade methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 20:25:23'!
+
+!TimeProviderSimulator methodsFor: 'accesing' stamp: 'TCM 11/11/2019 20:49:57'!
+now
+	^ currentTime ! !
+
+
+!TimeProviderSimulator methodsFor: 'operating' stamp: 'TCM 11/11/2019 20:46:39'!
+advance: aDuration 
+	currentTime := currentTime + aDuration! !
+
+
+!classDefinition: #TusLibrosRESTFacade category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+Object subclass: #TusLibrosRESTFacade
+	instanceVariableNames: 'catalog carts nextId usersDatabase salesBooks paymentGateway cartOwners timeProvider cartLastTimeUsed'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!TusLibrosRESTFacade methodsFor: 'initialization' stamp: 'TCM 11/11/2019 20:53:09'!
+initializeAcceptingItemsOf: aCatalog withUsers: anUsersDatabase withPaymentGateway: aPaymentGateway withTimeProvider: aTimeProvider   
+	catalog := aCatalog.
+	carts := Dictionary new.
+	cartOwners := Dictionary new.
+	cartLastTimeUsed := Dictionary new.
+	nextId := 0.
+	usersDatabase := anUsersDatabase.
+	salesBooks := Dictionary new.
+	usersDatabase keysDo: [ :anUsername | salesBooks at: anUsername put: OrderedCollection new].
+	paymentGateway := aPaymentGateway.
+	timeProvider := aTimeProvider.! !
+
+
+!TusLibrosRESTFacade methodsFor: 'private' stamp: 'TCM 11/7/2019 20:25:23'!
 areValidUser: anUser andPassword: aPassword
 
 	^ usersDatabase at: anUser ifPresent: [ :correctPassword | ^ correctPassword = aPassword ] ifAbsent: [ ^ false ]! !
 
-!TusLibrosRESTFacade methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 20:24:01'!
-assertValidUser: anUser andPassword: aPassword
+!TusLibrosRESTFacade methodsFor: 'private' stamp: 'TCM 11/11/2019 21:18:59'!
+cartById: aCartId
 
-	^ (self areValidUser: anUser andPassword: aPassword) ifFalse: [ self error: self class invalidadCredentialsErrorMessage ]! !
+	^ carts at: aCartId ifAbsent: [ self error: self class cartDoesNotExistErrorMessage ]! !
 
-!TusLibrosRESTFacade methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:20:31'!
+!TusLibrosRESTFacade methodsFor: 'private' stamp: 'TCM 11/11/2019 21:24:45'!
+mergedPurchasesOf: aSalesBook
+
+	^ aSalesBook inject: Purchase new into: [:acc :aPurchase | acc mergeWith: aPurchase]! !
+
+!TusLibrosRESTFacade methodsFor: 'private' stamp: 'TCM 11/11/2019 21:20:53'!
+minutesSinceLastUse: aCartId
+
+	^ (timeProvider now - (cartLastTimeUsed at: aCartId)) totalMinutes! !
+
+
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/11/2019 21:19:51'!
+addToCart: aCartId withQuantity: aQuantity of: anItem
+	| cart |
+	cart := self cartById: aCartId.
+	self assertCartNotExpired: aCartId.
+	cart add: aQuantity of: anItem! !
+
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/11/2019 21:22:54'!
 checkoutCart: aCartId withCreditCardNumber: aCreditCardNumber creditCardExpiration: anExpirationDate creditCardOwner: aCreditCardOwner onDate: aDate  
 
-	| cart creditCard |
+	| cart creditCard cartOwner salesBook |
 	creditCard := CreditCard withNumber: aCreditCardNumber expirationDate: anExpirationDate holderName: aCreditCardOwner.
-	cart := carts at: aCartId.
+
+	cart := self cartById: aCartId.
+	self assertCartNotExpired: aCartId.
+
+	cartOwner := cartOwners at: aCartId.
+	salesBook := salesBooks at: cartOwner.
 
 	(CashierForSale for: cart registerIn: salesBook payingWith: creditCard onDate: aDate withPaymentGateway: paymentGateway) checkout! !
 
-!TusLibrosRESTFacade methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 20:24:15'!
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/11/2019 20:52:49'!
 createCartFor: anUser with: aPassword
 	self assertValidUser: anUser andPassword: aPassword.
 
 	carts at: nextId put: (Cart acceptingItemsOf: catalog).
+	cartOwners at: nextId put: anUser.
+	cartLastTimeUsed at: nextId put: timeProvider now.
+
 	nextId := nextId + 1 .
 	^ nextId - 1! !
 
-!TusLibrosRESTFacade methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:04:58'!
-initializeAcceptingItemsOf: aCatalog withUsers: anUsersDatabase withPaymentGateway: aPaymentGateway  
-	catalog := aCatalog.
-	carts := Dictionary new.
-	nextId := 0.
-	usersDatabase := anUsersDatabase.
-	salesBook := OrderedCollection new.
-	paymentGateway := aPaymentGateway! !
-
-!TusLibrosRESTFacade methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 19:49:15'!
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/11/2019 21:23:19'!
 listCart: aCartId 
 	| items cart |
+	cart := self cartById: aCartId.
+	self assertCartNotExpired: aCartId.
+
 	items := Bag new.
-	
-	cart := carts at: aCartId ifAbsent: [ self error: self class cartDoesNotExistErrorMessage ].	
 	cart itemsDo: [ :anItem :aQuantity |
 		items add: anItem withOccurrences: aQuantity.
 	].
 	^ items! !
 
-!TusLibrosRESTFacade methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:15:45'!
+
+!TusLibrosRESTFacade methodsFor: 'purchases' stamp: 'TCM 11/11/2019 21:24:35'!
 listPurchasesOf: anUser withPassword: aPassword 
+	| salesBook |
 	self assertValidUser: anUser andPassword: aPassword.
 
-	^ salesBook isEmpty ifTrue: [ Purchase new ] ifFalse: [ salesBook first ]! !
+	salesBook := salesBooks at: anUser.
+
+	^ salesBook isEmpty ifTrue: [ Purchase new ] ifFalse: [ self mergedPurchasesOf: salesBook ]! !
+
+
+!TusLibrosRESTFacade methodsFor: 'assertions' stamp: 'TCM 11/11/2019 21:21:16'!
+assertCartNotExpired: aCartId
+
+	(self minutesSinceLastUse: aCartId) >= 30
+		ifTrue: [ self error: self class cartExpiredErrorMessage ]! !
+
+!TusLibrosRESTFacade methodsFor: 'assertions' stamp: 'TCM 11/11/2019 21:21:27'!
+assertValidUser: anUser andPassword: aPassword
+
+	(self areValidUser: anUser andPassword: aPassword)
+		ifFalse: [ self error: self class invalidadCredentialsErrorMessage ]! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosRESTFacade class' category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: 'TusLibrosRESTFacade class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 TusLibrosRESTFacade class
 	instanceVariableNames: ''!
 
-!TusLibrosRESTFacade class methodsFor: 'instance creation' stamp: 'TCM 11/7/2019 21:06:51'!
-acceptingItemsOf: aCatalog withUsers: anUsersDatabase withPaymentGateway: aPaymentGateway 
+!TusLibrosRESTFacade class methodsFor: 'instance creation' stamp: 'TCM 11/11/2019 20:45:12'!
+acceptingItemsOf: aCatalog withUsers: anUsersDatabase withPaymentGateway: aPaymentGateway withTimeProvider: aTimeProvider  
 
-	^self new initializeAcceptingItemsOf: aCatalog withUsers: anUsersDatabase withPaymentGateway: aPaymentGateway! !
+	^self new initializeAcceptingItemsOf: aCatalog withUsers: anUsersDatabase withPaymentGateway: aPaymentGateway withTimeProvider: aTimeProvider! !
 
 
 !TusLibrosRESTFacade class methodsFor: 'error messages' stamp: 'TCM 11/7/2019 19:40:12'!
 cartDoesNotExistErrorMessage
 	^ 'El carrito no existe'! !
 
+!TusLibrosRESTFacade class methodsFor: 'error messages' stamp: 'TCM 11/11/2019 20:51:12'!
+cartExpiredErrorMessage
+	^ 'El carrito expiro'! !
+
 !TusLibrosRESTFacade class methodsFor: 'error messages' stamp: 'TCM 11/7/2019 20:15:31'!
 invalidadCredentialsErrorMessage
 	^ 'Credenciales invalidas'! !
 
 
-!classDefinition: #TusLibrosTestObjectsFactory category: #TusLibros stamp: 'TCM 11/7/2019 21:53:28'!
+!classDefinition: #TusLibrosTestObjectsFactory category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
 Object subclass: #TusLibrosTestObjectsFactory
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 19:30:24'!
-catalog
-	^ (Dictionary with: self itemSellByStore -> self priceOfItemSellByStore)! !
+!TusLibrosTestObjectsFactory methodsFor: 'other builders' stamp: 'TCM 11/7/2019 21:38:20'!
+dummyPaymentGateway
+	^ MerchantProcessorSimulator responds: [].! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:39:01'!
+!TusLibrosTestObjectsFactory methodsFor: 'other builders' stamp: 'TCM 11/7/2019 21:24:27'!
+emptyCart
+	^ Cart acceptingItemsOf: self catalog ! !
+
+!TusLibrosTestObjectsFactory methodsFor: 'other builders' stamp: 'TCM 11/11/2019 21:25:44'!
+facade
+	^ TusLibrosRESTFacade acceptingItemsOf: self catalog withUsers: self userDatabase withPaymentGateway: self dummyPaymentGateway withTimeProvider: TimeProviderSimulator new.! !
+
+!TusLibrosTestObjectsFactory methodsFor: 'other builders' stamp: 'TCM 11/7/2019 21:48:57'!
+invalidCartId
+	^ 'cart id invalido'! !
+
+
+!TusLibrosTestObjectsFactory methodsFor: 'credit card' stamp: 'TCM 11/7/2019 20:39:01'!
 creditCard
 	^ CreditCard withNumber: self creditCardNumber expirationDate: self creditCardExpirationDate holderName: self creditCardName.! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:39:22'!
+!TusLibrosTestObjectsFactory methodsFor: 'credit card' stamp: 'TCM 11/7/2019 20:39:22'!
 creditCardExpirationDate
 
 	^ GregorianMonthOfYear octoberOf: (GregorianYear number: 2019)! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:39:51'!
+!TusLibrosTestObjectsFactory methodsFor: 'credit card' stamp: 'TCM 11/7/2019 20:39:51'!
 creditCardExpirationText
 
 	^ '102019'! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:38:40'!
+!TusLibrosTestObjectsFactory methodsFor: 'credit card' stamp: 'TCM 11/7/2019 20:38:40'!
 creditCardName
 
 	^ 'PIRULO'! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:38:24'!
+!TusLibrosTestObjectsFactory methodsFor: 'credit card' stamp: 'TCM 11/7/2019 20:38:24'!
 creditCardNumber
 
 	^ '1234567890123456'! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 21:31:51'!
+!TusLibrosTestObjectsFactory methodsFor: 'credit card' stamp: 'TCM 11/7/2019 21:31:51'!
 dateAfterExpiration
 
 	^ FixedGregorianDate yearNumber: 2019 monthNumber: 11 dayNumber: 1.! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 21:11:09'!
+!TusLibrosTestObjectsFactory methodsFor: 'credit card' stamp: 'TCM 11/7/2019 21:11:09'!
 dateBeforeExpiration
 
 	^ FixedGregorianDate yearNumber: 2019 monthNumber: 10 dayNumber: 1.! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 21:38:20'!
-dummyPaymentGateway
-	^ MerchantProcessorSimulator responds: [].! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 21:24:27'!
-emptyCart
-	^ Cart acceptingItemsOf: self catalog ! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:18:50'!
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/11/2019 17:57:39'!
+anotherUserPassword
+	^ 'ninja'! !
+
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/11/2019 17:57:25'!
+anotherUsername
+	^ 'Pepe'! !
+
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/7/2019 19:30:24'!
+catalog
+	^ (Dictionary with: self itemSellByStore -> self priceOfItemSellByStore)! !
+
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/7/2019 20:18:50'!
 invalidPassword
 	^ 'password'.! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:15:45'!
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/7/2019 20:15:45'!
 invalidUsername
 	^ 'Santi'! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 21:25:55'!
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/7/2019 21:25:55'!
 itemNotSellByTheStore
 	^ 'El libro que no queres vender'! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 19:30:43'!
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/7/2019 19:30:43'!
 itemSellByStore
 	^ 'anItem'! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:03:15'!
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/7/2019 20:03:15'!
 password
 	^ 'axolotl'! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 19:30:57'!
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/7/2019 19:30:57'!
 priceOfItemSellByStore
 	^ 123 * peso! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:02:45'!
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/11/2019 17:58:59'!
 userDatabase
-	^ (Dictionary with: self username -> self  password)! !
+	^ Dictionary 
+		with: self username -> self  password
+		with: self anotherUsername -> self  anotherUserPassword 
+		! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'builders' stamp: 'TCM 11/7/2019 20:03:01'!
+!TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/7/2019 20:03:01'!
 username 
 	^ 'Tobi'! !
 
 
-!TusLibrosTestObjectsFactory methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:40:21'!
-facade
-	^ TusLibrosRESTFacade acceptingItemsOf: self catalog withUsers: self userDatabase withPaymentGateway: self dummyPaymentGateway! !
-
-!TusLibrosTestObjectsFactory methodsFor: 'as yet unclassified' stamp: 'TCM 11/7/2019 21:48:57'!
-invalidCartId
-	^ 'cart id invalido'! !
+!TusLibrosTestObjectsFactory methodsFor: 'as yet unclassified' stamp: 'TCM 11/11/2019 20:45:54'!
+facadeWithTime: aTimeProvider
+	^ TusLibrosRESTFacade acceptingItemsOf: self catalog withUsers: self userDatabase withPaymentGateway: self dummyPaymentGateway withTimeProvider: aTimeProvider! !
