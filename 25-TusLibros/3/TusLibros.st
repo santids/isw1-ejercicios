@@ -1,4 +1,4 @@
-!classDefinition: #CartTest category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #CartTest category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 TestCase subclass: #CartTest
 	instanceVariableNames: 'objectsFactory'
 	classVariableNames: ''
@@ -148,7 +148,7 @@ itemSellByTheStore
 	^ objectsFactory itemSellByStore ! !
 
 
-!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #CashierForSaleTest category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 TestCase subclass: #CashierForSaleTest
 	instanceVariableNames: 'cartWithItem objectFactory'
 	classVariableNames: ''
@@ -301,7 +301,7 @@ test09IfMerchantProcessorFailsThePurcharseIsNotDone
 ! !
 
 
-!classDefinition: #TusLibrosRESTFacadeTest category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #TusLibrosRESTFacadeTest category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 TestCase subclass: #TusLibrosRESTFacadeTest
 	instanceVariableNames: 'objectsFactory'
 	classVariableNames: ''
@@ -327,29 +327,29 @@ assertPurchase: aPurchase has: aBagOfItems andTotalAmount: totalAmount
 	self assert: totalAmount equals: aPurchase totalSpent.! !
 
 
-!TusLibrosRESTFacadeTest methodsFor: 'support' stamp: 'TCM 11/7/2019 21:51:05'!
+!TusLibrosRESTFacadeTest methodsFor: 'support' stamp: 'TCM 11/11/2019 21:45:49'!
 makeCheckoutIn: aFacade forCartId: aCartId
 	| aCCExpiration aCCNumber aCCOwner |
 	aCCNumber := objectsFactory creditCardNumber.
 	aCCExpiration := objectsFactory creditCardExpirationDate.
 	aCCOwner := objectsFactory creditCardName.
-	aFacade checkoutCart: aCartId withCreditCardNumber: aCCNumber creditCardExpiration: aCCExpiration creditCardOwner: aCCOwner onDate: objectsFactory dateBeforeExpiration.
+	aFacade checkoutCart: aCartId withCreditCardNumber: aCCNumber creditCardExpiration: aCCExpiration creditCardOwner: aCCOwner .
 ! !
 
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:39:47'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/11/2019 21:45:30'!
 test01AfterCreationOFACartForValidUserListCartWithThatIdIsEmpty
 	| cartId facade |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 	
 	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
 	
 	self assert: (facade listCart: cartId) isEmpty.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:40:39'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/11/2019 21:45:30'!
 test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty
 	| cartId facade |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 	
 	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
 	
@@ -357,20 +357,20 @@ test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty
 	
 	self assert: ((facade listCart: cartId) occurrencesOf: objectsFactory itemSellByStore) equals: 5.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:48:37'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/11/2019 21:45:30'!
 test03CannotListNonExistantCart
 	| facade |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	self 
 		should: [ facade listCart: objectsFactory invalidCartId ] 
 		raise: Error - MessageNotUnderstood 
 		withMessageText: TusLibrosRESTFacade cartDoesNotExistErrorMessage.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:40:51'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/11/2019 21:45:30'!
 test04AddingItemsToACartDoesNotChangeAnotherCart
 	| cartId1 cartId2 facade |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	cartId1 := facade createCartFor: objectsFactory username with: objectsFactory password.
 	cartId2 := facade createCartFor: objectsFactory username with: objectsFactory password.
@@ -380,10 +380,10 @@ test04AddingItemsToACartDoesNotChangeAnotherCart
 	self assert: ((facade listCart: cartId1) occurrencesOf: objectsFactory itemSellByStore) equals: 5.
 	self assert: (facade listCart: cartId2) isEmpty.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/7/2019 21:49:21'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - adding and listing' stamp: 'TCM 11/11/2019 21:45:30'!
 test05CannotAddToNonExistantCart
 	| facade |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	self
 		should: [ facade addToCart: objectsFactory invalidCartId withQuantity: 5 of: objectsFactory itemSellByStore ]
@@ -392,10 +392,10 @@ test05CannotAddToNonExistantCart
 ! !
 
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/11/2019 21:25:44'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/11/2019 21:43:56'!
 test13CreatingCartAndAddingAfter30MinutesFails
 	| cartId facade timeProvider |
-	timeProvider := TimeProviderSimulator new.
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
 	facade := objectsFactory facadeWithTime: timeProvider.
 
 	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
@@ -407,10 +407,10 @@ test13CreatingCartAndAddingAfter30MinutesFails
 		raise: Error - MessageNotUnderstood
 		withMessageText: TusLibrosRESTFacade cartExpiredErrorMessage.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/11/2019 21:25:44'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/11/2019 21:44:00'!
 test14CreatingCartAndListingAfter30MinutesFails
 	| cartId facade timeProvider |
-	timeProvider := TimeProviderSimulator new.
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
 	facade := objectsFactory facadeWithTime: timeProvider.
 
 	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
@@ -422,10 +422,10 @@ test14CreatingCartAndListingAfter30MinutesFails
 		raise: Error - MessageNotUnderstood
 		withMessageText: TusLibrosRESTFacade cartExpiredErrorMessage.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/11/2019 21:25:44'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/11/2019 21:44:04'!
 test15CheckoutAfter30MinutesWithoutUsingCartFails
 	| cartId facade timeProvider |
-	timeProvider := TimeProviderSimulator new.
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
 	facade := objectsFactory facadeWithTime: timeProvider.
 
 	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
@@ -439,19 +439,19 @@ test15CheckoutAfter30MinutesWithoutUsingCartFails
 		withMessageText: TusLibrosRESTFacade cartExpiredErrorMessage.! !
 
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/7/2019 21:41:12'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 21:45:30'!
 test08ListPurchasesForUserWhichDidntCheckoutYetIsEmpty
 	| facade purchases |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	purchases := facade listPurchasesOf: objectsFactory username withPassword: objectsFactory password.
 
 	self assert: purchases isEmpty! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/7/2019 21:41:16'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 21:45:31'!
 test09CannotListPurchasesWithInvalidCredentials
 	| facade |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	self 
 		should: [ facade listPurchasesOf: objectsFactory invalidUsername withPassword: objectsFactory password ]
@@ -459,10 +459,10 @@ test09CannotListPurchasesWithInvalidCredentials
 		withMessageText: TusLibrosRESTFacade invalidadCredentialsErrorMessage
 	! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 18:08:39'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 21:45:30'!
 test10ListPurchasesOfAUserWhoCheckoutedOnceHasTheBooksBuyed
 	| cartId facade purchases expectedItems expectedAmount |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
 	facade addToCart: cartId withQuantity: 2 of: objectsFactory itemSellByStore.
@@ -474,10 +474,10 @@ test10ListPurchasesOfAUserWhoCheckoutedOnceHasTheBooksBuyed
 
 	self assertPurchase: purchases has: expectedItems andTotalAmount: expectedAmount! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 18:08:10'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 21:45:30'!
 test11PurchasesOfDifferentUsersDontGetMixed
 	| cartId facade purchasesFromUserWhichBuyed purchasesFromUserWhichDidntBuy expectedItems expectedAmount |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
 
@@ -492,10 +492,10 @@ test11PurchasesOfDifferentUsersDontGetMixed
 	self assertPurchase: purchasesFromUserWhichBuyed has: expectedItems andTotalAmount: expectedAmount.
 	self assertPurchase: purchasesFromUserWhichDidntBuy has: Bag new andTotalAmount: 0.! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 18:21:25'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 21:45:31'!
 test12ListPurchasesOfAUserWhoCheckoutedManyTimesHasTheBooksBuyed
 	| cartId1 cartId2 facade purchases expectedItems expectedAmount |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	cartId1 := facade createCartFor: objectsFactory username with: objectsFactory password.
 	facade addToCart: cartId1 withQuantity: 2 of: objectsFactory itemSellByStore.
@@ -513,10 +513,10 @@ test12ListPurchasesOfAUserWhoCheckoutedManyTimesHasTheBooksBuyed
 
 	self assertPurchase: purchases has: expectedItems andTotalAmount: expectedAmount! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 21:18:12'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - purchase' stamp: 'TCM 11/11/2019 21:45:30'!
 test12dot5CannotCheckoutACartWhichDoesNotExist
 	| facade |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	self
 		should: [ self makeCheckoutIn: facade forCartId: objectsFactory invalidCartId ]
@@ -524,10 +524,10 @@ test12dot5CannotCheckoutACartWhichDoesNotExist
 		withMessageText: TusLibrosRESTFacade cartDoesNotExistErrorMessage.! !
 
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - authentication' stamp: 'TCM 11/7/2019 21:41:01'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - authentication' stamp: 'TCM 11/11/2019 21:45:30'!
 test06CannotCreateCartWithInvalidUser
 	| facade |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	self 
 		should: [ facade createCartFor: objectsFactory invalidUsername with: objectsFactory password ]
@@ -535,10 +535,10 @@ test06CannotCreateCartWithInvalidUser
 		withMessageText: TusLibrosRESTFacade invalidadCredentialsErrorMessage
 	! !
 
-!TusLibrosRESTFacadeTest methodsFor: 'tests - authentication' stamp: 'TCM 11/7/2019 21:41:06'!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - authentication' stamp: 'TCM 11/11/2019 21:45:30'!
 test07CannotCreateCartWithValidUserButInvalidPassword
 	| facade |
-	facade := objectsFactory facade.
+	facade := objectsFactory facadeBeforeCardExpiration.
 
 	self 
 		should: [ facade createCartFor: objectsFactory username with: objectsFactory invalidPassword ]
@@ -547,7 +547,7 @@ test07CannotCreateCartWithValidUserButInvalidPassword
 	! !
 
 
-!classDefinition: #Cart category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #Cart category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Object subclass: #Cart
 	instanceVariableNames: 'catalog items'
 	classVariableNames: ''
@@ -632,7 +632,7 @@ totalAmount
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Cart class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: 'Cart class' category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Cart class
 	instanceVariableNames: ''!
 
@@ -642,7 +642,7 @@ acceptingItemsOf: aCatalog
 	^self new initializeAcceptingItemsOf: aCatalog ! !
 
 
-!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Object subclass: #CashierForSale
 	instanceVariableNames: 'cart salesBook purchaseDate paymentGateway creditCard'
 	classVariableNames: ''
@@ -667,7 +667,7 @@ checkout
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CashierForSale class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: 'CashierForSale class' category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 CashierForSale class
 	instanceVariableNames: ''!
 
@@ -688,7 +688,7 @@ expiredCardErrorMessage
 	^ 'No se puede comprar con una tarjeta vencida'! !
 
 
-!classDefinition: #CreditCard category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #CreditCard category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Object subclass: #CreditCard
 	instanceVariableNames: 'name number expiration'
 	classVariableNames: ''
@@ -708,7 +708,7 @@ isExpiredOn: aFixedGregorianDate
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CreditCard class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: 'CreditCard class' category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 CreditCard class
 	instanceVariableNames: ''!
 
@@ -731,7 +731,7 @@ withNumber: aCreditCardNumber expirationDate: aGregorianMonthOfYear holderName: 
 ! !
 
 
-!classDefinition: #MerchantProcessorSimulator category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #MerchantProcessorSimulator category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Object subclass: #MerchantProcessorSimulator
 	instanceVariableNames: 'blockClosure wasVisited'
 	classVariableNames: ''
@@ -756,7 +756,7 @@ debit: anAmountOfMoney from: aCreditCard
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'MerchantProcessorSimulator class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: 'MerchantProcessorSimulator class' category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 MerchantProcessorSimulator class
 	instanceVariableNames: ''!
 
@@ -765,7 +765,7 @@ responds: aBlockClosure
 	^self new initializeResponds: aBlockClosure ! !
 
 
-!classDefinition: #Purchase category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #Purchase category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Object subclass: #Purchase
 	instanceVariableNames: 'elements totalSpent'
 	classVariableNames: ''
@@ -820,7 +820,7 @@ itemsDo: aBlockClosure
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Purchase class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: 'Purchase class' category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Purchase class
 	instanceVariableNames: ''!
 
@@ -829,16 +829,16 @@ for: aCart
 	^ self new initializeFor: aCart.! !
 
 
-!classDefinition: #TimeProviderSimulator category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #TimeProviderSimulator category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Object subclass: #TimeProviderSimulator
 	instanceVariableNames: 'currentTime'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!TimeProviderSimulator methodsFor: 'initialization' stamp: 'TCM 11/11/2019 20:47:20'!
-initialize
-	currentTime := DateAndTime now.! !
+!TimeProviderSimulator methodsFor: 'initialization' stamp: 'TCM 11/11/2019 21:32:54'!
+initializeAt: aDateAndTime
+	currentTime := aDateAndTime.! !
 
 
 !TimeProviderSimulator methodsFor: 'accesing' stamp: 'TCM 11/11/2019 20:49:57'!
@@ -850,8 +850,18 @@ now
 advance: aDuration 
 	currentTime := currentTime + aDuration! !
 
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'TimeProviderSimulator class' category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
+TimeProviderSimulator class
+	instanceVariableNames: ''!
+
+!TimeProviderSimulator class methodsFor: 'as yet unclassified' stamp: 'TCM 11/11/2019 21:33:26'!
+startingAt: aDateAndTime
+	^ self new initializeAt: aDateAndTime! !
+
 
-!classDefinition: #TusLibrosRESTFacade category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #TusLibrosRESTFacade category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Object subclass: #TusLibrosRESTFacade
 	instanceVariableNames: 'catalog carts nextId usersDatabase salesBooks paymentGateway cartOwners timeProvider cartLastTimeUsed'
 	classVariableNames: ''
@@ -900,9 +910,8 @@ addToCart: aCartId withQuantity: aQuantity of: anItem
 	self assertCartNotExpired: aCartId.
 	cart add: aQuantity of: anItem! !
 
-!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/11/2019 21:22:54'!
-checkoutCart: aCartId withCreditCardNumber: aCreditCardNumber creditCardExpiration: anExpirationDate creditCardOwner: aCreditCardOwner onDate: aDate  
-
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/11/2019 21:47:56'!
+checkoutCart: aCartId withCreditCardNumber: aCreditCardNumber creditCardExpiration: anExpirationDate creditCardOwner: aCreditCardOwner   
 	| cart creditCard cartOwner salesBook |
 	creditCard := CreditCard withNumber: aCreditCardNumber expirationDate: anExpirationDate holderName: aCreditCardOwner.
 
@@ -912,7 +921,13 @@ checkoutCart: aCartId withCreditCardNumber: aCreditCardNumber creditCardExpirati
 	cartOwner := cartOwners at: aCartId.
 	salesBook := salesBooks at: cartOwner.
 
-	(CashierForSale for: cart registerIn: salesBook payingWith: creditCard onDate: aDate withPaymentGateway: paymentGateway) checkout! !
+	(CashierForSale
+		for: cart
+		registerIn: salesBook
+		payingWith: creditCard
+		onDate: (FixedGregorianDate fromDate: timeProvider now date)
+		withPaymentGateway: paymentGateway)
+			checkout! !
 
 !TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/11/2019 20:52:49'!
 createCartFor: anUser with: aPassword
@@ -962,7 +977,7 @@ assertValidUser: anUser andPassword: aPassword
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosRESTFacade class' category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: 'TusLibrosRESTFacade class' category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 TusLibrosRESTFacade class
 	instanceVariableNames: ''!
 
@@ -985,7 +1000,7 @@ invalidadCredentialsErrorMessage
 	^ 'Credenciales invalidas'! !
 
 
-!classDefinition: #TusLibrosTestObjectsFactory category: #TusLibros stamp: 'TCM 11/11/2019 21:26:14'!
+!classDefinition: #TusLibrosTestObjectsFactory category: #TusLibros stamp: 'TCM 11/11/2019 21:48:12'!
 Object subclass: #TusLibrosTestObjectsFactory
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -1000,13 +1015,29 @@ dummyPaymentGateway
 emptyCart
 	^ Cart acceptingItemsOf: self catalog ! !
 
-!TusLibrosTestObjectsFactory methodsFor: 'other builders' stamp: 'TCM 11/11/2019 21:25:44'!
-facade
-	^ TusLibrosRESTFacade acceptingItemsOf: self catalog withUsers: self userDatabase withPaymentGateway: self dummyPaymentGateway withTimeProvider: TimeProviderSimulator new.! !
+!TusLibrosTestObjectsFactory methodsFor: 'other builders' stamp: 'TCM 11/11/2019 21:45:30'!
+facadeBeforeCardExpiration
+	^ TusLibrosRESTFacade
+		acceptingItemsOf: self catalog
+		withUsers: self userDatabase
+		withPaymentGateway: self dummyPaymentGateway
+		withTimeProvider: self timeProviderBeforeCardExpiration.! !
+
+!TusLibrosTestObjectsFactory methodsFor: 'other builders' stamp: 'TCM 11/11/2019 21:45:08'!
+facadeWithTime: aTimeProvider
+	^ TusLibrosRESTFacade
+		acceptingItemsOf: self catalog
+		withUsers: self userDatabase
+		withPaymentGateway: self dummyPaymentGateway
+		withTimeProvider: aTimeProvider! !
 
 !TusLibrosTestObjectsFactory methodsFor: 'other builders' stamp: 'TCM 11/7/2019 21:48:57'!
 invalidCartId
 	^ 'cart id invalido'! !
+
+!TusLibrosTestObjectsFactory methodsFor: 'other builders' stamp: 'TCM 11/11/2019 21:38:41'!
+timeProviderBeforeCardExpiration
+	^ TimeProviderSimulator startingAt: (DateAndTime date: self dateBeforeExpiration asSmalltalkDate time: Time noon )! !
 
 
 !TusLibrosTestObjectsFactory methodsFor: 'credit card' stamp: 'TCM 11/7/2019 20:39:01'!
@@ -1091,8 +1122,3 @@ userDatabase
 !TusLibrosTestObjectsFactory methodsFor: 'users' stamp: 'TCM 11/7/2019 20:03:01'!
 username 
 	^ 'Tobi'! !
-
-
-!TusLibrosTestObjectsFactory methodsFor: 'as yet unclassified' stamp: 'TCM 11/11/2019 20:45:54'!
-facadeWithTime: aTimeProvider
-	^ TusLibrosRESTFacade acceptingItemsOf: self catalog withUsers: self userDatabase withPaymentGateway: self dummyPaymentGateway withTimeProvider: aTimeProvider! !
