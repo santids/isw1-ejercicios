@@ -13592,3 +13592,1039 @@ checkoutCart: aCartId withCreditCardNumber: aCreditCardNumber creditCardExpirati
 			checkout! !
 
 ----QUIT----(11 November 2019 21:48:15) CuisUniversity-3938.image priorSource: 14784342!
+
+----STARTUP---- (14 November 2019 17:21:29) as /home/tcarreira/Downloads/linux64/CuisUniversity-3938.image!
+
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:34:54'!
+test13CreatingCartAndAddingUpdatesCartTimeWithLastUseTime
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade addToCart: cartId withQuantity: 5 of: objectsFactory itemSellByStore.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self fa! !
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:35:31' prior: 50795007!
+test13CreatingCartAndAddingUpdatesCartTimeWithLastUseTime
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade addToCart: cartId withQuantity: 5 of: objectsFactory itemSellByStore.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: ((facade listCart: cartId) occurrencesOf: objectsFactory itemSellByStore) equals: 5.! !
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:35:43'!
+test16CreatingCartAndAddingUpdatesCartTimeWithLastUseTime
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade addToCart: cartId withQuantity: 5 of: objectsFactory itemSellByStore.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: ((facade listCart: cartId) occurrencesOf: objectsFactory itemSellByStore) equals: 5.! !
+
+!methodRemoval: TusLibrosRESTFacadeTest #test13CreatingCartAndAddingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:35:43'!
+test13CreatingCartAndAddingUpdatesCartTimeWithLastUseTime
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade addToCart: cartId withQuantity: 5 of: objectsFactory itemSellByStore.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: ((facade listCart: cartId) occurrencesOf: objectsFactory itemSellByStore) equals: 5.!
+
+!testRun: #TusLibrosRESTFacadeTest #test16CreatingCartAndAddingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:35:49'!
+ERROR!
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/14/2019 17:37:24' prior: 50793223!
+addToCart: aCartId withQuantity: aQuantity of: anItem
+	| cart |
+	cart := self cartById: aCartId.
+	self assertCartNotExpired: aCartId.
+	cart add: aQuantity of: anItem.
+	
+	cartLastTimeUsed at: aCartId  put: timeProvider now.! !
+
+!testRun: #TusLibrosRESTFacadeTest #test16CreatingCartAndAddingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test01AfterCreationOFACartForValidUserListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test03CannotListNonExistantCart stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test04AddingItemsToACartDoesNotChangeAnotherCart stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test05CannotAddToNonExistantCart stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test06CannotCreateCartWithInvalidUser stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test07CannotCreateCartWithValidUserButInvalidPassword stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test08ListPurchasesForUserWhichDidntCheckoutYetIsEmpty stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test09CannotListPurchasesWithInvalidCredentials stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test10ListPurchasesOfAUserWhoCheckoutedOnceHasTheBooksBuyed stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test11PurchasesOfDifferentUsersDontGetMixed stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12ListPurchasesOfAUserWhoCheckoutedManyTimesHasTheBooksBuyed stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12dot5CannotCheckoutACartWhichDoesNotExist stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test13CreatingCartAndAddingAfter30MinutesFails stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test14CreatingCartAndListingAfter30MinutesFails stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test15CheckoutAfter30MinutesWithoutUsingCartFails stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test16CreatingCartAndAddingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:37:33'!
+PASSED!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:38:47'!
+test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade listCart: cartId.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: (facade listCart: cartId) isEmpty.! !
+
+!testRun: #TusLibrosRESTFacadeTest #test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:38:49'!
+ERROR!
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/14/2019 17:39:13' prior: 50793360!
+listCart: aCartId 
+	| items cart |
+	cart := self cartById: aCartId.
+	self assertCartNotExpired: aCartId.
+
+	items := Bag new.
+	cart itemsDo: [ :anItem :aQuantity |
+		items add: anItem withOccurrences: aQuantity.
+	].
+	^ items
+	
+	cartLastTimeUsed at: aCartId  put: timeProvider now.! !
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/14/2019 17:39:23' prior: 50795202!
+listCart: aCartId 
+	| items cart |
+	cart := self cartById: aCartId.
+	self assertCartNotExpired: aCartId.
+
+	items := Bag new.
+	cart itemsDo: [ :anItem :aQuantity |
+		items add: anItem withOccurrences: aQuantity.
+	].
+	
+	
+	cartLastTimeUsed at: aCartId  put: timeProvider now.
+	
+	^ items.! !
+
+!testRun: #TusLibrosRESTFacadeTest #test01AfterCreationOFACartForValidUserListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test03CannotListNonExistantCart stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test04AddingItemsToACartDoesNotChangeAnotherCart stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test05CannotAddToNonExistantCart stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test06CannotCreateCartWithInvalidUser stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test07CannotCreateCartWithValidUserButInvalidPassword stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test08ListPurchasesForUserWhichDidntCheckoutYetIsEmpty stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test09CannotListPurchasesWithInvalidCredentials stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test10ListPurchasesOfAUserWhoCheckoutedOnceHasTheBooksBuyed stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test11PurchasesOfDifferentUsersDontGetMixed stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12ListPurchasesOfAUserWhoCheckoutedManyTimesHasTheBooksBuyed stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12dot5CannotCheckoutACartWhichDoesNotExist stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test13CreatingCartAndAddingAfter30MinutesFails stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test14CreatingCartAndListingAfter30MinutesFails stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test15CheckoutAfter30MinutesWithoutUsingCartFails stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test16CreatingCartAndAddingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:39:52'!
+PASSED!
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/14/2019 17:40:45'!
+updateLastTimeUsedOf: aCartId
+
+	^ cartLastTimeUsed at: aCartId  put: timeProvider now! !
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/14/2019 17:40:45' prior: 50795215!
+listCart: aCartId 
+	| items cart |
+	cart := self cartById: aCartId.
+	self assertCartNotExpired: aCartId.
+
+	items := Bag new.
+	cart itemsDo: [ :anItem :aQuantity |
+		items add: anItem withOccurrences: aQuantity.
+	].
+	
+	
+	self updateLastTimeUsedOf: aCartId.
+	
+	^ items.! !
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/14/2019 17:41:03' prior: 50795096!
+addToCart: aCartId withQuantity: aQuantity of: anItem
+	| cart |
+	cart := self cartById: aCartId.
+	self assertCartNotExpired: aCartId.
+	cart add: aQuantity of: anItem.
+	
+	self updateLastTimeUsedOf: aCartId.! !
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:41:41' prior: 50795179!
+test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+	facade addToCart: cartId withQuantity: 5 of: objectsFactory itemSellByStore.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade listCart: cartId.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: (facade listCart: cartId) isEmpty.! !
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:41:53' prior: 50795329!
+test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+	facade addToCart: cartId withQuantity: 5 of: objectsFactory itemSellByStore.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade listCart: cartId.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: (facade listCart: cartId) isEmpty.! !
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:42:58' prior: 50795351!
+test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade listCart: cartId.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: (facade listCart: cartId) isEmpty.! !
+
+!testRun: #TusLibrosRESTFacadeTest #test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test01AfterCreationOFACartForValidUserListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test03CannotListNonExistantCart stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test04AddingItemsToACartDoesNotChangeAnotherCart stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test05CannotAddToNonExistantCart stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test06CannotCreateCartWithInvalidUser stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test07CannotCreateCartWithValidUserButInvalidPassword stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test08ListPurchasesForUserWhichDidntCheckoutYetIsEmpty stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test09CannotListPurchasesWithInvalidCredentials stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test10ListPurchasesOfAUserWhoCheckoutedOnceHasTheBooksBuyed stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test11PurchasesOfDifferentUsersDontGetMixed stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12ListPurchasesOfAUserWhoCheckoutedManyTimesHasTheBooksBuyed stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12dot5CannotCheckoutACartWhichDoesNotExist stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test13CreatingCartAndAddingAfter30MinutesFails stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test14CreatingCartAndListingAfter30MinutesFails stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test15CheckoutAfter30MinutesWithoutUsingCartFails stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test16CreatingCartAndAddingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 17:42:59'!
+PASSED!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:43:53'!
+test18CannotCheckoutACartTwice
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade listCart: cartId.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: (facade listCart: cartId) isEmpty.! !
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:44:48' prior: 50795469!
+test18CannotCheckoutACartTwice
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+	self makeCheckoutIn: facade forCartId: cartId.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade listCart: cartId.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: (facade listCart: cartId) isEmpty.! !
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:45:40' prior: 50795487!
+test18CannotCheckoutACartTwice
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+	facade addToCart: cartId withQuantity: 4 of: objectsFactory itemSellByStore.
+	self makeCheckoutIn: facade forCartId: cartId.
+
+	timeProvider advance: (Duration minutes: 20).
+	
+	facade listCart: cartId.
+	
+	timeProvider advance: (Duration minutes: 20).
+	
+	self assert: (facade listCart: cartId) isEmpty.! !
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 17:46:27' prior: 50795507!
+test18CannotCheckoutACartTwice
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+	facade addToCart: cartId withQuantity: 4 of: objectsFactory itemSellByStore.
+	self makeCheckoutIn: facade forCartId: cartId.
+
+	self
+		should: [self makeCheckoutIn: facade forCartId: cartId.]
+		raise: Error - MessageNotUnderstood
+		withMessageText: TusLibrosRESTFacade cartHaveAlreadyCheckout.! !
+
+!testRun: #TusLibrosRESTFacadeTest #test18CannotCheckoutACartTwice stamp: 'TCM 11/14/2019 17:46:34'!
+ERROR!
+!TusLibrosRESTFacade class methodsFor: 'error messages' stamp: 'TCM 11/14/2019 17:47:10'!
+cartHaveAlreadyCheckout
+	self shouldBeImplemented.! !
+!TusLibrosRESTFacade class methodsFor: 'error messages' stamp: 'TCM 11/14/2019 17:47:39' prior: 50795554!
+cartHaveAlreadyCheckout
+	^ 'Ya se realizo checkout'! !
+
+!testRun: #TusLibrosRESTFacadeTest #test18CannotCheckoutACartTwice stamp: 'TCM 11/14/2019 17:47:40'!
+FAILURE!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/14/2019 18:13:20' prior: 50787823!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [].
+
+	(CashierForSale
+		for: cartWithItem
+		registerIn: salesBook
+		payingWith: objectFactory creditCard
+		onDate: objectFactory dateBeforeExpiration
+		withPaymentGateway: merchantProcessorSimulator) checkout.
+		
+	self
+		should: [
+			(CashierForSale 
+				for: cartWithItem
+				registerIn: salesBook
+				payingWith: objectFactory creditCard
+				onDate: objectFactory dateBeforeExpiration
+				withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale cartHaveAlreadyCheckout.
+
+
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/14/2019 18:13:22'!
+ERROR!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/14/2019 18:13:53'!
+test10CannotCheckoutTwice
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [].
+
+	(CashierForSale
+		for: cartWithItem
+		registerIn: salesBook
+		payingWith: objectFactory creditCard
+		onDate: objectFactory dateBeforeExpiration
+		withPaymentGateway: merchantProcessorSimulator) checkout.
+		
+	self
+		should: [
+			(CashierForSale 
+				for: cartWithItem
+				registerIn: salesBook
+				payingWith: objectFactory creditCard
+				onDate: objectFactory dateBeforeExpiration
+				withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale cartHaveAlreadyCheckout.
+
+
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/7/2019 21:36:02' prior: 50795567!
+test08CartWithItemsIsCheckedOutSuccesfully
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [].
+
+	(CashierForSale
+		for: cartWithItem
+		registerIn: salesBook
+		payingWith: objectFactory creditCard
+		onDate: objectFactory dateBeforeExpiration
+		withPaymentGateway: merchantProcessorSimulator) checkout.
+
+	self assert: salesBook includes: (Purchase for: cartWithItem).
+	self assert: 123 * peso equals: (Purchase for: cartWithItem) totalSpent.
+	self assert: merchantProcessorSimulator visited 
+		
+	
+	
+! !
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/14/2019 18:14:48' prior: 50795597!
+test10CannotCheckoutTwice
+
+	| salesBook merchantProcessorSimulator |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [].
+
+	(CashierForSale
+		for: cartWithItem
+		registerIn: salesBook
+		payingWith: objectFactory creditCard
+		onDate: objectFactory dateBeforeExpiration
+		withPaymentGateway: merchantProcessorSimulator) checkout.
+		
+	self
+		should: [
+			(CashierForSale 
+				for: cartWithItem
+				registerIn: salesBook
+				payingWith: objectFactory creditCard
+				onDate: objectFactory dateBeforeExpiration
+				withPaymentGateway: merchantProcessorSimulator) checkout.] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale cartHasAlreadyCheckout.
+
+
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test10CannotCheckoutTwice stamp: 'TCM 11/14/2019 18:14:49'!
+ERROR!
+!CashierForSale class methodsFor: 'error messages' stamp: 'TCM 11/14/2019 18:14:59'!
+cartHasAlreadyCheckout
+	self shouldBeImplemented.! !
+!CashierForSale class methodsFor: 'error messages' stamp: 'TCM 11/14/2019 18:15:19' prior: 50795674!
+cartHasAlreadyCheckout
+	^ 'No se puede hacer checkout mas de una vez'! !
+
+!testRun: #CashierForSaleTest #test10CannotCheckoutTwice stamp: 'TCM 11/14/2019 18:15:21'!
+FAILURE!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/14/2019 18:16:10' prior: 50795645!
+test10CannotCheckoutTwice
+
+	| salesBook merchantProcessorSimulator cashier |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [].
+
+	cashier := (CashierForSale
+		for: cartWithItem
+		registerIn: salesBook
+		payingWith: objectFactory creditCard
+		onDate: objectFactory dateBeforeExpiration
+		withPaymentGateway: merchantProcessorSimulator).
+		
+  cashier checkout.
+		
+	self
+		should: [
+			cashier checkout] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale cartHasAlreadyCheckout.
+
+
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test10CannotCheckoutTwice stamp: 'TCM 11/14/2019 18:16:14'!
+FAILURE!
+!CashierForSaleTest methodsFor: 'tests' stamp: 'TCM 11/14/2019 18:16:37' prior: 50795688!
+test10CannotCheckoutTwice
+
+	| salesBook merchantProcessorSimulator cashier |
+
+	salesBook := OrderedCollection new.
+
+	merchantProcessorSimulator := MerchantProcessorSimulator responds: [].
+
+	cashier := (CashierForSale
+		for: cartWithItem
+		registerIn: salesBook
+		payingWith: objectFactory creditCard
+		onDate: objectFactory dateBeforeExpiration
+		withPaymentGateway: merchantProcessorSimulator).
+		
+ 	cashier checkout.
+		
+	self
+		should: [ cashier checkout ] 
+		raise: Error - MessageNotUnderstood 
+		withMessageText: CashierForSale cartHasAlreadyCheckout.
+
+
+		
+	
+	
+! !
+
+!testRun: #CashierForSaleTest #test10CannotCheckoutTwice stamp: 'TCM 11/14/2019 18:18:06'!
+FAILURE!
+
+!classDefinition: #CashierForSale category: #TusLibros stamp: 'TCM 11/14/2019 18:19:04'!
+Object subclass: #CashierForSale
+	instanceVariableNames: 'cart salesBook purchaseDate paymentGateway creditCard alreadyCheckout'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CashierForSale methodsFor: 'operating' stamp: 'TCM 11/14/2019 18:19:02' prior: 50781263!
+checkout
+	| purchase |
+	alreadyCheckout ifTrue: [ self error: self class cartHasAlreadyCheckout ].
+	purchase := Purchase for: cart.
+	paymentGateway debit: purchase totalSpent from: creditCard .
+	^ salesBook add: purchase! !
+!CashierForSale methodsFor: 'initialization' stamp: 'TCM 11/14/2019 18:19:16' prior: 50781152!
+initializeFor: aCart registerIn: aSalesBook payingWith: aCreditCard onDate: aPurchaseDate withPaymentGateway: aPaymentGateway    
+	cart := aCart.
+	salesBook := aSalesBook.
+	creditCard := aCreditCard.
+	purchaseDate := aPurchaseDate.
+	paymentGateway := aPaymentGateway.
+	alreadyCheckout := false.! !
+!CashierForSale methodsFor: 'operating' stamp: 'TCM 11/14/2019 18:19:45' prior: 50795745!
+checkout
+	| purchase |
+	alreadyCheckout ifTrue: [ self error: self class cartHasAlreadyCheckout ].
+	purchase := Purchase for: cart.
+	paymentGateway debit: purchase totalSpent from: creditCard .
+	alreadyCheckout := true.
+	^ salesBook add: purchase! !
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test10CannotCheckoutTwice stamp: 'TCM 11/14/2019 18:19:47'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test18CannotCheckoutACartTwice stamp: 'TCM 11/14/2019 18:19:56'!
+FAILURE!
+!TusLibrosRESTFacadeTest methodsFor: 'tests - cart expiration' stamp: 'TCM 11/14/2019 18:21:04' prior: 50795529!
+test18CannotCheckoutACartTwice
+	| cartId facade timeProvider |
+	timeProvider := objectsFactory timeProviderBeforeCardExpiration .
+	facade := objectsFactory facadeWithTime: timeProvider.
+
+	cartId := facade createCartFor: objectsFactory username with: objectsFactory password.
+	facade addToCart: cartId withQuantity: 4 of: objectsFactory itemSellByStore.
+	self makeCheckoutIn: facade forCartId: cartId.
+
+	self
+		should: [self makeCheckoutIn: facade forCartId: cartId.]
+		raise: Error - MessageNotUnderstood
+		withMessageText: TusLibrosRESTFacade cartDoesNotExistErrorMessage .! !
+!TusLibrosRESTFacade methodsFor: 'cart interacting' stamp: 'TCM 11/14/2019 18:22:55' prior: 50794977!
+checkoutCart: aCartId withCreditCardNumber: aCreditCardNumber creditCardExpiration: anExpirationDate creditCardOwner: aCreditCardOwner   
+	| cart creditCard cartOwner salesBook |
+	creditCard := CreditCard withNumber: aCreditCardNumber expirationDate: anExpirationDate holderName: aCreditCardOwner.
+
+	cart := self cartById: aCartId.
+	self assertCartNotExpired: aCartId.
+
+	cartOwner := cartOwners at: aCartId.
+	salesBook := salesBooks at: cartOwner.
+
+	(CashierForSale
+		for: cart
+		registerIn: salesBook
+		payingWith: creditCard
+		onDate: (FixedGregorianDate fromDate: timeProvider now date)
+		withPaymentGateway: paymentGateway)
+			checkout.
+			
+	carts removeKey: aCartId! !
+
+!testRun: #TusLibrosRESTFacadeTest #test01AfterCreationOFACartForValidUserListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test03CannotListNonExistantCart stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test04AddingItemsToACartDoesNotChangeAnotherCart stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test05CannotAddToNonExistantCart stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test06CannotCreateCartWithInvalidUser stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test07CannotCreateCartWithValidUserButInvalidPassword stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test08ListPurchasesForUserWhichDidntCheckoutYetIsEmpty stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test09CannotListPurchasesWithInvalidCredentials stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test10ListPurchasesOfAUserWhoCheckoutedOnceHasTheBooksBuyed stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test11PurchasesOfDifferentUsersDontGetMixed stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12ListPurchasesOfAUserWhoCheckoutedManyTimesHasTheBooksBuyed stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12dot5CannotCheckoutACartWhichDoesNotExist stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test13CreatingCartAndAddingAfter30MinutesFails stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test14CreatingCartAndListingAfter30MinutesFails stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test15CheckoutAfter30MinutesWithoutUsingCartFails stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test16CreatingCartAndAddingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test18CannotCheckoutACartTwice stamp: 'TCM 11/14/2019 18:22:56'!
+PASSED!
+!CashierForSale methodsFor: 'operating' stamp: 'TCM 11/14/2019 18:23:23' prior: 50795768!
+checkout
+	| purchase |
+	alreadyCheckout ifTrue: [ self error: self class cartHasAlreadyCheckout ].
+
+	purchase := Purchase for: cart.
+	paymentGateway debit: purchase totalSpent from: creditCard .
+
+	alreadyCheckout := true.
+
+	^ salesBook add: purchase! !
+
+!testRun: #CartTest #test01NewCartsAreCreatedEmpty stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CartTest #test02CanNotAddItemsThatDoNotBelongToStore stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CartTest #test03AfterAddingAnItemTheCartIsNotEmptyAnymore stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CartTest #test04CanNotAddNonPositiveNumberOfItems stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CartTest #test05CanNotAddMoreThanOneItemNotSellByTheStore stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CartTest #test06CartRemembersAddedItems stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CartTest #test07CartDoesNotHoldNotAddedItems stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CartTest #test08CartRemembersTheNumberOfAddedItems stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CartTest #test09ItemsDoOfCardWithITemsVisitsThem stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CartTest #test10ItemsDoOfEmptyCartDoesNothing stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test10CannotCheckoutTwice stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test01AfterCreationOFACartForValidUserListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test03CannotListNonExistantCart stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test04AddingItemsToACartDoesNotChangeAnotherCart stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test05CannotAddToNonExistantCart stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test06CannotCreateCartWithInvalidUser stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test07CannotCreateCartWithValidUserButInvalidPassword stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test08ListPurchasesForUserWhichDidntCheckoutYetIsEmpty stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test09CannotListPurchasesWithInvalidCredentials stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test10ListPurchasesOfAUserWhoCheckoutedOnceHasTheBooksBuyed stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test11PurchasesOfDifferentUsersDontGetMixed stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12ListPurchasesOfAUserWhoCheckoutedManyTimesHasTheBooksBuyed stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12dot5CannotCheckoutACartWhichDoesNotExist stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test13CreatingCartAndAddingAfter30MinutesFails stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test14CreatingCartAndListingAfter30MinutesFails stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test15CheckoutAfter30MinutesWithoutUsingCartFails stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test16CreatingCartAndAddingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test18CannotCheckoutACartTwice stamp: 'TCM 11/14/2019 18:26:35'!
+PASSED!
+
+!methodRemoval: TusLibrosRESTFacade class #cartHaveAlreadyCheckout stamp: 'TCM 11/14/2019 19:16:19'!
+cartHaveAlreadyCheckout
+	^ 'Ya se realizo checkout'!
+
+!testRun: #CartTest #test01NewCartsAreCreatedEmpty stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CartTest #test02CanNotAddItemsThatDoNotBelongToStore stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CartTest #test03AfterAddingAnItemTheCartIsNotEmptyAnymore stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CartTest #test04CanNotAddNonPositiveNumberOfItems stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CartTest #test05CanNotAddMoreThanOneItemNotSellByTheStore stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CartTest #test06CartRemembersAddedItems stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CartTest #test07CartDoesNotHoldNotAddedItems stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CartTest #test08CartRemembersTheNumberOfAddedItems stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CartTest #test09ItemsDoOfCardWithITemsVisitsThem stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CartTest #test10ItemsDoOfEmptyCartDoesNothing stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test01EmptyCartCannotCheckout stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test02CreditCardCreationWithInvalidNumberFails stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test03CreditCardCreationWithLettersFails stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test04CreditCardCreationWithNotOnlyLettersFails stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test05IsExpiredOnExpiredCardReturnsTrue stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test06IsExpiredOnNotExpiredCardReturnsFalse stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test07CheckoutWithExpiredCardFails stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test08CartWithItemsIsCheckedOutSuccesfully stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test09IfMerchantProcessorFailsThePurcharseIsNotDone stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #CashierForSaleTest #test10CannotCheckoutTwice stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test01AfterCreationOFACartForValidUserListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test02AfterAddingAnItemToACartListCartWithThatIdIsEmpty stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test03CannotListNonExistantCart stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test04AddingItemsToACartDoesNotChangeAnotherCart stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test05CannotAddToNonExistantCart stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test06CannotCreateCartWithInvalidUser stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test07CannotCreateCartWithValidUserButInvalidPassword stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test08ListPurchasesForUserWhichDidntCheckoutYetIsEmpty stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test09CannotListPurchasesWithInvalidCredentials stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test10ListPurchasesOfAUserWhoCheckoutedOnceHasTheBooksBuyed stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test11PurchasesOfDifferentUsersDontGetMixed stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12ListPurchasesOfAUserWhoCheckoutedManyTimesHasTheBooksBuyed stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test12dot5CannotCheckoutACartWhichDoesNotExist stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test13CreatingCartAndAddingAfter30MinutesFails stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test14CreatingCartAndListingAfter30MinutesFails stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test15CheckoutAfter30MinutesWithoutUsingCartFails stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test16CreatingCartAndAddingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test17CreatingCartAndListingUpdatesCartTimeWithLastUseTime stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+!testRun: #TusLibrosRESTFacadeTest #test18CannotCheckoutACartTwice stamp: 'TCM 11/14/2019 19:16:22'!
+PASSED!
+
+----QUIT----(14 November 2019 19:17:17) CuisUniversity-3938.image priorSource: 14827170!
