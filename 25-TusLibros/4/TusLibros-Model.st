@@ -1,4 +1,4 @@
-!classDefinition: #Cart category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #Cart category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #Cart
 	instanceVariableNames: 'catalog items'
 	classVariableNames: ''
@@ -97,7 +97,7 @@ remove: anItem
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Cart class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: 'Cart class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Cart class
 	instanceVariableNames: ''!
 
@@ -122,7 +122,7 @@ acceptingItemsOf: aCatalog
 	^self new initializeAcceptingItemsOf: aCatalog ! !
 
 
-!classDefinition: #CartSession category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #CartSession category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #CartSession
 	instanceVariableNames: 'owner cart lastUsedTime systemFacade'
 	classVariableNames: ''
@@ -208,7 +208,7 @@ removeFromCart: aBook
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CartSession class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: 'CartSession class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 CartSession class
 	instanceVariableNames: ''!
 
@@ -218,7 +218,7 @@ ownedBy: aCustomer with: aCart on: aSystemFacade
 	^self new initializeOwnedBy: aCustomer with: aCart on: aSystemFacade! !
 
 
-!classDefinition: #Cashier category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #Cashier category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #Cashier
 	instanceVariableNames: 'cart salesBook merchantProcessor creditCard owner ticket'
 	classVariableNames: ''
@@ -259,10 +259,10 @@ registerSale
 
 	salesBook add: self createSale! !
 
-!Cashier methodsFor: 'checkout - private' stamp: 'HernanWilkinson 6/22/2013 12:17'!
+!Cashier methodsFor: 'checkout - private' stamp: 'TCM 11/22/2019 18:26:51'!
 totalOf: anItem quantity: aQuantity
 
-	^(cart catalog at: anItem) * aQuantity  ! !
+	^((cart catalog at: anItem) at: 'price') * aQuantity  ! !
 
 
 !Cashier methodsFor: 'checkout' stamp: 'HernanWilkinson 6/22/2013 12:28'!
@@ -286,7 +286,7 @@ initializeToCheckout: aCart ownedBy: anOwner charging: aCreditCard throught: aMe
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Cashier class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: 'Cashier class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Cashier class
 	instanceVariableNames: ''!
 
@@ -337,7 +337,7 @@ signalCartCanNotBeEmpty
 	self error: self cartCanNotBeEmptyErrorMessage! !
 
 
-!classDefinition: #Clock category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #Clock category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #Clock
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -355,7 +355,7 @@ today
 	self subclassResponsibility ! !
 
 
-!classDefinition: #RealTimeClock category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #RealTimeClock category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Clock subclass: #RealTimeClock
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -371,7 +371,7 @@ today
 	^ Date today! !
 
 
-!classDefinition: #CreditCard category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #CreditCard category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #CreditCard
 	instanceVariableNames: 'expiration'
 	classVariableNames: ''
@@ -391,7 +391,7 @@ initializeExpiringOn: aMonth
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CreditCard class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: 'CreditCard class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 CreditCard class
 	instanceVariableNames: ''!
 
@@ -401,7 +401,7 @@ expiringOn: aMonth
 	^self new initializeExpiringOn: aMonth! !
 
 
-!classDefinition: #LineItem category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #LineItem category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #LineItem
 	instanceVariableNames: 'item quantity total'
 	classVariableNames: ''
@@ -430,7 +430,7 @@ initializeOf: anItem quantity: aQuantity total: aTotal
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'LineItem class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: 'LineItem class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 LineItem class
 	instanceVariableNames: ''!
 
@@ -442,7 +442,7 @@ of: anItem quantity: aQuantity total: aTotal
 ! !
 
 
-!classDefinition: #MerchantProcessor category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #MerchantProcessor category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #MerchantProcessor
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -460,7 +460,7 @@ debit: anAmount from: aCreditCard
 	self subclassResponsibility ! !
 
 
-!classDefinition: #MerchantProcessorStub category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #MerchantProcessorStub category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 MerchantProcessor subclass: #MerchantProcessorStub
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -472,7 +472,7 @@ debit: anAmount from: aCreditCard
 ! !
 
 
-!classDefinition: #Sale category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #Sale category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #Sale
 	instanceVariableNames: 'customer ticket'
 	classVariableNames: ''
@@ -505,7 +505,7 @@ lineItemsDo: aBlock
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Sale class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: 'Sale class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Sale class
 	instanceVariableNames: ''!
 
@@ -515,7 +515,7 @@ doneBy: aCustomer certifiedWith: aTicket
 	^self new initializeDoneBy: aCustomer certifiedWith: aTicket ! !
 
 
-!classDefinition: #Ticket category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #Ticket category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #Ticket
 	instanceVariableNames: 'lineItems'
 	classVariableNames: ''
@@ -541,7 +541,7 @@ lineItemsDo: aBlock
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Ticket class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: 'Ticket class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Ticket class
 	instanceVariableNames: ''!
 
@@ -551,7 +551,7 @@ of: aCollectionOfLineItems
 	^self new initializeOf: aCollectionOfLineItems ! !
 
 
-!classDefinition: #TusLibrosRESTController category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #TusLibrosRESTController category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #TusLibrosRESTController
 	instanceVariableNames: 'systemFacade webServer'
 	classVariableNames: ''
@@ -701,11 +701,11 @@ destroy
 	webServer destroy! !
 
 
-!TusLibrosRESTController methodsFor: 'object creation' stamp: 'TCM 11/21/2019 20:53:19'!
+!TusLibrosRESTController methodsFor: 'object creation' stamp: 'TCM 11/22/2019 18:24:03'!
 catalog
 	^ Dictionary new
-		at: 'ISBN1' put: 400;
-		at: 'ISBN2' put: 450;
+		at: 'ISBN1' put: (Dictionary with: 'price'->400 with: 'title'->'Libro 1' with: 'author'->'Pepe');
+		at: 'ISBN2' put: (Dictionary with: 'price'->450 with: 'title'->'Libro 2' with: 'author'->'Juana');
 		yourself ! !
 
 !TusLibrosRESTController methodsFor: 'object creation' stamp: 'TCM 11/21/2019 20:22:07'!
@@ -728,7 +728,7 @@ usersAndPasswords
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosRESTController class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: 'TusLibrosRESTController class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 TusLibrosRESTController class
 	instanceVariableNames: ''!
 
@@ -738,7 +738,7 @@ listeningOn: aPortNumber
 	^self new initializeWith: aPortNumber.! !
 
 
-!classDefinition: #TusLibrosSystemFacade category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: #TusLibrosSystemFacade category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 Object subclass: #TusLibrosSystemFacade
 	instanceVariableNames: 'validUsersAndPasswords catalog lastId merchantProcessor salesBook clock cartSessions booksDetails'
 	classVariableNames: ''
@@ -847,13 +847,14 @@ add: anAmount of: aBook toCartIdentifiedAs: aCartId
 
 	self withCartSessionIdentifiedAs: aCartId do: [ :cartSession | cartSession addToCart: anAmount of: aBook ]! !
 
-!TusLibrosSystemFacade methodsFor: 'facade protocol' stamp: 'TCM 11/22/2019 18:06:51'!
+!TusLibrosSystemFacade methodsFor: 'facade protocol' stamp: 'TCM 11/22/2019 18:31:30'!
 bookDetailsOf: aBook inCart: aCartId
 
 	self withCartSessionIdentifiedAs: aCartId do: [ :cartSession |
 		| bookDetails |
-		bookDetails := booksDetails at: aBook.
-		bookDetails at: 'quantity' put: (cartSession amountOf: aBook)
+		bookDetails := (catalog at: aBook) copy.
+		bookDetails at: 'quantity' put: (cartSession amountOf: aBook).
+		^ bookDetails
 	]! !
 
 !TusLibrosSystemFacade methodsFor: 'facade protocol' stamp: 'TCM 11/21/2019 20:52:12'!
@@ -950,7 +951,7 @@ initializeAuthenticatingWith: aValidUsersAndPasswords
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosSystemFacade class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:12:42'!
+!classDefinition: 'TusLibrosSystemFacade class' category: #'TusLibros-Model' stamp: 'TCM 11/22/2019 18:47:08'!
 TusLibrosSystemFacade class
 	instanceVariableNames: ''!
 
