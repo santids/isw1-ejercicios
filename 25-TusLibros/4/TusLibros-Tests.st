@@ -1,4 +1,4 @@
-!classDefinition: #CartTest category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:12:47'!
+!classDefinition: #CartTest category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
 TestCase subclass: #CartTest
 	instanceVariableNames: 'testObjectsFactory'
 	classVariableNames: ''
@@ -139,7 +139,7 @@ setUp
 	testObjectsFactory := StoreTestObjectsFactory new.! !
 
 
-!classDefinition: #CashierTest category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:12:47'!
+!classDefinition: #CashierTest category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
 TestCase subclass: #CashierTest
 	instanceVariableNames: 'testObjectsFactory debitBehavior'
 	classVariableNames: ''
@@ -293,12 +293,54 @@ debit: anAmount from: aCreditCard
 	^debitBehavior value: anAmount value: aCreditCard ! !
 
 
-!classDefinition: #TusLibrosSystemFacadeTest category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:12:47'!
+!classDefinition: #TusLibrosSystemFacadeTest category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
 TestCase subclass: #TusLibrosSystemFacadeTest
 	instanceVariableNames: 'testObjectsFactory clock systemFacade'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Tests'!
+
+!TusLibrosSystemFacadeTest methodsFor: 'tests - book details' stamp: 'TCM 11/22/2019 18:37:37'!
+test21CanGetIBookInCartDetails
+
+	| cartId bookDetails |
+
+	cartId := systemFacade createCartFor: self validUser authenticatedWith: self validUserPassword.
+
+	systemFacade add: 3 of: self validBook toCartIdentifiedAs: cartId.
+
+	bookDetails := systemFacade bookDetailsOf: self validBook inCart: cartId.
+
+	self assert: self validBookPrice equals: (bookDetails at: 'price').
+	self assert: self validBookTitle equals: (bookDetails at: 'title').
+	self assert: self validBookAuthor equals: (bookDetails at: 'author').
+	self assert: 3 equals: (bookDetails at: 'quantity').
+		! !
+
+!TusLibrosSystemFacadeTest methodsFor: 'tests - book details' stamp: 'TCM 11/22/2019 18:42:25'!
+test22ChangingBookDetailsOutsideFacadeDoesntChangeRealBookDetails
+
+	| cartId bookDetails |
+
+	cartId := systemFacade createCartFor: self validUser authenticatedWith: self validUserPassword.
+
+	systemFacade add: 3 of: self validBook toCartIdentifiedAs: cartId.
+
+	bookDetails := systemFacade bookDetailsOf: self validBook inCart: cartId.
+
+	bookDetails at: 'price' put: self validBookPrice + 10.
+	bookDetails at: 'title' put: self validBookTitle, ' cambiado'.
+	bookDetails at: 'author' put: self validBookAuthor , ' cambiado'.
+	bookDetails at: 'quantity' put: 8.
+
+	bookDetails := systemFacade bookDetailsOf: self validBook inCart: cartId.
+
+	self assert: self validBookPrice equals: (bookDetails at: 'price').
+	self assert: self validBookTitle equals: (bookDetails at: 'title').
+	self assert: self validBookAuthor equals: (bookDetails at: 'author').
+	self assert: 3 equals: (bookDetails at: 'quantity').
+		! !
+
 
 !TusLibrosSystemFacadeTest methodsFor: 'tests - remove from cart' stamp: 'TCM 11/21/2019 20:01:07'!
 test20CanRemoveItemsToACartWithItems
@@ -492,6 +534,21 @@ validBook
 
 	^testObjectsFactory itemSellByTheStore ! !
 
+!TusLibrosSystemFacadeTest methodsFor: 'test objects' stamp: 'TCM 11/22/2019 18:35:22'!
+validBookAuthor
+
+	^testObjectsFactory itemSellByTheStoreAuthor! !
+
+!TusLibrosSystemFacadeTest methodsFor: 'test objects' stamp: 'TCM 11/22/2019 18:35:00'!
+validBookPrice
+
+	^testObjectsFactory itemSellByTheStorePrice! !
+
+!TusLibrosSystemFacadeTest methodsFor: 'test objects' stamp: 'TCM 11/22/2019 18:35:11'!
+validBookTitle
+
+	^testObjectsFactory itemSellByTheStoreTitle! !
+
 !TusLibrosSystemFacadeTest methodsFor: 'test objects' stamp: 'HernanWilkinson 6/21/2013 22:27'!
 validUser
 
@@ -665,7 +722,7 @@ revertTime: aDuration
 	clock revertTime: aDuration ! !
 
 
-!classDefinition: #ManualClock category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:12:47'!
+!classDefinition: #ManualClock category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
 Clock subclass: #ManualClock
 	instanceVariableNames: 'now'
 	classVariableNames: ''
@@ -701,7 +758,7 @@ initializeNow: aTime
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'ManualClock class' category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:12:47'!
+!classDefinition: 'ManualClock class' category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
 ManualClock class
 	instanceVariableNames: ''!
 
@@ -711,7 +768,7 @@ now: aTime
 	^self new initializeNow: aTime ! !
 
 
-!classDefinition: #StoreTestObjectsFactory category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:12:47'!
+!classDefinition: #StoreTestObjectsFactory category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
 Object subclass: #StoreTestObjectsFactory
 	instanceVariableNames: 'today'
 	classVariableNames: ''
@@ -722,6 +779,14 @@ Object subclass: #StoreTestObjectsFactory
 anotherItemSellByTheStore
 
 	^'anotherValidBook'! !
+
+!StoreTestObjectsFactory methodsFor: 'items' stamp: 'TCM 11/22/2019 18:28:36'!
+anotherItemSellByTheStoreDetails
+
+	^ Dictionary
+		with: 'price'->self anotherItemSellByTheStorePrice
+		with: 'title'->'Libro 2'
+		with: 'author'->'Juana'! !
 
 !StoreTestObjectsFactory methodsFor: 'items' stamp: 'HernanWilkinson 6/22/2013 00:16'!
 anotherItemSellByTheStorePrice
@@ -738,10 +803,28 @@ itemSellByTheStore
 
 	^ 'validBook'! !
 
+!StoreTestObjectsFactory methodsFor: 'items' stamp: 'TCM 11/22/2019 18:35:55'!
+itemSellByTheStoreAuthor
+
+	^ 'Pepe'! !
+
+!StoreTestObjectsFactory methodsFor: 'items' stamp: 'TCM 11/22/2019 18:35:55'!
+itemSellByTheStoreDetails
+
+	^ Dictionary 
+		with: 'price'->self itemSellByTheStorePrice
+		with: 'title'->self itemSellByTheStoreTitle
+		with: 'author'->self itemSellByTheStoreAuthor! !
+
 !StoreTestObjectsFactory methodsFor: 'items' stamp: 'HernanWilkinson 6/17/2013 18:08'!
 itemSellByTheStorePrice
 
 	^10! !
+
+!StoreTestObjectsFactory methodsFor: 'items' stamp: 'TCM 11/22/2019 18:35:48'!
+itemSellByTheStoreTitle
+
+	^ 'Libro 1'! !
 
 
 !StoreTestObjectsFactory methodsFor: 'cart' stamp: 'HernanWilkinson 6/17/2013 18:08'!
@@ -749,12 +832,12 @@ createCart
 
 	^Cart acceptingItemsOf: self defaultCatalog! !
 
-!StoreTestObjectsFactory methodsFor: 'cart' stamp: 'HernanWilkinson 6/22/2013 00:16'!
+!StoreTestObjectsFactory methodsFor: 'cart' stamp: 'TCM 11/22/2019 18:27:59'!
 defaultCatalog
 
 	^ Dictionary new
-		at: self itemSellByTheStore put: self itemSellByTheStorePrice;
-		at: self anotherItemSellByTheStore put: self anotherItemSellByTheStorePrice;
+		at: self itemSellByTheStore put: self itemSellByTheStoreDetails;
+		at: self anotherItemSellByTheStore put: (self anotherItemSellByTheStoreDetails);
 		yourself ! !
 
 
