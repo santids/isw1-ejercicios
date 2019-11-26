@@ -1,4 +1,4 @@
-!classDefinition: #CartTest category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
+!classDefinition: #CartTest category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
 TestCase subclass: #CartTest
 	instanceVariableNames: 'testObjectsFactory'
 	classVariableNames: ''
@@ -139,7 +139,7 @@ setUp
 	testObjectsFactory := StoreTestObjectsFactory new.! !
 
 
-!classDefinition: #CashierTest category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
+!classDefinition: #CashierTest category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
 TestCase subclass: #CashierTest
 	instanceVariableNames: 'testObjectsFactory debitBehavior'
 	classVariableNames: ''
@@ -293,7 +293,7 @@ debit: anAmount from: aCreditCard
 	^debitBehavior value: anAmount value: aCreditCard ! !
 
 
-!classDefinition: #TusLibrosSystemFacadeTest category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
+!classDefinition: #TusLibrosSystemFacadeTest category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
 TestCase subclass: #TusLibrosSystemFacadeTest
 	instanceVariableNames: 'testObjectsFactory clock systemFacade'
 	classVariableNames: ''
@@ -661,6 +661,33 @@ test19CanNotCheckOutCartWhenSessionIsExpired
 
 	! !
 
+!TusLibrosSystemFacadeTest methodsFor: 'tests - checkout' stamp: 'TCM 11/26/2019 19:54:44'!
+test23CannotCheckoutACartTwice
+
+	| cartId purchases |
+
+	cartId := systemFacade createCartFor: self validUser authenticatedWith: self validUserPassword.
+	systemFacade add: 1 of: self validBook toCartIdentifiedAs: cartId.
+	systemFacade
+		checkOutCartIdentifiedAs: cartId
+		withCreditCardNumbered: testObjectsFactory notExpiredCreditCardNumber
+		ownedBy: testObjectsFactory notExpiredCreditCardOwner
+		expiringOn: testObjectsFactory notExpiredMonthOfYear.
+
+	self
+		should: [systemFacade
+			checkOutCartIdentifiedAs: cartId
+			withCreditCardNumbered: testObjectsFactory notExpiredCreditCardNumber
+			ownedBy: testObjectsFactory notExpiredCreditCardOwner
+			expiringOn: testObjectsFactory notExpiredMonthOfYear.]
+		raise: Error - MessageNotUnderstood
+		withMessageText: systemFacade cannotCheckoutACartTwiceErrorMessage.
+
+	purchases := systemFacade listPurchasesOf: self validUser authenticatingWith: self validUserPassword.
+
+	self assert: (purchases at: self validBook) equals: testObjectsFactory itemSellByTheStorePrice.
+! !
+
 
 !TusLibrosSystemFacadeTest methodsFor: 'tests - list cart' stamp: 'HernanWilkinson 6/17/2015 20:53'!
 test07ListCartOfAnEmptyCartReturnsAnEmptyBag
@@ -722,7 +749,7 @@ revertTime: aDuration
 	clock revertTime: aDuration ! !
 
 
-!classDefinition: #ManualClock category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
+!classDefinition: #ManualClock category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
 Clock subclass: #ManualClock
 	instanceVariableNames: 'now'
 	classVariableNames: ''
@@ -758,7 +785,7 @@ initializeNow: aTime
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'ManualClock class' category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
+!classDefinition: 'ManualClock class' category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
 ManualClock class
 	instanceVariableNames: ''!
 
@@ -768,7 +795,7 @@ now: aTime
 	^self new initializeNow: aTime ! !
 
 
-!classDefinition: #StoreTestObjectsFactory category: #'TusLibros-Tests' stamp: 'TCM 11/22/2019 18:47:14'!
+!classDefinition: #StoreTestObjectsFactory category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
 Object subclass: #StoreTestObjectsFactory
 	instanceVariableNames: 'today'
 	classVariableNames: ''
