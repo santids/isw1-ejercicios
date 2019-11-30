@@ -2,12 +2,11 @@ function Login(props) {
   const { router } = props
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    text: '',
+    user: '',
+    password: ''
   });
 
-  const [error, setError] = React.useState({
-    error: ''
-  })
+  const [error, setError] = React.useState('');
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value });
@@ -15,14 +14,19 @@ function Login(props) {
   const handleSend = () => {
     getLocalAsJson(`/createCart?userId=${values.user}&password=${values.password}`)
       .then(function (response) {
-        // return response.json()
-        return '';
+          return (response.json()
+            .then(function(responseContent) {
+              if (!response.ok) {
+                throw responseContent.error
+              }
+              return responseContent
+            }))
       })
       .then(function (json) {
-        router.navigate("/list", { substrings: json })
+        router.navigate("/list", json)
       })
       .catch(function (error) {
-        setError('Se produjo un error')
+        setError(`${error}`)
       });
   }
 
@@ -42,7 +46,6 @@ function Login(props) {
 
         />
       </FormControl>
-
       <FormControl fullWidth className={classes.textField} variant="outlined">
         <InputLabel htmlFor="outlined-adornment-amount">Password</InputLabel>
         <OutlinedInput
@@ -61,8 +64,8 @@ function Login(props) {
         Enviar
       </Button>
 
-      <Typography component="h1" gutterBottom>
-        {`error`}
+      <Typography color="error" component="h1" gutterBottom>
+        {error}
       </Typography>
     </div>
   )

@@ -3,8 +3,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       path: "/",
-      substrings: [],
-      selectedSubstring: "",
     };
   }
 
@@ -24,9 +22,9 @@ class App extends React.Component {
         router={router}
       />)
     } else if (this.state.path === "/list") {
-      content = (<SubstringsView
+      content = (<CatalogView
         router={router}
-        substrings={this.state.substrings}
+        cartId={this.state.cartId}
       />)
     } else if (this.state.path === "/details") {
       content = (<SubstringDetailsView

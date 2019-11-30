@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Substrings Finder</title>
+  <title>Tus Libros</title>
 
   <!-- Fonts to support Material Design -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
@@ -103,13 +103,11 @@
         margin: theme.spacing(2),
       }
     }));
-
-    const getLocalAsJson = (path) => {
+    const getLocalAsJson = path => {
     
-      // var port = 8080
-      var port = 8082
+      var port = 8080
     
-      return fetch(`http://localhost:${port}/${path}`, {
+      return fetch(`http://localhost:${port}${path}`, {
         method: "GET",
         dataType: "JSON",
         headers: {
@@ -117,7 +115,6 @@
         }
       })
     }
-
     function MyToolBar(props) {
       const classes = useStyles();
       const {title, router} = props;
@@ -167,12 +164,11 @@
       const { router } = props
       const classes = useStyles();
       const [values, setValues] = React.useState({
-        text: '',
+        user: '',
+        password: ''
       });
     
-      const [error, setError] = React.useState({
-        error: ''
-      })
+      const [error, setError] = React.useState('');
     
       const handleChange = prop => event => {
         setValues({ ...values, [prop]: event.target.value });
@@ -180,14 +176,19 @@
       const handleSend = () => {
         getLocalAsJson(`/createCart?userId=${values.user}&password=${values.password}`)
           .then(function (response) {
-            // return response.json()
-            return '';
+              return (response.json()
+                .then(function(responseContent) {
+                  if (!response.ok) {
+                    throw responseContent.error
+                  }
+                  return responseContent
+                }))
           })
           .then(function (json) {
-            router.navigate("/list", { substrings: json })
+            router.navigate("/list", json)
           })
           .catch(function (error) {
-            setError('Se produjo un error')
+            setError(`${error}`)
           });
       }
     
@@ -207,7 +208,6 @@
     
             />
           </FormControl>
-    
           <FormControl fullWidth className={classes.textField} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-amount">Password</InputLabel>
             <OutlinedInput
@@ -226,30 +226,111 @@
             Enviar
           </Button>
     
-          <Typography component="h1" gutterBottom>
-            {`error`}
+          <Typography color="error" component="h1" gutterBottom>
+            {error}
           </Typography>
         </div>
       )
     }
-    function SubstringsView(props) {
-      const { router, substrings } = props
+    
+    
+    function CatalogView(props) {
+      const { router, cartId } = props
       const classes = useStyles();
+    
+      const [catalog, setCatalog] = React.useState([])
+      const [cartItems, setCartItems] = React.useState({})
+    
+      const retrieveCatalog = () => {
+        return getLocalAsJson(`/showCatalog`)
+        .then(function (response) {
+            return (response.json()
+              .then(function(responseContent) {
+                if (!response.ok) {
+                  throw responseContent.error
+                }
+                return responseContent
+              }))
+        }).then((json) => json.catalog )
+        .catch(function (error) {
+          console.error(error);
+        });
+      }
+      
+      const updateCartItems = () => {
+        getLocalAsJson(`/listCart?cartId=${cartId}`)
+        .then(function (response) {
+            return (response.json()
+              .then(function(responseContent) {
+                if (!response.ok) {
+                  throw responseContent.error
+                }
+                return responseContent
+              }))
+        })
+        .then(function (json) {
+          setCartItems(json);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+      };
+    
+    
+      const addToCart = isbn => () => {
+        getLocalAsJson(`/addToCart?cartId=${cartId}&bookISBN=${isbn}`)
+          .then(() => {
+            updateCartItems();
+          })
+    
+      }
+    
+      const removeFromCart = isbn => () => {
+        getLocalAsJson(`/removeFromCart?cartId=${cartId}&bookISBN=${isbn}`)
+                .then(() => {
+        updateCartItems();
+      })
+    }
+    
+      const getAmount = isbn => {
+        return (cartItems[isbn] || 0).toString();
+      }
+    
+      React.useEffect(() => {
+        retrieveCatalog().then((data) => {
+          setCatalog(data)
+        }).then(() => {
+          updateCartItems();
+        })
+      }, [])
+    
     
       return (
         <div>
           <Typography component="h1" gutterBottom>
-            Encontramos los siguientes substrings:
-              </Typography>
+            Esto son los libros a la venta
+          </Typography>
           <List component="nav" className={classes.rootList} aria-label="substrings">
             {
-              substrings.map((substring, ix) => {
+              Object.keys(catalog).map((isbn, ix) => {
+                const book = catalog[isbn];
                 return (
                   <ListItem
-                    button
                     key={ix}
-                    onClick={() => router.navigate('/details', { selectedSubstring: substring })}>
-                    <ListItemText primary={substring} />
+                  >
+                    <ListItemText primary={book.title} />
+                    <ListItemText primary={isbn} />
+                      <Button
+                        onClick={addToCart(isbn)}
+                      >
+                        +
+                      </Button>
+                      <ListItemText primary={getAmount(isbn)} />
+                      <Button
+                        onClick={removeFromCart(isbn)}
+                      >
+                        -
+                      </Button>
                   </ListItem>
                 )
               })
@@ -390,8 +471,6 @@
         super(props);
         this.state = {
           path: "/",
-          substrings: [],
-          selectedSubstring: "",
         };
       }
     
@@ -411,9 +490,9 @@
             router={router}
           />)
         } else if (this.state.path === "/list") {
-          content = (<SubstringsView
+          content = (<CatalogView
             router={router}
-            substrings={this.state.substrings}
+            cartId={this.state.cartId}
           />)
         } else if (this.state.path === "/details") {
           content = (<SubstringDetailsView
