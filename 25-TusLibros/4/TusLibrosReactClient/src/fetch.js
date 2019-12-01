@@ -9,4 +9,13 @@ const getLocalAsJson = path => {
       "Access-Control-Request-Headers": "*"
     }
   })
+  .then(function (response) {
+    return (response.json()
+      .then(function(responseContent) {
+        if (!response.ok) {
+          throw responseContent.error
+        }
+        return responseContent
+      }))
+ })
 }

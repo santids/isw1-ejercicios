@@ -9,15 +9,7 @@ function CatalogView(props) {
 
   const retrieveCatalog = () => {
     return getLocalAsJson(`/showCatalog`)
-    .then(function (response) {
-        return (response.json()
-          .then(function(responseContent) {
-            if (!response.ok) {
-              throw responseContent.error
-            }
-            return responseContent
-          }))
-    }).then((json) => json.catalog )
+    .then(json => json.catalog )
     .catch(function (error) {
       console.error(error);
     });
@@ -25,15 +17,6 @@ function CatalogView(props) {
   
   const updateCartItems = () => {
     getLocalAsJson(`/listCart?cartId=${cartId}`)
-    .then(function (response) {
-        return (response.json()
-          .then(function(responseContent) {
-            if (!response.ok) {
-              throw responseContent.error
-            }
-            return responseContent
-          }))
-    })
     .then(function (json) {
       setCartItems(json);
     })

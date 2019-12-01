@@ -114,6 +114,15 @@
           "Access-Control-Request-Headers": "*"
         }
       })
+      .then(function (response) {
+        return (response.json()
+          .then(function(responseContent) {
+            if (!response.ok) {
+              throw responseContent.error
+            }
+            return responseContent
+          }))
+     })
     }
     function MyToolBar(props) {
       const classes = useStyles();
@@ -175,15 +184,6 @@
       };
       const handleSend = () => {
         getLocalAsJson(`/createCart?userId=${values.user}&password=${values.password}`)
-          .then(function (response) {
-              return (response.json()
-                .then(function(responseContent) {
-                  if (!response.ok) {
-                    throw responseContent.error
-                  }
-                  return responseContent
-                }))
-          })
           .then(function (json) {
             router.navigate("/list", json)
           })
@@ -243,15 +243,7 @@
     
       const retrieveCatalog = () => {
         return getLocalAsJson(`/showCatalog`)
-        .then(function (response) {
-            return (response.json()
-              .then(function(responseContent) {
-                if (!response.ok) {
-                  throw responseContent.error
-                }
-                return responseContent
-              }))
-        }).then((json) => json.catalog )
+        .then(json => json.catalog )
         .catch(function (error) {
           console.error(error);
         });
@@ -259,15 +251,6 @@
       
       const updateCartItems = () => {
         getLocalAsJson(`/listCart?cartId=${cartId}`)
-        .then(function (response) {
-            return (response.json()
-              .then(function(responseContent) {
-                if (!response.ok) {
-                  throw responseContent.error
-                }
-                return responseContent
-              }))
-        })
         .then(function (json) {
           setCartItems(json);
         })

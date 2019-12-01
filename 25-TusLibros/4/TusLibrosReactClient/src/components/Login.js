@@ -13,15 +13,6 @@ function Login(props) {
   };
   const handleSend = () => {
     getLocalAsJson(`/createCart?userId=${values.user}&password=${values.password}`)
-      .then(function (response) {
-          return (response.json()
-            .then(function(responseContent) {
-              if (!response.ok) {
-                throw responseContent.error
-              }
-              return responseContent
-            }))
-      })
       .then(function (json) {
         router.navigate("/list", json)
       })
