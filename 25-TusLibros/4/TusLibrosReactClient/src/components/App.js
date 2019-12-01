@@ -3,7 +3,22 @@ class App extends React.Component {
     super(props);
     this.state = {
       path: "/",
+      catalog: {}
     };
+  }
+
+ retrieveCatalog = () => (
+     getLocalAsJson(`/showCatalog`)
+    .then(json => json.catalog )
+    .catch(function (error) {
+      console.error(error);
+    })
+ )
+
+  async componentDidMount() {
+    this.setState({
+      catalog: await this.retrieveCatalog()
+    })
   }
 
   render() {
@@ -24,11 +39,13 @@ class App extends React.Component {
       content = (<CatalogView
         router={router}
         cartId={this.state.cartId}
+        catalog={this.state.catalog}
       />)
     } else if (this.state.path === "/cart") {
       content = (<CartView
         router={router}
         cartId={this.state.cartId}
+        catalog={this.state.catalog}
       />)
     }
     return (
