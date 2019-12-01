@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
   },
   lightBulb: {
     verticalAlign: 'middle',
-    // marginRight: theme.spacing(1),
   },
   rootToolBar: {
     flexGrow: 1,
@@ -45,5 +44,11 @@ const useStyles = makeStyles(theme => ({
   },
   textFieldDetails: {
     margin: theme.spacing(2),
+  },
+  centeredDiv: {
+    marginTop: theme.spacing(2),
+    backgroundColor: theme.palette.primary.main,
+    display: 'flex',
+    justifyContent: 'center',
   }
 }));

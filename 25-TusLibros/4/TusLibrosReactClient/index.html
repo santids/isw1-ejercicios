@@ -77,7 +77,6 @@
       },
       lightBulb: {
         verticalAlign: 'middle',
-        // marginRight: theme.spacing(1),
       },
       rootToolBar: {
         flexGrow: 1,
@@ -101,6 +100,12 @@
       },
       textFieldDetails: {
         margin: theme.spacing(2),
+      },
+      centeredDiv: {
+        marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.primary.main,
+        display: 'flex',
+        justifyContent: 'center',
       }
     }));
     const getLocalAsJson = path => {
@@ -124,46 +129,64 @@
           }))
      })
     }
+    
+    const createButtons = props => [
+      {
+        title: 'Log Out',
+        shouldShow: props.router.current() !== '/',
+        onClick: () => {
+          props.router.navigate('/', { cartId: undefined })
+        }
+      },
+      {
+        title: 'Catalogo',
+        shouldShow: props.router.current() !== '/',
+        onClick: () => { 
+          props.router.navigate('/catalog')
+    
+        },
+      },
+      {
+        title: 'Carrito',
+        shouldShow: props.router.current() !== '/',
+        onClick: () => { 
+          props.router.navigate('/cart')
+    
+        },
+    
+      },
+      {
+        title: 'Historial de Compras',
+        shouldShow: props.router.current() !== '/',
+        onClick: () => {},
+    
+      }
+    ].filter(button => button.shouldShow)
+    
+    
     function MyToolBar(props) {
       const classes = useStyles();
-      const {title, router} = props;
+      const { title, router } = props;
     
-      let menuButton = (
-        <IconButton
-          edge="start"
-          className={classes.menuButton}
-          color="inherit"
-          onClick={()=>router.navigate("/", {
-            substrings: [],
-            selectedSubstring: "",})}
-          >
-          <Icon>home</Icon>
-        </IconButton>
-      )
-    
-      if (router.current() === "/details") {
-        menuButton = (
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            onClick={()=>router.navigate("/list", {
-            selectedSubstring: "",})}
-          >
-            <Icon>keyboard_arrow_left</Icon>
-          </IconButton>
-        )
-      }
+      const buttons = createButtons(props);
     
       return (
         <div className={classes.rootToolBar}>
           <AppBar position="static">
             <Toolbar>
-              {menuButton}
               <Typography variant="h6" className={classes.title}>
                 {title}
               </Typography>
-              {/*<Button color="inherit">Login</Button>*/}
+              {buttons
+                .map(button => 
+                  <Button 
+                    key={button.title}
+                    color="inherit"
+                    onClick={button.onClick}
+                  >
+                    {button.title}
+                  </Button>
+              )}
             </Toolbar>
           </AppBar>
         </div>
@@ -185,7 +208,7 @@
       const handleSend = () => {
         getLocalAsJson(`/createCart?userId=${values.user}&password=${values.password}`)
           .then(function (json) {
-            router.navigate("/list", json)
+            router.navigate("/catalog", json)
           })
           .catch(function (error) {
             setError(`${error}`)
@@ -323,128 +346,90 @@
       )
     }
     
-    // Fetch Hook
-    const useFetchDetails = (substring) => {
-      const [details, setDetails] = React.useState([])
-      const [loading, setLoading] = React.useState(false)
-      const [error, setError] = React.useState(null)
-    
-      React.useEffect(() => {
-        setLoading(true)
-        setError(null)
-    
-        let details = {}
-    
-        getLocalAsJson(`firstletter?word=${substring}`)
-          .then(function (response) {
-            return response.json()
-          })
-          .then(function (json) {
-            details["firstLetter"] = json
-    
-            setLoading(false)
-            if (details) {
-              setDetails(details)
-            } else {
-              setDetails([])
-            }
-          })
-          .then(function () {
-            setLoading(true)
-            setError(null)
-    
-            return getLocalAsJson(`touppercase?word=${substring}`)
-          })
-          .then(function (response) {
-            return response.json()
-          })
-          .then(function (json) {
-            details["uppercase"] = json
-    
-            setLoading(false)
-            if (details) {
-              setDetails(details)
-            } else {
-              setDetails([])
-            }
-          })
-          .then(function () {
-            setLoading(true)
-            setError(null)
-    
-            return getLocalAsJson(`vowels?word=${substring}`)
-          })
-          .then(function (response) {
-            return response.json()
-          })
-          .then(function (json) {
-            details["vowels"] = json
-    
-            setLoading(false)
-            if (details) {
-              setDetails(details)
-            } else {
-              setDetails([])
-            }
-          })
-          .catch(err => {
-            setError(err)
-            setLoading(false)
-          })
-      }, [substring])
-    
-      return { details, loading, error }
-    }
-    
-    // Component
-    function SubstringDetailsView(props) {
-      const { router, selectedSubstring } = props
+    function CartView(props) {
+      const { router, cartId, catalog } = props
       const classes = useStyles();
     
-      const { details, loading, error } = useFetchDetails(selectedSubstring)
+      const [cartItems, setCartItems] = React.useState({})
     
-      if (loading) return <div>Loading...</div>
-      if (error) return <div>{error}</div>
+    
+      
+      const updateCartItems = () => {
+        getLocalAsJson(`/listCart?cartId=${cartId}`)
+        .then(function (json) {
+          setCartItems(json);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+      };
+    
+      const addToCart = isbn => () => {
+        getLocalAsJson(`/addToCart?cartId=${cartId}&bookISBN=${isbn}`)
+          .then(() => {
+            updateCartItems();
+          })
+    
+      }
+    
+      const removeFromCart = isbn => () => {
+        getLocalAsJson(`/removeFromCart?cartId=${cartId}&bookISBN=${isbn}`)
+          .then(() => {
+            updateCartItems();
+          })
+      }
+    
+      const checkoutCart = () => (
+        getLocalAsJson(`/checkoutCart?cartId=${cartId}`)
+        .catch( error => console.error(error))
+      )
+    
+      const getAmount = isbn => {
+        return (cartItems[isbn] || 0).toString();
+      }
+    
+      React.useEffect(() => {
+          updateCartItems();
+      }, [])
+    
     
       return (
         <div>
-          <Typography variant="h4" component="h4" gutterBottom>
-            Detalles de <b>{selectedSubstring}</b>
+          <Typography component="h1" gutterBottom>
+            Esto son los libros en el carrito
           </Typography>
-    
-          <TextField
-            id="outlined-read-only-input"
-            label="Primera letra"
-            defaultValue={details["firstLetter"]}
-            className={classes.textFieldDetails}
-            margin="normal"
-            InputProps={{
-              readOnly: true,
-            }}
-            variant="outlined"
-          />
-          <TextField
-            id="outlined-read-only-input"
-            label="En mayúsculas"
-            defaultValue={details["uppercase"]}
-            className={classes.textFieldDetails}
-            margin="normal"
-            InputProps={{
-              readOnly: true,
-            }}
-            variant="outlined"
-          />
-          <TextField
-            id="outlined-read-only-input"
-            label="Vocales"
-            defaultValue={details["vowels"]}
-            className={classes.textFieldDetails}
-            margin="normal"
-            InputProps={{
-              readOnly: true,
-            }}
-            variant="outlined"
-          />
+          <List component="nav" className={classes.rootList} aria-label="substrings">
+            {
+              Object.keys(cartItems).map((isbn, ix) => {
+                return (
+                  <ListItem
+                    key={ix}
+                  >
+                    <ListItemText primary={isbn} />
+                      <Button
+                        onClick={addToCart(isbn)}
+                      >
+                        +
+                      </Button>
+                      <ListItemText primary={getAmount(isbn)} />
+                      <Button
+                        onClick={removeFromCart(isbn)}
+                      >
+                        -
+                      </Button>
+                  </ListItem>
+                )
+              })
+            }
+          </List>
+          <div className={classes.centeredDiv}>
+            <Button
+              color="inherit"
+              onClick={checkoutCart}
+            >
+              Checkout
+            </Button>
+          </div>
         </div>
       )
     }
@@ -463,7 +448,6 @@
         const router = {
           current: () => this.state.path,
           navigate: (path, state) => {
-            // http://es6-features.org/#SpreadOperator
             this.setState({ ...state, path: path })
           }
         }
@@ -472,15 +456,15 @@
           content = (<Login
             router={router}
           />)
-        } else if (this.state.path === "/list") {
+        } else if (this.state.path === "/catalog") {
           content = (<CatalogView
             router={router}
             cartId={this.state.cartId}
           />)
-        } else if (this.state.path === "/details") {
-          content = (<SubstringDetailsView
+        } else if (this.state.path === "/cart") {
+          content = (<CartView
             router={router}
-            selectedSubstring={this.state.selectedSubstring}
+            cartId={this.state.cartId}
           />)
         }
         return (

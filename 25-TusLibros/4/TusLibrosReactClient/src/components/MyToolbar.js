@@ -1,43 +1,61 @@
+
+const createButtons = props => [
+  {
+    title: 'Log Out',
+    shouldShow: props.router.current() !== '/',
+    onClick: () => {
+      props.router.navigate('/', { cartId: undefined })
+    }
+  },
+  {
+    title: 'Catalogo',
+    shouldShow: props.router.current() !== '/',
+    onClick: () => { 
+      props.router.navigate('/catalog')
+
+    },
+  },
+  {
+    title: 'Carrito',
+    shouldShow: props.router.current() !== '/',
+    onClick: () => { 
+      props.router.navigate('/cart')
+
+    },
+
+  },
+  {
+    title: 'Historial de Compras',
+    shouldShow: props.router.current() !== '/',
+    onClick: () => {},
+
+  }
+].filter(button => button.shouldShow)
+
+
 function MyToolBar(props) {
   const classes = useStyles();
-  const {title, router} = props;
+  const { title, router } = props;
 
-  let menuButton = (
-    <IconButton
-      edge="start"
-      className={classes.menuButton}
-      color="inherit"
-      onClick={()=>router.navigate("/", {
-        substrings: [],
-        selectedSubstring: "",})}
-      >
-      <Icon>home</Icon>
-    </IconButton>
-  )
-
-  if (router.current() === "/details") {
-    menuButton = (
-      <IconButton
-        edge="start"
-        className={classes.menuButton}
-        color="inherit"
-        onClick={()=>router.navigate("/list", {
-        selectedSubstring: "",})}
-      >
-        <Icon>keyboard_arrow_left</Icon>
-      </IconButton>
-    )
-  }
+  const buttons = createButtons(props);
 
   return (
     <div className={classes.rootToolBar}>
       <AppBar position="static">
         <Toolbar>
-          {menuButton}
           <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>
-          {/*<Button color="inherit">Login</Button>*/}
+          {buttons
+            .map(button => 
+              <Button 
+                key={button.title}
+                color="inherit"
+                onClick={button.onClick}
+              >
+                {button.title}
+              </Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>

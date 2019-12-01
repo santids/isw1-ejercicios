@@ -12,7 +12,6 @@ class App extends React.Component {
     const router = {
       current: () => this.state.path,
       navigate: (path, state) => {
-        // http://es6-features.org/#SpreadOperator
         this.setState({ ...state, path: path })
       }
     }
@@ -21,15 +20,15 @@ class App extends React.Component {
       content = (<Login
         router={router}
       />)
-    } else if (this.state.path === "/list") {
+    } else if (this.state.path === "/catalog") {
       content = (<CatalogView
         router={router}
         cartId={this.state.cartId}
       />)
-    } else if (this.state.path === "/details") {
-      content = (<SubstringDetailsView
+    } else if (this.state.path === "/cart") {
+      content = (<CartView
         router={router}
-        selectedSubstring={this.state.selectedSubstring}
+        cartId={this.state.cartId}
       />)
     }
     return (
