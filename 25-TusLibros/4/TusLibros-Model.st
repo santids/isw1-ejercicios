@@ -790,7 +790,7 @@ addService: aServicePath doing: aBlock
 
 	webServer  addService: aServicePath action: (self createServiceDoing: aBlock)	! !
 
-!TusLibrosRESTController methodsFor: 'private - support' stamp: 'TCM 11/26/2019 19:34:00'!
+!TusLibrosRESTController methodsFor: 'private - support' stamp: 'sjd 12/1/2019 15:57:44'!
 createServiceDoing: aBlock
  ^ [:request |
 		[
@@ -798,8 +798,9 @@ createServiceDoing: aBlock
 			response := aBlock value: request.
 			"request send200Response: (substringsAsJson)"
 			request send200Response: ((WebUtils jsonEncode: response) asUtf8) 
-					 contentType: 'application/json; charset=utf-8' do: [:resp | 
-						resp headerAt: 'Access-Control-Allow-Origin' put: '*'.]
+					contentType: 'application/json; charset=utf-8' 
+					do: [:resp | 
+						resp headerAt: 'Access-Control-Allow-Origin' put: '*'.] 
 			 ] 
 			on: Error 
 			do: [ :anError | |response|
@@ -809,8 +810,10 @@ createServiceDoing: aBlock
 
 				request sendResponseCode: 400 
 					content: (WebUtils jsonEncode: response) asUtf8
-					type: 'text/plain; charset=utf-8'
-					close: true ]
+					type: 'application/json; charset=utf-8'
+					do: [:resp | 
+						resp headerAt: 'Access-Control-Allow-Origin' put: '*'.] 
+			]
 		].
 
 	! !
