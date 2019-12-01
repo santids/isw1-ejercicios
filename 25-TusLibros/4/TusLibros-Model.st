@@ -1,4 +1,4 @@
-!classDefinition: #Cart category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #Cart category: #'TusLibros-Model'!
 Object subclass: #Cart
 	instanceVariableNames: 'catalog items'
 	classVariableNames: ''
@@ -97,7 +97,7 @@ remove: anItem
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Cart class' category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: 'Cart class' category: #'TusLibros-Model'!
 Cart class
 	instanceVariableNames: ''!
 
@@ -122,7 +122,7 @@ acceptingItemsOf: aCatalog
 	^self new initializeAcceptingItemsOf: aCatalog ! !
 
 
-!classDefinition: #CartSession category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #CartSession category: #'TusLibros-Model'!
 Object subclass: #CartSession
 	instanceVariableNames: 'owner cart lastUsedTime systemFacade alreadyCheckout'
 	classVariableNames: ''
@@ -215,7 +215,7 @@ removeFromCart: aBook
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CartSession class' category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: 'CartSession class' category: #'TusLibros-Model'!
 CartSession class
 	instanceVariableNames: ''!
 
@@ -230,7 +230,7 @@ cartAlreadyCheckoutErrorMessage
 	^ 'No se puede hacer checkout dos veces sobre un carrito'! !
 
 
-!classDefinition: #Cashier category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #Cashier category: #'TusLibros-Model'!
 Object subclass: #Cashier
 	instanceVariableNames: 'cart salesBook merchantProcessor creditCard owner ticket'
 	classVariableNames: ''
@@ -298,7 +298,7 @@ initializeToCheckout: aCart ownedBy: anOwner charging: aCreditCard throught: aMe
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Cashier class' category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: 'Cashier class' category: #'TusLibros-Model'!
 Cashier class
 	instanceVariableNames: ''!
 
@@ -349,7 +349,7 @@ signalCartCanNotBeEmpty
 	self error: self cartCanNotBeEmptyErrorMessage! !
 
 
-!classDefinition: #Clock category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #Clock category: #'TusLibros-Model'!
 Object subclass: #Clock
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -367,7 +367,7 @@ today
 	self subclassResponsibility ! !
 
 
-!classDefinition: #RealTimeClock category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #RealTimeClock category: #'TusLibros-Model'!
 Clock subclass: #RealTimeClock
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -383,7 +383,7 @@ today
 	^ Date today! !
 
 
-!classDefinition: #CreditCard category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #CreditCard category: #'TusLibros-Model'!
 Object subclass: #CreditCard
 	instanceVariableNames: 'expiration'
 	classVariableNames: ''
@@ -403,7 +403,7 @@ initializeExpiringOn: aMonth
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CreditCard class' category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: 'CreditCard class' category: #'TusLibros-Model'!
 CreditCard class
 	instanceVariableNames: ''!
 
@@ -413,7 +413,7 @@ expiringOn: aMonth
 	^self new initializeExpiringOn: aMonth! !
 
 
-!classDefinition: #LineItem category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #LineItem category: #'TusLibros-Model'!
 Object subclass: #LineItem
 	instanceVariableNames: 'item quantity total'
 	classVariableNames: ''
@@ -447,7 +447,7 @@ initializeOf: anItem quantity: aQuantity total: aTotal
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'LineItem class' category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: 'LineItem class' category: #'TusLibros-Model'!
 LineItem class
 	instanceVariableNames: ''!
 
@@ -459,7 +459,7 @@ of: anItem quantity: aQuantity total: aTotal
 ! !
 
 
-!classDefinition: #MerchantProcessor category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #MerchantProcessor category: #'TusLibros-Model'!
 Object subclass: #MerchantProcessor
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -477,7 +477,7 @@ debit: anAmount from: aCreditCard
 	self subclassResponsibility ! !
 
 
-!classDefinition: #MerchantProcessorStub category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #MerchantProcessorStub category: #'TusLibros-Model'!
 MerchantProcessor subclass: #MerchantProcessorStub
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -489,7 +489,7 @@ debit: anAmount from: aCreditCard
 ! !
 
 
-!classDefinition: #Sale category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #Sale category: #'TusLibros-Model'!
 Object subclass: #Sale
 	instanceVariableNames: 'customer ticket'
 	classVariableNames: ''
@@ -515,6 +515,19 @@ total
 	^ ticket total! !
 
 
+!Sale methodsFor: 'accessing' stamp: 'TCM 12/1/2019 13:57:53'!
+items
+	^ ticket items ! !
+
+!Sale methodsFor: 'accessing' stamp: 'TCM 12/1/2019 14:22:00'!
+quantityBoughtOf: aBook
+	^ ticket quantityBoughtOf: aBook! !
+
+!Sale methodsFor: 'accessing' stamp: 'TCM 12/1/2019 14:21:42'!
+totalSpentIn: aBook
+	^ ticket totalSpentIn: aBook! !
+
+
 !Sale methodsFor: 'line items' stamp: 'HernanWilkinson 6/22/2013 12:33'!
 lineItemsDo: aBlock
 
@@ -522,7 +535,7 @@ lineItemsDo: aBlock
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Sale class' category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: 'Sale class' category: #'TusLibros-Model'!
 Sale class
 	instanceVariableNames: ''!
 
@@ -532,7 +545,62 @@ doneBy: aCustomer certifiedWith: aTicket
 	^self new initializeDoneBy: aCustomer certifiedWith: aTicket ! !
 
 
-!classDefinition: #Ticket category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #SalesBook category: #'TusLibros-Model'!
+Object subclass: #SalesBook
+	instanceVariableNames: 'sales'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros-Model'!
+
+!SalesBook methodsFor: 'initialization' stamp: 'TCM 12/1/2019 13:44:11'!
+initialize
+	sales := OrderedCollection new.! !
+
+
+!SalesBook methodsFor: 'adding' stamp: 'TCM 12/1/2019 13:44:26'!
+add: aSale
+	sales add: aSale! !
+
+
+!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 13:57:33'!
+booksBoughtBy: aUser
+
+	^ (self salesDoneBy: aUser)
+		collect: [:aSale | aSale items]
+		andFold: [:aSaleItems :anotherSaleItems | aSaleItems union: anotherSaleItems ]
+		ifEmpty: [ Set new ]. ! !
+
+!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 14:20:03'!
+quantityBoughtOf: aBook by: anUser 
+	^ (self salesDoneBy: anUser)
+		collect: [:aSale | aSale quantityBoughtOf: aBook]
+		andFold: [:aQuantityBought :anotherQuantityBought | aQuantityBought + anotherQuantityBought ]
+		ifEmpty: 0! !
+
+!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 13:45:17'!
+salesDoneBy: aUser
+
+	^ sales select: [ :aSale | aSale wasDoneBy: aUser ]! !
+
+!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 14:17:34'!
+ticketFor: aUser
+
+	| lineItems |
+	lineItems := (self booksBoughtBy: aUser) collect: [ :aBook |
+		LineItem of: aBook quantity: (self quantityBoughtOf: aBook by: aUser) total: (self totalSpentIn: aBook by: aUser)
+	].
+	^ Ticket of: lineItems
+	! !
+
+!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 14:21:06'!
+totalSpentIn: aBook by: anUser 
+	^ (self salesDoneBy: anUser)
+		collect: [:aSale | aSale totalSpentIn: aBook]
+		andFold: [:aSpent :anotherSpent | aSpent + anotherSpent ]
+		ifEmpty: 0! !
+
+
+!classDefinition: #Ticket category: #'TusLibros-Model'!
 Object subclass: #Ticket
 	instanceVariableNames: 'lineItems'
 	classVariableNames: ''
@@ -551,6 +619,36 @@ initializeOf: aCollectionOfLineItems
 	lineItems := aCollectionOfLineItems ! !
 
 
+!Ticket methodsFor: 'testing' stamp: 'TCM 12/1/2019 14:24:25'!
+isEmpty
+
+	^ lineItems isEmpty! !
+
+
+!Ticket methodsFor: 'accessing' stamp: 'TCM 12/1/2019 13:58:28'!
+items
+
+	^ lineItems collect: [:aLineItem | aLineItem item ] ! !
+
+!Ticket methodsFor: 'accessing' stamp: 'TCM 12/1/2019 14:23:15'!
+quantityBoughtOf: aBook
+
+	| lineOfBook |
+	lineOfBook := lineItems
+		detect: [:aLineItem | aLineItem item = aBook ]
+		ifNone: [^0].
+	^ lineOfBook quantity! !
+
+!Ticket methodsFor: 'accessing' stamp: 'TCM 12/1/2019 14:23:31'!
+totalSpentIn: aBook
+
+	| lineOfBook |
+	lineOfBook := lineItems
+		detect: [:aLineItem | aLineItem item = aBook ]
+		ifNone: [^0].
+	^ lineOfBook total! !
+
+
 !Ticket methodsFor: 'line items' stamp: 'HernanWilkinson 6/22/2013 12:33'!
 lineItemsDo: aBlock
 
@@ -558,7 +656,7 @@ lineItemsDo: aBlock
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Ticket class' category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: 'Ticket class' category: #'TusLibros-Model'!
 Ticket class
 	instanceVariableNames: ''!
 
@@ -568,7 +666,7 @@ of: aCollectionOfLineItems
 	^self new initializeOf: aCollectionOfLineItems ! !
 
 
-!classDefinition: #TusLibrosRESTController category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #TusLibrosRESTController category: #'TusLibros-Model'!
 Object subclass: #TusLibrosRESTController
 	instanceVariableNames: 'systemFacade webServer'
 	classVariableNames: ''
@@ -589,7 +687,7 @@ addAddToCartService
 		''
 	]! !
 
-!TusLibrosRESTController methodsFor: 'private - services' stamp: 'TCM 11/26/2019 19:48:51'!
+!TusLibrosRESTController methodsFor: 'private - services' stamp: 'TCM 12/1/2019 14:32:37'!
 addCheckoutService
 
 	^ self addService: '/checkoutCart' doing: [:request |
@@ -604,19 +702,7 @@ addCheckoutService
 			ownedBy: 'PEPE'
 			expiringOn: ( Month current ).
 
-		result := Dictionary 
-			with: 'total' -> ticket total.
-
-		items := OrderedCollection new.
-		ticket lineItemsDo: [ :aLineItem |
-			items add: (Dictionary
-				with: 'item' -> aLineItem item
-				with: 'quantity' -> aLineItem quantity
-				with: 'total' -> aLineItem total)
-		].
-		result add: 'items' -> items asArray.
-	
-		result
+		self ticketToDictionary: ticket
 	]! !
 
 !TusLibrosRESTController methodsFor: 'private - services' stamp: 'TCM 11/22/2019 17:51:19'!
@@ -646,15 +732,17 @@ addListCartService
 		items contents
 	]! !
 
-!TusLibrosRESTController methodsFor: 'private - services' stamp: 'TCM 11/22/2019 19:05:43'!
+!TusLibrosRESTController methodsFor: 'private - services' stamp: 'TCM 12/1/2019 14:33:03'!
 addListPurchasesService
 
 	^ self addService: '/listPurchases' doing: [:request |
-		| cartId password user |
+		| cartId password user ticket |
 		user := self field: request withName: 'userId'.
 		password := self field: request withName: 'password'.
 
-		systemFacade listPurchasesOf: user  authenticatingWith: password.
+		ticket := systemFacade listPurchasesOf: user  authenticatingWith: password.
+		
+		self ticketToDictionary: ticket
 	]! !
 
 !TusLibrosRESTController methodsFor: 'private - services' stamp: 'TCM 11/22/2019 17:51:11'!
@@ -732,6 +820,24 @@ field: request withName: aFieldName
 
 	^ request fields at:aFieldName ifAbsent: [ self error: aFieldName, ' param is missing' ]! !
 
+!TusLibrosRESTController methodsFor: 'private - support' stamp: 'TCM 12/1/2019 14:31:50'!
+ticketToDictionary: aTicket
+
+	| items result |
+	result := Dictionary 
+		with: 'total' -> aTicket total.
+
+	items := OrderedCollection new.
+	aTicket lineItemsDo: [ :aLineItem |
+		items add: (Dictionary
+			with: 'item' -> aLineItem item
+			with: 'quantity' -> aLineItem quantity
+			with: 'total' -> aLineItem total)
+	].
+	result add: 'items' -> items asArray.
+
+	^ result! !
+
 
 !TusLibrosRESTController methodsFor: 'initialize' stamp: 'TCM 11/22/2019 19:05:10'!
 initializeWith: aPortNumber
@@ -776,9 +882,9 @@ merchantProcessor
 realTimeClock
 	^ RealTimeClock new.! !
 
-!TusLibrosRESTController methodsFor: 'object creation' stamp: 'TCM 11/21/2019 20:21:51'!
+!TusLibrosRESTController methodsFor: 'object creation' stamp: 'TCM 12/1/2019 14:35:21'!
 salesBook
-	^ OrderedCollection new! !
+	^ SalesBook new! !
 
 !TusLibrosRESTController methodsFor: 'object creation' stamp: 'TCM 11/21/2019 20:18:44'!
 usersAndPasswords
@@ -788,7 +894,7 @@ usersAndPasswords
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosRESTController class' category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: 'TusLibrosRESTController class' category: #'TusLibros-Model'!
 TusLibrosRESTController class
 	instanceVariableNames: ''!
 
@@ -798,7 +904,7 @@ listeningOn: aPortNumber
 	^self new initializeWith: aPortNumber.! !
 
 
-!classDefinition: #TusLibrosSystemFacade category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: #TusLibrosSystemFacade category: #'TusLibros-Model'!
 Object subclass: #TusLibrosSystemFacade
 	instanceVariableNames: 'validUsersAndPasswords catalog lastId merchantProcessor salesBook clock cartSessions booksDetails'
 	classVariableNames: ''
@@ -954,16 +1060,11 @@ listCartIdentifiedAs: aCartId
 
 	^ self withCartSessionIdentifiedAs: aCartId do: [ :cartSession | cartSession cartContent ]! !
 
-!TusLibrosSystemFacade methodsFor: 'facade protocol' stamp: 'HAW 11/26/2018 20:33:49'!
+!TusLibrosSystemFacade methodsFor: 'facade protocol' stamp: 'TCM 12/1/2019 14:13:47'!
 listPurchasesOf: aUser authenticatingWith: aPassword
 
-	^self if: aUser authenticatesWith: aPassword do: [ | sales |
-		sales := self salesDoneBy: aUser.
-		sales
-			inject: Dictionary new
-			into: [ :salesOrderedByBook :aSale |
-				self list: aSale on: salesOrderedByBook.
-				salesOrderedByBook ] ]! !
+	^self if: aUser authenticatesWith: aPassword do: [
+		salesBook ticketFor: aUser ]! !
 
 !TusLibrosSystemFacade methodsFor: 'facade protocol' stamp: 'TCM 11/21/2019 20:02:45'!
 remove: aBook fromCartIdentifiedAs: aCartId
@@ -991,11 +1092,11 @@ list: aSale on: salesOrderedByBook
 		newTotal := oldTotal + aLineItem total.
 		salesOrderedByBook at: aLineItem item put: newTotal ]! !
 
-!TusLibrosSystemFacade methodsFor: 'private' stamp: 'HernanWilkinson 6/17/2015 20:55'!
+!TusLibrosSystemFacade methodsFor: 'private' stamp: 'TCM 12/1/2019 14:02:23'!
 salesDoneBy: aUser
 
 	"Esto es un indicio de que por ahi conviene empezar a pensar en modelar un SaleBook - Hernan"
-	^ salesBook select: [ :aSale | aSale wasDoneBy: aUser ]! !
+	^ salesBook salesDoneBy: aUser! !
 
 
 !TusLibrosSystemFacade methodsFor: 'initialization' stamp: 'TCM 11/22/2019 18:09:24'!
@@ -1017,7 +1118,7 @@ initializeAuthenticatingWith: aValidUsersAndPasswords
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosSystemFacade class' category: #'TusLibros-Model' stamp: 'TCM 11/26/2019 20:20:27'!
+!classDefinition: 'TusLibrosSystemFacade class' category: #'TusLibros-Model'!
 TusLibrosSystemFacade class
 	instanceVariableNames: ''!
 
