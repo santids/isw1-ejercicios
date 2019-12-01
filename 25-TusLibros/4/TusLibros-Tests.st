@@ -1,4 +1,4 @@
-!classDefinition: #CartTest category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
+!classDefinition: #CartTest category: #'TusLibros-Tests'!
 TestCase subclass: #CartTest
 	instanceVariableNames: 'testObjectsFactory'
 	classVariableNames: ''
@@ -139,7 +139,7 @@ setUp
 	testObjectsFactory := StoreTestObjectsFactory new.! !
 
 
-!classDefinition: #CashierTest category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
+!classDefinition: #CashierTest category: #'TusLibros-Tests'!
 TestCase subclass: #CashierTest
 	instanceVariableNames: 'testObjectsFactory debitBehavior'
 	classVariableNames: ''
@@ -293,7 +293,7 @@ debit: anAmount from: aCreditCard
 	^debitBehavior value: anAmount value: aCreditCard ! !
 
 
-!classDefinition: #TusLibrosSystemFacadeTest category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
+!classDefinition: #TusLibrosSystemFacadeTest category: #'TusLibros-Tests'!
 TestCase subclass: #TusLibrosSystemFacadeTest
 	instanceVariableNames: 'testObjectsFactory clock systemFacade'
 	classVariableNames: ''
@@ -408,7 +408,21 @@ test17CanNotAddToCartWhenSessionIsExpired
 ! !
 
 
-!TusLibrosSystemFacadeTest methodsFor: 'tests - list purchases' stamp: 'HAW 11/26/2018 18:07:48'!
+!TusLibrosSystemFacadeTest methodsFor: 'assertions' stamp: 'TCM 12/1/2019 14:27:58'!
+assertPurchases: somePurchases includesItem: anItem withQuantity: aQuantity andTotalSpent: aPrice
+
+	| quantityByBook spentByBook |
+
+	quantityByBook := Dictionary new.
+	spentByBook := Dictionary new.
+	somePurchases lineItemsDo: [ :aLineItem | 
+		quantityByBook add: aLineItem item -> aLineItem quantity.
+		spentByBook add: aLineItem item -> aLineItem total. ].
+	self assert: aPrice equals: (spentByBook at: anItem).
+	self assert: aQuantity equals: (quantityByBook at: anItem).! !
+
+
+!TusLibrosSystemFacadeTest methodsFor: 'tests - list purchases' stamp: 'TCM 12/1/2019 14:30:11'!
 test14ListPurchasesIncludesBoughtItems
 
 	| cartId purchases |
@@ -424,8 +438,16 @@ test14ListPurchasesIncludesBoughtItems
 
 	purchases := systemFacade listPurchasesOf: self validUser authenticatingWith: self validUserPassword.
 
-	self assert: (purchases at: self validBook) equals: (testObjectsFactory itemSellByTheStorePrice * 2).
-	self assert: (purchases at: self anotherValidBook) equals: testObjectsFactory anotherItemSellByTheStorePrice.! !
+	self
+		assertPurchases: purchases
+		includesItem: self validBook
+		withQuantity: 2
+		andTotalSpent: testObjectsFactory itemSellByTheStorePrice * 2.
+	self
+		assertPurchases: purchases
+		includesItem: self anotherValidBook 
+		withQuantity: 1
+		andTotalSpent: testObjectsFactory anotherItemSellByTheStorePrice.! !
 
 !TusLibrosSystemFacadeTest methodsFor: 'tests - list purchases' stamp: 'HAW 11/26/2018 18:10:29'!
 test15CanNotListPurchasesOfInvalidCustomer
@@ -479,10 +501,10 @@ debit: anAmount from: aCreditCard
 ! !
 
 
-!TusLibrosSystemFacadeTest methodsFor: 'setup' stamp: 'HernanWilkinson 6/22/2013 11:42'!
+!TusLibrosSystemFacadeTest methodsFor: 'setup' stamp: 'TCM 12/1/2019 14:02:00'!
 createSalesBook
 
-	^OrderedCollection new! !
+	^SalesBook new! !
 
 !TusLibrosSystemFacadeTest methodsFor: 'setup' stamp: 'HernanWilkinson 6/22/2013 11:47'!
 merchantProcessor
@@ -567,7 +589,7 @@ validUsersAndPasswords
 		yourself! !
 
 
-!TusLibrosSystemFacadeTest methodsFor: 'tests - checkout' stamp: 'HAW 6/19/2018 11:45:13'!
+!TusLibrosSystemFacadeTest methodsFor: 'tests - checkout' stamp: 'TCM 12/1/2019 14:11:23'!
 test10CanCheckoutACart
 
 	| cartId purchases |
@@ -582,7 +604,11 @@ test10CanCheckoutACart
 
 	purchases := systemFacade listPurchasesOf: self validUser authenticatingWith: self validUserPassword.
 
-	self assert: (purchases at: self validBook) equals: testObjectsFactory itemSellByTheStorePrice.
+	self
+		assertPurchases: purchases
+		includesItem: self validBook
+		withQuantity: 1
+		andTotalSpent: testObjectsFactory itemSellByTheStorePrice.
 ! !
 
 !TusLibrosSystemFacadeTest methodsFor: 'tests - checkout' stamp: 'HAW 11/26/2018 18:05:20'!
@@ -661,7 +687,7 @@ test19CanNotCheckOutCartWhenSessionIsExpired
 
 	! !
 
-!TusLibrosSystemFacadeTest methodsFor: 'tests - checkout' stamp: 'TCM 11/26/2019 19:54:44'!
+!TusLibrosSystemFacadeTest methodsFor: 'tests - checkout' stamp: 'TCM 12/1/2019 14:25:15'!
 test23CannotCheckoutACartTwice
 
 	| cartId purchases |
@@ -685,7 +711,7 @@ test23CannotCheckoutACartTwice
 
 	purchases := systemFacade listPurchasesOf: self validUser authenticatingWith: self validUserPassword.
 
-	self assert: (purchases at: self validBook) equals: testObjectsFactory itemSellByTheStorePrice.
+	self assertPurchases: purchases includesItem: self validBook withQuantity: 1 andTotalSpent: testObjectsFactory itemSellByTheStorePrice
 ! !
 
 
@@ -749,7 +775,7 @@ revertTime: aDuration
 	clock revertTime: aDuration ! !
 
 
-!classDefinition: #ManualClock category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
+!classDefinition: #ManualClock category: #'TusLibros-Tests'!
 Clock subclass: #ManualClock
 	instanceVariableNames: 'now'
 	classVariableNames: ''
@@ -785,7 +811,7 @@ initializeNow: aTime
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'ManualClock class' category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
+!classDefinition: 'ManualClock class' category: #'TusLibros-Tests'!
 ManualClock class
 	instanceVariableNames: ''!
 
@@ -795,7 +821,7 @@ now: aTime
 	^self new initializeNow: aTime ! !
 
 
-!classDefinition: #StoreTestObjectsFactory category: #'TusLibros-Tests' stamp: 'TCM 11/26/2019 20:18:56'!
+!classDefinition: #StoreTestObjectsFactory category: #'TusLibros-Tests'!
 Object subclass: #StoreTestObjectsFactory
 	instanceVariableNames: 'today'
 	classVariableNames: ''
