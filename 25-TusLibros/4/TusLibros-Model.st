@@ -150,13 +150,14 @@ today
 	^systemFacade today! !
 
 
-!CartSession methodsFor: 'session management' stamp: 'HernanWilkinson 6/17/2015 20:35'!
+!CartSession methodsFor: 'session management' stamp: 'TCM 12/1/2019 18:59:51'!
 do: aBlock
 
 	| now |
 
 	now := self now.
 	self assertIsNotExpirtedAt: now.
+	alreadyCheckout ifTrue: [ self error: self class cartAlreadyCheckoutErrorMessage ].
 
 	^ [ aBlock value: self ] ensure: [ lastUsedTime := now  ]! !
 
@@ -192,11 +193,10 @@ cartContent
 
 	^cart content! !
 
-!CartSession methodsFor: 'cart' stamp: 'TCM 11/26/2019 20:00:03'!
+!CartSession methodsFor: 'cart' stamp: 'TCM 12/1/2019 18:59:24'!
 checkOutCartWithCreditCardNumbered: aCreditCartNumber ownedBy: anOwner expiringOn: anExpirationMonthOfYear
 
 	| ticket |
-	alreadyCheckout ifTrue: [ self error: self class cartAlreadyCheckoutErrorMessage ].
 
 	ticket := (Cashier
 		toCheckout: cart
@@ -208,6 +208,10 @@ checkOutCartWithCreditCardNumbered: aCreditCartNumber ownedBy: anOwner expiringO
 
 	alreadyCheckout := true.
 	^ ticket! !
+
+!CartSession methodsFor: 'cart' stamp: 'TCM 12/1/2019 19:20:57'!
+owner
+	^owner! !
 
 !CartSession methodsFor: 'cart' stamp: 'TCM 11/21/2019 20:02:13'!
 removeFromCart: aBook 
@@ -225,9 +229,9 @@ ownedBy: aCustomer with: aCart on: aSystemFacade
 	^self new initializeOwnedBy: aCustomer with: aCart on: aSystemFacade! !
 
 
-!CartSession class methodsFor: 'error messages' stamp: 'TCM 11/26/2019 20:01:27'!
+!CartSession class methodsFor: 'error messages' stamp: 'TCM 12/1/2019 19:01:50'!
 cartAlreadyCheckoutErrorMessage
-	^ 'No se puede hacer checkout dos veces sobre un carrito'! !
+	^ 'Ya se hizo check out sobre este carrito'! !
 
 
 !classDefinition: #Cashier category: #'TusLibros-Model'!
@@ -570,11 +574,10 @@ booksBoughtBy: aUser
 		andFold: [:aSaleItems :anotherSaleItems | aSaleItems union: anotherSaleItems ]
 		ifEmpty: [ Set new ]. ! !
 
-!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 14:20:03'!
+!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 19:46:14'!
 quantityBoughtOf: aBook by: anUser 
-	^ (self salesDoneBy: anUser)
-		collect: [:aSale | aSale quantityBoughtOf: aBook]
-		andFold: [:aQuantityBought :anotherQuantityBought | aQuantityBought + anotherQuantityBought ]
+	^ ((self salesDoneBy: anUser)
+		sum: [:aSale | aSale quantityBoughtOf: aBook])
 		ifEmpty: 0! !
 
 !SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 13:45:17'!
@@ -592,11 +595,10 @@ ticketFor: aUser
 	^ Ticket of: lineItems
 	! !
 
-!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 14:21:06'!
+!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 19:46:27'!
 totalSpentIn: aBook by: anUser 
-	^ (self salesDoneBy: anUser)
-		collect: [:aSale | aSale totalSpentIn: aBook]
-		andFold: [:aSpent :anotherSpent | aSpent + anotherSpent ]
+	^ ((self salesDoneBy: anUser)
+		sum: [:aSale | aSale totalSpentIn: aBook])
 		ifEmpty: 0! !
 
 
@@ -607,10 +609,10 @@ Object subclass: #Ticket
 	poolDictionaries: ''
 	category: 'TusLibros-Model'!
 
-!Ticket methodsFor: 'total' stamp: 'HernanWilkinson 6/17/2015 20:39'!
+!Ticket methodsFor: 'total' stamp: 'TCM 12/1/2019 19:44:27'!
 total
 
-	^lineItems sum: [ :aLineItem | aLineItem total]! !
+	^lineItems sum: [ :aLineItem | aLineItem total] ifEmpty: 0! !
 
 
 !Ticket methodsFor: 'initialization' stamp: 'HernanWilkinson 6/22/2013 12:20'!
@@ -687,20 +689,21 @@ addAddToCartService
 		''
 	]! !
 
-!TusLibrosRESTController methodsFor: 'private - services' stamp: 'TCM 12/1/2019 14:32:37'!
+!TusLibrosRESTController methodsFor: 'private - services' stamp: 'TCM 12/1/2019 19:34:00'!
 addCheckoutService
 
 	^ self addService: '/checkoutCart' doing: [:request |
-		| cartId bookISBN catalog ticket result items |
+		| cartId bookISBN catalog ticket result items cartOwner |
 
 		cartId := (self field: request withName: 'cartId') asInteger.
 
-		"Deberian buscarse los datos de la tarjeta del usuario dueño del carrito"
+		cartOwner := systemFacade ownerOf: cartId.
+
 		ticket := systemFacade
 			checkOutCartIdentifiedAs: cartId
-			withCreditCardNumbered: '12345678'
-			ownedBy: 'PEPE'
-			expiringOn: ( Month current ).
+			withCreditCardNumbered: ((self creditCardOf: cartOwner) at: 'number')
+			ownedBy: ((self creditCardOf: cartOwner) at: 'owner')
+			expiringOn: ((self creditCardOf: cartOwner) at: 'expiration').
 
 		self ticketToDictionary: ticket
 	]! !
@@ -818,6 +821,10 @@ createServiceDoing: aBlock
 
 	! !
 
+!TusLibrosRESTController methodsFor: 'private - support' stamp: 'TCM 12/1/2019 19:32:35'!
+creditCardOf: anUser
+	^ self creditCardDataByUser at: anUser! !
+
 !TusLibrosRESTController methodsFor: 'private - support' stamp: 'TCM 11/22/2019 17:27:56'!
 field: request withName: aFieldName 
 
@@ -877,6 +884,20 @@ catalog
 		at: 'ISBN2' put: (Dictionary with: 'price'->450 with: 'title'->'Libro 2' with: 'author'->'Juana');
 		yourself ! !
 
+!TusLibrosRESTController methodsFor: 'object creation' stamp: 'TCM 12/1/2019 19:31:06'!
+creditCardDataByUser
+	^ Dictionary
+		with: 'Tobi' -> 
+			(Dictionary 
+				with: 'number' -> '12345678'
+				with: 'owner' -> 'TOBI'
+				with: 'expiration'-> Month current)
+		with: 'Santi' -> 
+			(Dictionary 
+				with: 'number' -> '12345679'
+				with: 'owner' -> 'SANTI'
+				with: 'expiration'-> (Month month: 1 year: 1990)).! !
+
 !TusLibrosRESTController methodsFor: 'object creation' stamp: 'TCM 11/21/2019 20:22:07'!
 merchantProcessor
 	^ MerchantProcessorStub new! !
@@ -919,8 +940,8 @@ canNotChargeAnExpiredCreditCardErrorMessage
 
 	^Cashier canNotChargeAnExpiredCreditCardErrorMessage ! !
 
-!TusLibrosSystemFacade methodsFor: 'error messages' stamp: 'TCM 11/26/2019 20:02:50'!
-cannotCheckoutACartTwiceErrorMessage
+!TusLibrosSystemFacade methodsFor: 'error messages' stamp: 'TCM 12/1/2019 18:58:41'!
+cartAlreadyCheckoutErrorMessage
 	^ CartSession cartAlreadyCheckoutErrorMessage ! !
 
 !TusLibrosSystemFacade methodsFor: 'error messages' stamp: 'HernanWilkinson 6/22/2013 11:17'!
@@ -1068,6 +1089,10 @@ listPurchasesOf: aUser authenticatingWith: aPassword
 
 	^self if: aUser authenticatesWith: aPassword do: [
 		salesBook ticketFor: aUser ]! !
+
+!TusLibrosSystemFacade methodsFor: 'facade protocol' stamp: 'TCM 12/1/2019 19:20:45'!
+ownerOf: aCartId 
+	^ (cartSessions at: aCartId) owner! !
 
 !TusLibrosSystemFacade methodsFor: 'facade protocol' stamp: 'TCM 11/21/2019 20:02:45'!
 remove: aBook fromCartIdentifiedAs: aCartId

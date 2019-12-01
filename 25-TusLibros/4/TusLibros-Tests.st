@@ -467,6 +467,16 @@ test16CanNotListPurchasesOfValidCustomerWithInvalidPassword
 		withExceptionDo: [ :anError |
 			self assert: anError messageText equals: systemFacade invalidUserAndOrPasswordErrorDescription ]! !
 
+!TusLibrosSystemFacadeTest methodsFor: 'tests - list purchases' stamp: 'TCM 12/1/2019 19:42:10'!
+test25ListPurchasesWithoutPreviousCheckoutIsEmpty
+
+	| purchases |
+
+	purchases := systemFacade listPurchasesOf: self validUser authenticatingWith: self validUserPassword.
+
+	self assert: purchases isEmpty.
+	self assert: 0 equals: purchases total ! !
+
 
 !TusLibrosSystemFacadeTest methodsFor: 'tests - create cart' stamp: 'HAW 6/19/2018 11:40:51'!
 test01CanCreateCartWithValidUserAndPassword
@@ -494,6 +504,15 @@ test03CanNotCreateCartWithInvalidPassword
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
 			self assert: anError messageText equals: systemFacade invalidUserAndOrPasswordErrorDescription ]! !
+
+!TusLibrosSystemFacadeTest methodsFor: 'tests - create cart' stamp: 'TCM 12/1/2019 19:19:23'!
+test24CartKnowsItsOwnerCorrectly
+
+	| cartId |
+
+	cartId := systemFacade createCartFor: self validUser authenticatedWith: self validUserPassword.
+	self assert: self validUser equals: (systemFacade ownerOf: cartId)
+	! !
 
 
 !TusLibrosSystemFacadeTest methodsFor: 'merchant processor protocol' stamp: 'HernanWilkinson 6/22/2013 11:48'!
@@ -687,8 +706,8 @@ test19CanNotCheckOutCartWhenSessionIsExpired
 
 	! !
 
-!TusLibrosSystemFacadeTest methodsFor: 'tests - checkout' stamp: 'TCM 12/1/2019 14:25:15'!
-test23CannotCheckoutACartTwice
+!TusLibrosSystemFacadeTest methodsFor: 'tests - checkout' stamp: 'TCM 12/1/2019 19:00:43'!
+test23CannotInteractWithCartWhenItWasAlreadyCheckedOut
 
 	| cartId purchases |
 
@@ -707,7 +726,7 @@ test23CannotCheckoutACartTwice
 			ownedBy: testObjectsFactory notExpiredCreditCardOwner
 			expiringOn: testObjectsFactory notExpiredMonthOfYear.]
 		raise: Error - MessageNotUnderstood
-		withMessageText: systemFacade cannotCheckoutACartTwiceErrorMessage.
+		withMessageText: systemFacade cartAlreadyCheckoutErrorMessage.
 
 	purchases := systemFacade listPurchasesOf: self validUser authenticatingWith: self validUserPassword.
 
