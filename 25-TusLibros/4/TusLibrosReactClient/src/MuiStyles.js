@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     overflow: 'auto',
     maxHeight: 300,
+    marginVertical: 5
   },
   textFieldDetails: {
     margin: theme.spacing(2),

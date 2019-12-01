@@ -1,15 +1,15 @@
 function TicketView(props) {
-  const { ticket, catalog, router, user, password} = props
+  const { ticket, catalog, router, user, password } = props
   const classes = useStyles();
 
   const makeAnotherPurchase = () => {
     getLocalAsJson(`/createCart?userId=${user}&password=${password}`)
-    .then(function (json) {
-      router.navigate("/catalog", json)
-    })
-    .catch(function (error) {
-      console.error(error)
-    });
+      .then(function (json) {
+        router.navigate("/catalog", json)
+      })
+      .catch(function (error) {
+        console.error(error)
+      });
   }
 
 
@@ -38,14 +38,11 @@ function TicketView(props) {
           })
         }
       </List>
-      <div style={{ display: 'flex', flexDirection: 'row'}}>
-        <Typography component="h1">
-          {`Total: ${ticket.total}`}
-        </Typography>
-
-      </div>
+      <Typography component="h1">
+        {`Total: ${ticket.total}`}
+      </Typography>
       <BigButton onClick={makeAnotherPurchase}>
-          Realizar Otra Compra
+        Realizar Otra Compra
         </BigButton>
     </div>
 
