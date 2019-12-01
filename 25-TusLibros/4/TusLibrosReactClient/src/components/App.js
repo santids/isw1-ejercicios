@@ -3,6 +3,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       path: "/",
+      user: '',
+      password: '',
       catalog: {}
     };
   }
@@ -47,7 +49,16 @@ class App extends React.Component {
         cartId={this.state.cartId}
         catalog={this.state.catalog}
       />)
+    } else if (this.state.path === "/ticket") {
+      content = (<TicketView
+        user={this.state.user}
+        password={this.state.password}
+        router={router}
+        catalog={this.state.catalog}
+        ticket={this.state.ticket}
+      />)
     }
+
     return (
       <div>
         <MyToolBar

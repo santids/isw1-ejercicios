@@ -7,6 +7,9 @@ function CartView(props) {
 
   const checkoutCart = () => (
     getLocalAsJson(`/checkoutCart?cartId=${cartId}`)
+    .then( json => {
+      router.navigate('/ticket', { ticket: json })
+    } )
     .catch( error => setError(error))
   )
 
@@ -16,14 +19,9 @@ function CartView(props) {
         Esto son los libros en el carrito
       </Typography>
       <BookList catalog={catalog} cartId={cartId} />
-      <div className={classes.centeredDiv}>
-        <Button
-          color="inherit"
-          onClick={checkoutCart}
-        >
-          Checkout
-        </Button>
-      </div>
+      <BigButton onClick={checkoutCart}>
+        Checkout
+      </BigButton>
       <Typography color="error" component="h1" gutterBottom>
         {error}
       </Typography>

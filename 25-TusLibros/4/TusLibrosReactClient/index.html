@@ -208,7 +208,7 @@
       const handleSend = () => {
         getLocalAsJson(`/createCart?userId=${values.user}&password=${values.password}`)
           .then(function (json) {
-            router.navigate("/catalog", json)
+            router.navigate("/catalog", {...json, ...values})
           })
           .catch(function (error) {
             setError(`${error}`)
@@ -281,6 +281,9 @@
     
       const checkoutCart = () => (
         getLocalAsJson(`/checkoutCart?cartId=${cartId}`)
+        .then( json => {
+          router.navigate('/ticket', { ticket: json })
+        } )
         .catch( error => setError(error))
       )
     
@@ -290,14 +293,9 @@
             Esto son los libros en el carrito
           </Typography>
           <BookList catalog={catalog} cartId={cartId} />
-          <div className={classes.centeredDiv}>
-            <Button
-              color="inherit"
-              onClick={checkoutCart}
-            >
-              Checkout
-            </Button>
-          </div>
+          <BigButton onClick={checkoutCart}>
+            Checkout
+          </BigButton>
           <Typography color="error" component="h1" gutterBottom>
             {error}
           </Typography>
@@ -310,6 +308,8 @@
         super(props);
         this.state = {
           path: "/",
+          user: '',
+          password: '',
           catalog: {}
         };
       }
@@ -354,7 +354,16 @@
             cartId={this.state.cartId}
             catalog={this.state.catalog}
           />)
+        } else if (this.state.path === "/ticket") {
+          content = (<TicketView
+            user={this.state.user}
+            password={this.state.password}
+            router={router}
+            catalog={this.state.catalog}
+            ticket={this.state.ticket}
+          />)
         }
+    
         return (
           <div>
             <MyToolBar
@@ -442,6 +451,74 @@
       )
     }
     
+    function TicketView(props) {
+      const { ticket, catalog, router, user, password} = props
+      const classes = useStyles();
+    
+      const makeAnotherPurchase = () => {
+        getLocalAsJson(`/createCart?userId=${user}&password=${password}`)
+        .then(function (json) {
+          router.navigate("/catalog", json)
+        })
+        .catch(function (error) {
+          console.error(error)
+        });
+      }
+    
+    
+    
+      return (
+        <div>
+          <Typography>
+            La compra fue realizada con exito!
+          </Typography>
+    
+          <List component="nav" className={classes.rootList} >
+            {
+              ticket.items.map((item, ix) => {
+                const isbn = item.item;
+                const book = catalog[isbn];
+                return (
+                  <ListItem
+                    key={ix}
+                  >
+                    <ListItemText primary={isbn} />
+                    <ListItemText primary={book.title} />
+                    <ListItemText primary={item.total} />
+                    <ListItemText primary={item.quantity} />
+                  </ListItem>
+                )
+              })
+            }
+          </List>
+          <div style={{ display: 'flex', flexDirection: 'row'}}>
+            <Typography component="h1">
+              {`Total: ${ticket.total}`}
+            </Typography>
+    
+          </div>
+          <BigButton onClick={makeAnotherPurchase}>
+              Realizar Otra Compra
+            </BigButton>
+        </div>
+    
+      )
+    }
+    
+    
+    function BigButton(props) {
+      const classes = useStyles();
+    
+      return (
+        <div className={classes.centeredDiv}>
+            <Button
+              color="inherit"
+              {...props}
+            />
+    
+          </div>
+      )
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Initial render
