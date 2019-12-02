@@ -11,7 +11,7 @@ function BookList(props) {
       setCartItems(json);
     })
     .catch(function (error) {
-      console.error(error);
+      alert(error);
     });
   };
 
@@ -20,6 +20,9 @@ function BookList(props) {
       .then(() => {
         updateCartItems();
       })
+      .catch((error) => {
+        alert(error)
+      })
 
   }
 
@@ -27,6 +30,9 @@ function BookList(props) {
     getLocalAsJson(`/removeFromCart?cartId=${cartId}&bookISBN=${isbn}`)
       .then(() => {
         updateCartItems();
+      })
+      .catch((error) => {
+        alert(error)
       })
   }
   

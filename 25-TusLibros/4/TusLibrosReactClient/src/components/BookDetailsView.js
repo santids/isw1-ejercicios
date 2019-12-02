@@ -4,12 +4,16 @@ function BookDetailsView(props) {
 
   const [details, setDetails] = React.useState();
   const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState('');
 
   const addToCart = () => {
     getLocalAsJson(`/addToCart?cartId=${cartId}&bookISBN=${isbn}`)
       .then(() => {
         updateDetails();
       })
+      .catch(error => {
+		setError(error)
+	  })
   }
 
   const removeFromCart = () => {
@@ -17,6 +21,9 @@ function BookDetailsView(props) {
       .then(() => {
         updateDetails();
       })
+      .catch(error => {
+		setError(error)
+	  })
   }
   
   const updateDetails = () => {
@@ -25,6 +32,10 @@ function BookDetailsView(props) {
         setDetails(json)
         setLoading(false)
       })
+      .catch(error => {
+		setError(error)
+        setLoading(false)
+	  })
   }
 
   React.useEffect(() => {
@@ -60,6 +71,9 @@ function BookDetailsView(props) {
 		  >
 			-
 		  </Button>
+		  <Typography color="error" component="h1" gutterBottom>
+			{error}
+		  </Typography>
       </div>
       
   )

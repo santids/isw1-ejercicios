@@ -4,6 +4,7 @@ function HistoryView(props) {
 
   const [history, setHistory] = React.useState({});
   const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState('');
 
   
   const updateHistory = () => {
@@ -12,9 +13,9 @@ function HistoryView(props) {
       setHistory(json);
 	  setLoading(false);
     })
-    .catch(function (error) {
-      console.error(error);
-    });
+	.catch(function (error) {
+	  setError(error)
+	});
   };
 
   React.useEffect(() => {
@@ -23,6 +24,12 @@ function HistoryView(props) {
 
   if(loading){
 	  return (<CircularProgress />);
+  }
+  if(error) {
+	  return (
+      <Typography color="error" component="h1" gutterBottom>
+        {error}
+      </Typography>);
   }
   return (
     <div>

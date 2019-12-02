@@ -409,7 +409,7 @@
           setCartItems(json);
         })
         .catch(function (error) {
-          console.error(error);
+          alert(error);
         });
       };
     
@@ -418,6 +418,9 @@
           .then(() => {
             updateCartItems();
           })
+          .catch((error) => {
+            alert(error)
+          })
     
       }
     
@@ -425,6 +428,9 @@
         getLocalAsJson(`/removeFromCart?cartId=${cartId}&bookISBN=${isbn}`)
           .then(() => {
             updateCartItems();
+          })
+          .catch((error) => {
+            alert(error)
           })
       }
       
@@ -513,13 +519,15 @@
       const { ticket, catalog, router, user, password } = props
       const classes = useStyles();
     
+      const [error, setError] = React.useState('');
+    
       const makeAnotherPurchase = () => {
         getLocalAsJson(`/createCart?userId=${user}&password=${password}`)
           .then(function (json) {
             router.navigate("/catalog", json)
           })
           .catch(function (error) {
-            console.error(error)
+            setError(error)
           });
       }
     
@@ -541,6 +549,9 @@
           <BigButton onClick={makeAnotherPurchase}>
             Realizar Otra Compra
             </BigButton>
+          <Typography color="error" component="h1" gutterBottom>
+            {error}
+          </Typography>
         </div>
     
       )
@@ -552,6 +563,7 @@
     
       const [history, setHistory] = React.useState({});
       const [loading, setLoading] = React.useState(true);
+      const [error, setError] = React.useState('');
     
       
       const updateHistory = () => {
@@ -560,9 +572,9 @@
           setHistory(json);
     	  setLoading(false);
         })
-        .catch(function (error) {
-          console.error(error);
-        });
+    	.catch(function (error) {
+    	  setError(error)
+    	});
       };
     
       React.useEffect(() => {
@@ -571,6 +583,12 @@
     
       if(loading){
     	  return (<CircularProgress />);
+      }
+      if(error) {
+    	  return (
+          <Typography color="error" component="h1" gutterBottom>
+            {error}
+          </Typography>);
       }
       return (
         <div>
@@ -595,12 +613,16 @@
     
       const [details, setDetails] = React.useState();
       const [loading, setLoading] = React.useState(true);
+      const [error, setError] = React.useState('');
     
       const addToCart = () => {
         getLocalAsJson(`/addToCart?cartId=${cartId}&bookISBN=${isbn}`)
           .then(() => {
             updateDetails();
           })
+          .catch(error => {
+    		setError(error)
+    	  })
       }
     
       const removeFromCart = () => {
@@ -608,6 +630,9 @@
           .then(() => {
             updateDetails();
           })
+          .catch(error => {
+    		setError(error)
+    	  })
       }
       
       const updateDetails = () => {
@@ -616,6 +641,10 @@
             setDetails(json)
             setLoading(false)
           })
+          .catch(error => {
+    		setError(error)
+            setLoading(false)
+    	  })
       }
     
       React.useEffect(() => {
@@ -651,6 +680,9 @@
     		  >
     			-
     		  </Button>
+    		  <Typography color="error" component="h1" gutterBottom>
+    			{error}
+    		  </Typography>
           </div>
           
       )
