@@ -8,7 +8,7 @@ function CartView(props) {
   const checkoutCart = () => (
     getLocalAsJson(`/checkoutCart?cartId=${cartId}`)
     .then( json => {
-      router.navigate('/ticket', { ticket: json })
+      router.navigate('/checkout', { ticket: json })
     } )
     .catch( error => setError(error))
   )
@@ -18,7 +18,7 @@ function CartView(props) {
       <Typography component="h1" gutterBottom>
         Esto son los libros en el carrito
       </Typography>
-      <BookList catalog={catalog} cartId={cartId} />
+      <BookList catalog={catalog} cartId={cartId} router={router} />
       <BigButton onClick={checkoutCart}>
         Checkout
       </BigButton>

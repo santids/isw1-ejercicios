@@ -45,6 +45,7 @@
       Link,
       List,
       ListItem,
+      ListSubheader,
       ListItemIcon,
       ListItemText,
       makeStyles,
@@ -53,6 +54,7 @@
       ThemeProvider,
       Toolbar,
       Typography,
+      CircularProgress,
     } = MaterialUI;
     const theme = createMuiTheme({
       palette: {
@@ -141,7 +143,7 @@
       },
       {
         title: 'Catalogo',
-        shouldShow: props.router.current() !== '/',
+        shouldShow: props.router.current() !== '/' && props.router.current() !== '/checkout',
         onClick: () => { 
           props.router.navigate('/catalog')
     
@@ -149,7 +151,7 @@
       },
       {
         title: 'Carrito',
-        shouldShow: props.router.current() !== '/',
+        shouldShow: props.router.current() !== '/' && props.router.current() !== '/checkout',
         onClick: () => { 
           props.router.navigate('/cart')
     
@@ -158,8 +160,10 @@
       },
       {
         title: 'Historial de Compras',
-        shouldShow: props.router.current() !== '/',
-        onClick: () => {},
+        shouldShow: props.router.current() !== '/' && props.router.current() !== '/checkout',
+        onClick: () => {
+    		props.router.navigate('/history')
+    	},
     
       }
     ].filter(button => button.shouldShow)
@@ -259,7 +263,7 @@
     
     
     function CatalogView(props) {
-      const { cartId, catalog } = props
+      const { cartId, catalog, router } = props
     
     
     
@@ -268,7 +272,7 @@
           <Typography component="h1" gutterBottom>
             Esto son los libros a la venta
           </Typography>
-          <BookList showAll catalog={catalog} cartId={cartId} />
+          <BookList showAll catalog={catalog} cartId={cartId} router={router} />
         </div>
       )
     }
@@ -283,7 +287,7 @@
       const checkoutCart = () => (
         getLocalAsJson(`/checkoutCart?cartId=${cartId}`)
         .then( json => {
-          router.navigate('/ticket', { ticket: json })
+          router.navigate('/checkout', { ticket: json })
         } )
         .catch( error => setError(error))
       )
@@ -293,7 +297,7 @@
           <Typography component="h1" gutterBottom>
             Esto son los libros en el carrito
           </Typography>
-          <BookList catalog={catalog} cartId={cartId} />
+          <BookList catalog={catalog} cartId={cartId} router={router} />
           <BigButton onClick={checkoutCart}>
             Checkout
           </BigButton>
@@ -355,13 +359,25 @@
             cartId={this.state.cartId}
             catalog={this.state.catalog}
           />)
-        } else if (this.state.path === "/ticket") {
-          content = (<TicketView
+        } else if (this.state.path === "/checkout") {
+          content = (<SuccesfulCheckoutView
             user={this.state.user}
             password={this.state.password}
             router={router}
             catalog={this.state.catalog}
             ticket={this.state.ticket}
+          />)
+        } else if (this.state.path === "/history") {
+          content = (<HistoryView
+            user={this.state.user}
+            password={this.state.password}
+            router={router}
+            catalog={this.state.catalog}
+          />)
+        } else if (this.state.path === "/bookDetails") {
+          content = (<BookDetailsView
+            cartId={this.state.cartId}
+            isbn={this.state.isbn}
           />)
         }
     
@@ -381,7 +397,7 @@
       }
     }
     function BookList(props) {
-      const { cartId, catalog, showAll } = props
+      const { cartId, catalog, showAll, router } = props
       const classes = useStyles();
     
       const [cartItems, setCartItems] = React.useState({})
@@ -411,6 +427,10 @@
             updateCartItems();
           })
       }
+      
+      const showDetails = isbn => () => {
+    	router.navigate('/bookDetails', {'isbn': isbn})
+      }
     
       const getAmount = isbn => {
         return (cartItems[isbn] || 0).toString();
@@ -437,11 +457,16 @@
                       >
                         +
                       </Button>
-                      <ListItemText primary={getAmount(isbn)} />
+                      <ListItemText primary={getAmount(isbn)} align="center" />
                       <Button
                         onClick={removeFromCart(isbn)}
                       >
                         -
+                      </Button>
+                      <Button
+                        onClick={showDetails(isbn)}
+                      >
+                        Ver detalles
                       </Button>
                   </ListItem>
                 )
@@ -456,24 +481,8 @@
       const { ticket, catalog, router, user, password } = props
       const classes = useStyles();
     
-      const makeAnotherPurchase = () => {
-        getLocalAsJson(`/createCart?userId=${user}&password=${password}`)
-          .then(function (json) {
-            router.navigate("/catalog", json)
-          })
-          .catch(function (error) {
-            console.error(error)
-          });
-      }
-    
-    
-    
       return (
         <div>
-          <Typography>
-            La compra fue realizada con exito!
-          </Typography>
-    
           <List component="nav" className={classes.rootList} >
             {
               ticket.items.map((item, ix) => {
@@ -495,11 +504,155 @@
           <Typography component="h1">
             {`Total: ${ticket.total}`}
           </Typography>
+        </div>
+    
+      )
+    }
+    
+    function SuccesfulCheckoutView(props) {
+      const { ticket, catalog, router, user, password } = props
+      const classes = useStyles();
+    
+      const makeAnotherPurchase = () => {
+        getLocalAsJson(`/createCart?userId=${user}&password=${password}`)
+          .then(function (json) {
+            router.navigate("/catalog", json)
+          })
+          .catch(function (error) {
+            console.error(error)
+          });
+      }
+    
+    
+    
+      return (
+        <div>
+          <Typography>
+            La compra fue realizada con exito!
+          </Typography>
+    
+          <TicketView
+            user={user}
+            password={password}
+            router={router}
+            catalog={catalog}
+            ticket={ticket}
+          />
           <BigButton onClick={makeAnotherPurchase}>
             Realizar Otra Compra
             </BigButton>
         </div>
     
+      )
+    }
+    
+    function HistoryView(props) {
+      const { catalog, router, user, password } = props
+      const classes = useStyles();
+    
+      const [history, setHistory] = React.useState({});
+      const [loading, setLoading] = React.useState(true);
+    
+      
+      const updateHistory = () => {
+        getLocalAsJson(`/listPurchases?userId=${user}&password=${password}`)
+        .then(function (json) {
+          setHistory(json);
+    	  setLoading(false);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+      };
+    
+      React.useEffect(() => {
+          updateHistory();
+      }, [])
+    
+      if(loading){
+    	  return (<CircularProgress />);
+      }
+      return (
+        <div>
+          <Typography>
+            Historial de compras
+          </Typography>
+    
+          <TicketView
+            user={user}
+            password={password}
+            router={router}
+            catalog={catalog}
+            ticket={history}
+          />
+        </div>
+      )
+    }
+    
+    function BookDetailsView(props) {
+      const { cartId, isbn } = props
+      const classes = useStyles();
+    
+      const [details, setDetails] = React.useState();
+      const [loading, setLoading] = React.useState(true);
+    
+      const addToCart = () => {
+        getLocalAsJson(`/addToCart?cartId=${cartId}&bookISBN=${isbn}`)
+          .then(() => {
+            updateDetails();
+          })
+      }
+    
+      const removeFromCart = () => {
+        getLocalAsJson(`/removeFromCart?cartId=${cartId}&bookISBN=${isbn}`)
+          .then(() => {
+            updateDetails();
+          })
+      }
+      
+      const updateDetails = () => {
+    	getLocalAsJson(`/showBookInCartDetails?cartId=${cartId}&bookISBN=${isbn}`)
+          .then((json) => {
+            setDetails(json)
+            setLoading(false)
+          })
+      }
+    
+      React.useEffect(() => {
+          updateDetails();
+      }, [])
+      
+      if(loading){
+    	  return (<CircularProgress />);
+      }
+    
+      return (
+          <div>
+    		<Typography variant="h4">
+              {details.title}, de {details.author}
+            </Typography>
+    		<Typography variant="h6">
+              ISBN: {isbn}
+            </Typography>
+            <Typography display="inline">
+              Cantidad:
+            </Typography>
+    		  <Button
+    			onClick={addToCart}
+    		  >
+    			+
+    		  </Button>
+    		  
+    		<Typography display="inline">
+    		  {details.quantity}
+    		</Typography>
+    		  <Button
+    			onClick={removeFromCart}
+    		  >
+    			-
+    		  </Button>
+          </div>
+          
       )
     }
     

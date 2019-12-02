@@ -1,7 +1,7 @@
 
 
 function CatalogView(props) {
-  const { cartId, catalog } = props
+  const { cartId, catalog, router } = props
 
 
 
@@ -10,7 +10,7 @@ function CatalogView(props) {
       <Typography component="h1" gutterBottom>
         Esto son los libros a la venta
       </Typography>
-      <BookList showAll catalog={catalog} cartId={cartId} />
+      <BookList showAll catalog={catalog} cartId={cartId} router={router} />
     </div>
   )
 }

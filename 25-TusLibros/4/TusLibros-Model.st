@@ -574,11 +574,10 @@ booksBoughtBy: aUser
 		andFold: [:aSaleItems :anotherSaleItems | aSaleItems union: anotherSaleItems ]
 		ifEmpty: [ Set new ]. ! !
 
-!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 19:46:14'!
+!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 20:51:06'!
 quantityBoughtOf: aBook by: anUser 
 	^ ((self salesDoneBy: anUser)
-		sum: [:aSale | aSale quantityBoughtOf: aBook])
-		ifEmpty: 0! !
+		sum: [:aSale | aSale quantityBoughtOf: aBook])! !
 
 !SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 13:45:17'!
 salesDoneBy: aUser
@@ -595,11 +594,10 @@ ticketFor: aUser
 	^ Ticket of: lineItems
 	! !
 
-!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 19:46:27'!
+!SalesBook methodsFor: 'accessing' stamp: 'TCM 12/1/2019 20:51:35'!
 totalSpentIn: aBook by: anUser 
 	^ ((self salesDoneBy: anUser)
-		sum: [:aSale | aSale totalSpentIn: aBook])
-		ifEmpty: 0! !
+		sum: [:aSale | aSale totalSpentIn: aBook])! !
 
 
 !classDefinition: #Ticket category: #'TusLibros-Model'!
@@ -793,7 +791,7 @@ addService: aServicePath doing: aBlock
 
 	webServer  addService: aServicePath action: (self createServiceDoing: aBlock)	! !
 
-!TusLibrosRESTController methodsFor: 'private - support' stamp: 'sjd 12/1/2019 15:57:44'!
+!TusLibrosRESTController methodsFor: 'private - support' stamp: 'TCM 12/1/2019 20:49:51'!
 createServiceDoing: aBlock
  ^ [:request |
 		[
@@ -815,7 +813,7 @@ createServiceDoing: aBlock
 					content: (WebUtils jsonEncode: response) asUtf8
 					type: 'application/json; charset=utf-8'
 					do: [:resp | 
-						resp headerAt: 'Access-Control-Allow-Origin' put: '*'.] 
+						resp headerAt: 'Access-Control-Allow-Origin' put: '*'.]
 			]
 		].
 

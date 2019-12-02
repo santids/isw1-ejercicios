@@ -9,7 +9,7 @@ const createButtons = props => [
   },
   {
     title: 'Catalogo',
-    shouldShow: props.router.current() !== '/',
+    shouldShow: props.router.current() !== '/' && props.router.current() !== '/checkout',
     onClick: () => { 
       props.router.navigate('/catalog')
 
@@ -17,7 +17,7 @@ const createButtons = props => [
   },
   {
     title: 'Carrito',
-    shouldShow: props.router.current() !== '/',
+    shouldShow: props.router.current() !== '/' && props.router.current() !== '/checkout',
     onClick: () => { 
       props.router.navigate('/cart')
 
@@ -26,8 +26,10 @@ const createButtons = props => [
   },
   {
     title: 'Historial de Compras',
-    shouldShow: props.router.current() !== '/',
-    onClick: () => {},
+    shouldShow: props.router.current() !== '/' && props.router.current() !== '/checkout',
+    onClick: () => {
+		props.router.navigate('/history')
+	},
 
   }
 ].filter(button => button.shouldShow)

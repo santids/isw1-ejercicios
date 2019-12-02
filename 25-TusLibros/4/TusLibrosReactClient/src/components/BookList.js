@@ -1,5 +1,5 @@
 function BookList(props) {
-  const { cartId, catalog, showAll } = props
+  const { cartId, catalog, showAll, router } = props
   const classes = useStyles();
 
   const [cartItems, setCartItems] = React.useState({})
@@ -29,6 +29,10 @@ function BookList(props) {
         updateCartItems();
       })
   }
+  
+  const showDetails = isbn => () => {
+	router.navigate('/bookDetails', {'isbn': isbn})
+  }
 
   const getAmount = isbn => {
     return (cartItems[isbn] || 0).toString();
@@ -55,11 +59,16 @@ function BookList(props) {
                   >
                     +
                   </Button>
-                  <ListItemText primary={getAmount(isbn)} />
+                  <ListItemText primary={getAmount(isbn)} align="center" />
                   <Button
                     onClick={removeFromCart(isbn)}
                   >
                     -
+                  </Button>
+                  <Button
+                    onClick={showDetails(isbn)}
+                  >
+                    Ver detalles
                   </Button>
               </ListItem>
             )

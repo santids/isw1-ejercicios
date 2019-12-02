@@ -49,13 +49,25 @@ class App extends React.Component {
         cartId={this.state.cartId}
         catalog={this.state.catalog}
       />)
-    } else if (this.state.path === "/ticket") {
-      content = (<TicketView
+    } else if (this.state.path === "/checkout") {
+      content = (<SuccesfulCheckoutView
         user={this.state.user}
         password={this.state.password}
         router={router}
         catalog={this.state.catalog}
         ticket={this.state.ticket}
+      />)
+    } else if (this.state.path === "/history") {
+      content = (<HistoryView
+        user={this.state.user}
+        password={this.state.password}
+        router={router}
+        catalog={this.state.catalog}
+      />)
+    } else if (this.state.path === "/bookDetails") {
+      content = (<BookDetailsView
+        cartId={this.state.cartId}
+        isbn={this.state.isbn}
       />)
     }
 
